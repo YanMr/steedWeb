@@ -6,6 +6,9 @@ import { connect } from 'react-redux';
 import SchoolList from './login/SchoolList'
 import { setUserInfo } from '@/redux/actions/userInfo';
 import '@/assets/css/login';
+import banner from '@/assets/img/banber.png'
+import computer from '@/assets/img/computer.png'
+import qrcode from '@/assets/img/qrcode.png'
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -36,7 +39,7 @@ class Login extends Component {
 			liked: true,
 			action: true,
 			server: false,
-			userMessage: {}
+			userMessage: {},
 		};
 	}
 	
@@ -176,7 +179,7 @@ class Login extends Component {
 				<div className="steed-title">铠硕达智慧校园设备管理系统</div>
 				 <div className="content">
 					<div className="login-main">
-					<div className="login-img"></div>
+					<div className="login-img"><img alt="banner" src={banner}/></div>
 					<div className="login-form-z">
 						{!this.state.server?(<div>
 						{this.state.action?(<Tabs defaultActiveKey={this.state.tabKey} onChange={this.callback}>
@@ -243,7 +246,7 @@ class Login extends Component {
 							<div className="wx-text">请使用微信扫描二维码登录</div>
 						</div>)}
 						<div className="action-s" onClick={this.actionFun}>{this.state.action?'扫一扫登录':'账号密码登录'}</div>
-						<div className="action-img"></div>
+						<div className="action-img" onClick={this.actionFun}><img alt="banner" src={this.state.action?qrcode:computer}/></div>
 					  </div>):(<SchoolList prop={this.props} close={this.serverClose} value={this.state.userMessage} />)}
 					</div>
 					</div>
