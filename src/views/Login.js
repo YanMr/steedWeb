@@ -172,8 +172,9 @@ class Login extends Component {
 	render() {
 		return (
 			<div className="container" style={{'height': this.state.clientHeight}}>
+				<div className="content-main">
 				<div className="steed-title">铠硕达智慧校园设备管理系统</div>
-				<div className="content">
+				 <div className="content">
 					<div className="login-main">
 					<div className="login-img"></div>
 					<div className="login-form-z">
@@ -246,6 +247,11 @@ class Login extends Component {
 					  </div>):(<SchoolList prop={this.props} close={this.serverClose} value={this.state.userMessage} />)}
 					</div>
 					</div>
+					</div>
+				</div>
+				<div className="copyright">
+					<div className="copyright-one">粤公网安备000000000000号 / 粤ICP备00000000号</div>
+					<div className="copyright-one">深圳市铠硕达科技有限公司 © 2020 STEED</div>
 				</div>
 			</div>
 		);

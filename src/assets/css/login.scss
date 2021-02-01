@@ -8,10 +8,16 @@
 		font-weight: 400;
 		color: #FEFEFE;
 		text-align: center;
+		margin-bottom: 40px;
+	}
+	.copyright {
 		position: absolute;
-		left: 50%;
-		top: 24%;
-		transform: translate(-50%, -24%);
+		width: 100%;
+		bottom: 30px;
+		.copyright-one {
+			color: #FFFFFF;
+			text-align: center;
+		}
 	}
 }
 .title {
@@ -20,13 +26,15 @@
 	font-size: 26px;
 	margin-bottom: 25px;
 }
-.content {
-	width: 750px;
-	height: 400px;
+.content-main {
 	position: absolute;
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
+}	
+.content {
+	width: 750px;
+	height: 400px;
 	border: 12px solid rgba(150, 195, 255, .5);
 	border-radius: 16px;
 	.login-main {
