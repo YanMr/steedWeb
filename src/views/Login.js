@@ -250,7 +250,7 @@ class Login extends Component {
 					</div>
 				</div>
 				<div className="copyright">
-					<div className="copyright-one">粤公网安备000000000000号 / 粤ICP备00000000号1</div>
+					<div className="copyright-one">粤公网安备000000000000号 / 粤ICP备00000000号</div>
 					<div className="copyright-one">深圳市铠硕达科技有限公司 © 2020 STEED</div>
 				</div>
 			</div>
