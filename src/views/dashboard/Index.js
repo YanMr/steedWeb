@@ -5,7 +5,7 @@ class Index extends Component {
 		return (
 			<div className="shadow-radius">
 				<div >
-					<h1>这是首页</h1>
+					<h1>这是系统首页</h1>
 				</div>
 			</div>
 		);
