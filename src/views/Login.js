@@ -5,6 +5,7 @@ import { Form, Input, Button, Tabs, Select } from 'antd';
 import { connect } from 'react-redux';
 import SchoolList from './login/SchoolList'
 import { setUserInfo } from '@/redux/actions/userInfo';
+import Security from '@/views/passwordSecurity/Index';
 import '@/assets/css/login';
 import banner from '@/assets/img/banber.png'
 import computer from '@/assets/img/computer.png'
@@ -40,6 +41,7 @@ class Login extends Component {
 			action: true,
 			server: false,
 			userMessage: {},
+			security: true
 		};
 	}
 	
@@ -172,9 +174,18 @@ class Login extends Component {
 		localStorage.removeItem('isLogin');
 	}
 
+	// 忘记密码
+	securityFun = () => {
+		this.setState({
+			security: !this.state.security
+		})
+	}
+
 	render() {
 		return (
-			<div className="container" style={{'height': this.state.clientHeight}}>
+			<div>
+			{
+				this.state.security ? (<div className="container" style={{'height': this.state.clientHeight}}>
 				<div className="content-main">
 				<div className="steed-title">铠硕达智慧校园设备管理系统</div>
 				 <div className="content">
@@ -201,7 +212,7 @@ class Login extends Component {
 								  <Button type="primary" disabled={!this.state.submitType}  htmlType="submit" block onClick={this.login}>
 										登录
 									</Button>
-									<div className="forget-pass">忘记密码</div>
+									<div className="forget-pass" onClick={this.securityFun}>忘记密码</div>
 								</FormItem>
 							</Form>):''}
 							</TabPane>
@@ -256,6 +267,8 @@ class Login extends Component {
 					<div className="copyright-one">粤公网安备000000000000号 / 粤ICP备00000000号</div>
 					<div className="copyright-one">深圳市铠硕达科技有限公司 © 2020 STEED</div>
 				</div>
+			</div>) : <Security securityFun={this.securityFun}/>
+			}
 			</div>
 		);
 	}
