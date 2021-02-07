@@ -5,7 +5,7 @@
 
 import Dashboard from '../views/dashboard/Index'; // 首页
 import Energy from '../views/deviceManager/Energy'; // 能耗统计
-import DeviceList from '../views/deviceManager/List'; // 设备列表
+import DeviceList from '../views/deviceManager/list/Index'; // 设备列表
 import Statistical from '../views/deviceManager/Statistical'; // 设备统计
 import Error404 from '../views/error/Error404'; // 404
 import Error500 from '../views/error/Error500'; // 500

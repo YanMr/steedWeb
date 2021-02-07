@@ -1,0 +1,244 @@
+@import './var.scss';
+.full-content {
+	margin: -15px;
+}
+.device-page {
+	flex: auto;
+	display: flex;
+	.device-left {
+		flex: 1;
+		display: flex;
+		position: relative;
+		flex-direction: column;
+	}
+	.device-right {
+		width: 400px;
+		position: relative;
+		background: #fff;
+	}
+}
+.device-page-header {
+	height: 50px;
+	background: #fff;
+	display: flex;
+	align-items: center;
+}
+.ant-form.searh-header-form {
+	.ant-form-item {
+		width: 200px;
+		margin-left: 50px;
+		margin-right: 0;
+		.ant-form-item-control-input {
+			height: 34px;
+			.ant-select-selector {
+				background: #f0f0f0;
+				border-radius: 17px;
+				font-size: 14px;
+				color: #656565;
+			}
+		}
+		.ant-form-item-label > label {
+			font-size: 14px;
+			color: #282828;
+		}
+		.ant-btn {
+			width: 90px;
+			height: 34px;
+			border-radius: 17px;
+			overflow: hidden;
+			font-size: 16px;
+			padding: 0;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			span {
+				display: inline;
+				line-height: 1;
+			}
+			.action {
+				position: relative;
+				top: 2px;
+			}
+		}
+	}
+}
+
+.left-main {
+	flex: auto;
+	display: flex;
+	flex-direction: column;
+	.status-control {
+		padding-right: 100px;
+		height: 50px;
+		display: flex;
+		align-items: center;
+		justify-content: flex-end;
+		border-bottom: 1px solid #e1e1e1;
+		.status-button {
+			height: 25px;
+			width: 80px;
+			border-radius: 25px;
+			line-height: 25px;
+			text-align: center;
+			font-size: 12px;
+			margin: 0 0 0 30px;
+		}
+		.button-edit {
+			width: 60px;
+			height: 25px;
+			font-size: 12px;
+			border-radius: 25px;
+			text-align: center;
+			border: none;
+			margin-left: 30px;
+			span {
+				display: inline;
+			}
+		}
+	}
+	.table-wrap {
+		position: relative;
+		height: 100%;
+		overflow: auto;
+	}
+}
+.table {
+	.ant-table-row {
+		color: #282828;
+		&.disabled {
+			.ant-table-cell {
+				color: #8c8c8c;
+			}
+		}
+	}
+	.ant-checkbox-checked .ant-checkbox-inner::after {
+		display: none;
+	}
+	.ant-checkbox-inner {
+		width: 12px;
+		height: 12px;
+	}
+	.anticon {
+		color: $light;
+		position: relative;
+		margin-right: 4px;
+	}
+	.icon-equipment {
+		font-size: 22px;
+		top: 3px;
+	}
+	.icon-base-info {
+		font-size: 20px;
+		top: 3px;
+	}
+	.icon-status {
+		font-size: 14px;
+		top: 1px;
+	}
+	.icon-wl-status {
+		font-size: 16px;
+		top: 1px;
+	}
+	.status-icon-box {
+		.light {
+			color: $light;
+		}
+		.disabled {
+			color: #c8c8c8;
+		}
+	}
+	.device-name-th {
+		padding-left: 15px;
+	}
+	.device-name {
+		padding-left: 20px;
+	}
+	.ant-table-selection-column {
+		.ant-table-selection {
+			display: none;
+		}
+	}
+}
+
+.ant-table {
+	background: none;
+}
+.ant-table-thead > tr > th {
+	background: none;
+	border-bottom: 1px solid #e1e1e1;
+	font-size: 14px;
+	color: #282828;
+}
+.ant-table .ant-table-cell {
+	border-bottom: 1px solid #e1e1e1;
+	padding: 0 10px;
+	height: 50px;
+	color: #282828;
+	font-size: 14px;
+}
+.table-bottom-footer {
+	height: 50px;
+	display: flex;
+	align-items: center;
+	background: #fff;
+	border-top: 1px solid #e1e1e1;
+	padding-left: 14px;
+	.ant-checkbox-checked .ant-checkbox-inner::after {
+		display: none;
+	}
+	.ant-checkbox-inner {
+		width: 12px;
+		height: 12px;
+	}
+	.check-all {
+		margin-right: 12px;
+		.ant-checkbox-wrapper {
+			color: $light;
+			font-size: 14px;
+		}
+	}
+	.check-total {
+		font-size: 12px;
+		color: $light;
+		margin-right: 50px;
+  }
+  .action-item {
+    margin-right: 50px;
+    .icon-tiaojie {
+      color: #282828;
+      &:hover {
+        color: $light;
+        cursor: pointer;
+      }
+    }
+    .icon-del {
+      color: #282828;
+      font-size: 16px;
+      &:hover {
+        color: #FF7D78;
+        cursor: pointer;
+      }
+    }    
+    .icon-set {
+      font-size: 23px;
+      color: #282828;
+      &:hover {
+        color: $light;
+        cursor: pointer;
+      }      
+    }
+  }
+  .cancel {
+    margin-left: 160px;
+  }
+  .cancel-button {
+    cursor: pointer;
+    color: #646464;
+    font-size: 16px;
+    background: none;
+    border: none;
+    &:hover {
+      color: $light;
+    }
+  }
+}

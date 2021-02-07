@@ -204,9 +204,12 @@ $borderColor: #d8d8d8;
 		margin-right: 10px;
 	}
 }
-.breadCrumb {
+.breadCrumb .ant-breadcrumb{
 	padding: 15px;
 	padding-bottom: 0;
+	&:empty {
+		display: none;
+	}
 }
 
 .list {
@@ -245,4 +248,15 @@ $borderColor: #d8d8d8;
 
 .ant-menu-inline-collapsed > .ant-menu-item, .ant-menu-inline-collapsed > .ant-menu-submenu > .ant-menu-submenu-title {
 	padding: 0 13px !important;
+}
+.main-content-parent {
+	flex: auto;
+	position: relative;
+	display: flex;
+	.main-content {
+		display: flex;
+		flex: auto;
+		flex-direction: column;
+		padding: 15px;
+	}
 }
