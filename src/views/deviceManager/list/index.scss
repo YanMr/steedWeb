@@ -1,27 +1,36 @@
-@import './var.scss';
+@import '../../../assets/css/var.scss';
 .full-content {
 	margin: -15px;
 }
-.device-page {
+section.device-page {
 	flex: auto;
 	display: flex;
+	flex-direction: row;
 	.device-left {
 		flex: 1;
 		display: flex;
 		position: relative;
 		flex-direction: column;
+		border-right: 1px solid #e1e1e1;
 	}
 	.device-right {
 		width: 400px;
 		position: relative;
 		background: #fff;
 	}
-}
-.device-page-header {
-	height: 50px;
-	background: #fff;
-	display: flex;
-	align-items: center;
+	.left-main {
+		border-right: 3px solid #e1e1e1;
+		overflow-y: auto;
+		*::-webkit-scrollbar {
+			width: 3px;
+		}
+		*::-webkit-scrollbar-track {
+			background: #e1e1e1;
+		}
+		*::-webkit-scrollbar-thumb {
+			background: $light;
+		}
+	}
 }
 .ant-form.searh-header-form {
 	.ant-form-item {
@@ -98,8 +107,7 @@
 	}
 	.table-wrap {
 		position: relative;
-		height: 100%;
-		overflow: auto;
+		flex: 1;
 	}
 }
 .table {
@@ -177,6 +185,10 @@
 	font-size: 14px;
 }
 .table-bottom-footer {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	left: 0;
 	height: 50px;
 	display: flex;
 	align-items: center;
@@ -201,44 +213,160 @@
 		font-size: 12px;
 		color: $light;
 		margin-right: 50px;
-  }
-  .action-item {
-    margin-right: 50px;
-    .icon-tiaojie {
-      color: #282828;
-      &:hover {
-        color: $light;
-        cursor: pointer;
-      }
-    }
-    .icon-del {
-      color: #282828;
-      font-size: 16px;
-      &:hover {
-        color: #FF7D78;
-        cursor: pointer;
-      }
-    }    
-    .icon-set {
-      font-size: 23px;
-      color: #282828;
-      &:hover {
-        color: $light;
-        cursor: pointer;
-      }      
-    }
-  }
-  .cancel {
-    margin-left: 160px;
-  }
-  .cancel-button {
-    cursor: pointer;
-    color: #646464;
-    font-size: 16px;
-    background: none;
-    border: none;
-    &:hover {
-      color: $light;
-    }
-  }
+	}
+	.action-item {
+		margin-right: 50px;
+		.icon-tiaojie {
+			color: #282828;
+			&:hover {
+				color: $light;
+				cursor: pointer;
+			}
+		}
+		.icon-del {
+			color: #282828;
+			font-size: 16px;
+			&:hover {
+				color: #ff7d78;
+				cursor: pointer;
+			}
+		}
+		.icon-set {
+			font-size: 23px;
+			color: #282828;
+			&:hover {
+				color: $light;
+				cursor: pointer;
+			}
+		}
+	}
+	.cancel {
+		margin-left: 160px;
+	}
+	.cancel-button {
+		cursor: pointer;
+		color: #646464;
+		font-size: 16px;
+		background: none;
+		border: none;
+		&:hover {
+			color: $light;
+		}
+	}
+}
+#root .main-content-parent {
+	overflow: hidden;
+}
+
+.tab-bar {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+	.tab-item {
+		flex: 1;
+		height: 50px;
+		line-height: 50px;
+		text-align: center;
+		font-size: 16px;
+		color: #282828;
+		position: relative;
+		cursor: pointer;
+		&:hover {
+			color: $light;
+		}
+		&.active {
+			color: $light;
+			&::after {
+				content: '';
+				display: block;
+				position: absolute;
+				bottom: 0;
+				width: 50%;
+				left: 50%;
+				transform: translateX(-50%);
+				height: 3px;
+				background: $light;
+			}
+		}
+	}
+}
+
+.right-tab-main {
+	padding: 15px;
+	.control-list {
+		flex-wrap: wrap;
+		.control-row {
+			display: flex;
+			margin-bottom: 15px;
+			&.control-row-small {
+				justify-content: space-between;
+				.control-item {
+					flex: inherit;
+					width: 178px;
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+				}
+			}
+		}
+		.control-item {
+			display: flex;
+			height: 80px;
+			background: #ffffff;
+			border: 1px solid #c8c8c8;
+			border-radius: 8px;
+			padding: 0 20px;
+			flex: 1;
+			justify-content: space-between;
+			.li {
+				font-size: 14px;
+				line-height: 1;
+				color: #282828;
+				display: inline-flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				cursor: pointer;
+				text-transform: uppercase;
+				&.mini-li {
+					flex-direction: row;
+					flex: 1;
+					.control-name {
+						margin-left: 5px;
+					}
+				}
+				&.li-group {
+					padding: 10px 0;
+				}
+				&.light {
+					color: $light;
+				}
+				&.disabled {
+					color: #c8c8c8;
+					.icon-guanbi {
+						color: #c8c8c8;
+					}
+				}
+				.icon-center {
+					font-size: 24px;
+					color: $light;
+				}
+				.icon-guanbi {
+					font-size: 35px;
+					color: $danger;
+				}
+				.icon-kongzhi1 {
+					font-size: 30px;
+					color: $light;
+				}
+				.icon-danxuan {
+					font-size: 35px;
+					color: $light;
+				}
+				.icon-yitiji {
+					font-size: 30px;
+				}
+			}
+		}
+	}
 }

@@ -16,6 +16,7 @@ export const menus = [
 			{
 				path: '/device/list',
 				title: '设备列表',
+				breadCrumb: false
 			},
 			{
 				path: '/device/energy',

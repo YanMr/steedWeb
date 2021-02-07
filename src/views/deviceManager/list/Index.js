@@ -1,41 +1,50 @@
 import React, { useState } from 'react';
 import { Tag, Button } from 'antd';
-import '@/assets/css/device-list';
-import SearchHeader from './SearchHeader';
-import DeviceTable from './DeviceTable';
-
+import './index.scss';
+import SearchHeader from './components/SearchHeader';
+import DeviceTable from './components/DeviceTable';
+import RightTab from './components/RightTab';
+import RightTabMain from './components/RightTabMain';
 const List = () => {
-  const [showCheckBox, setShowCheckBox] = useState(true);
-  const toggleEdit = () => {
-    console.log('showCheckBox', showCheckBox);
-    setShowCheckBox(!showCheckBox)
-  }
+	const [showCheckBox, setShowCheckBox] = useState(true);
+	const toggleEdit = () => {
+		setShowCheckBox(!showCheckBox);
+	};
 	return (
 		<section className="device-page full-content">
 			<section className="device-left">
-				<header className="device-page-header">
-					<SearchHeader />
-				</header>
-				<section className="left-main">
-					<div className="status-control">
-						<Tag className="status-button status-online" color="blue">
-							在线:20/30
-						</Tag>
-						<Tag className="status-button status-poweron" color="green">
-							开机:20
-						</Tag>
-						<Tag className="status-button status-turnoff" color="magenta">
-							关机:20
-						</Tag>
-						<Button className="button-edit" type="primary" onClick={toggleEdit}>
-							编辑
-						</Button>
-					</div>
-					<DeviceTable showCheckBox={showCheckBox}/>
+				<section className="custom-layout">
+					<header className="custom-layout-header">
+						<SearchHeader />
+					</header>
+					<section className="left-main custom-layout-content">
+						<div className="status-control">
+							<Tag className="status-button status-online" color="blue">
+								在线:20/30
+							</Tag>
+							<Tag className="status-button status-poweron" color="green">
+								开机:20
+							</Tag>
+							<Tag className="status-button status-turnoff" color="magenta">
+								关机:20
+							</Tag>
+							<Button className="button-edit" type="primary" onClick={toggleEdit}>
+								编辑
+							</Button>
+						</div>
+						<DeviceTable showCheckBox={showCheckBox} />
+					</section>
 				</section>
 			</section>
 			<section className="device-right">
-				<header className="device-page-header">右边</header>
+				<section className="custom-layout">
+					<header className="custom-layout-header">
+						<RightTab />
+					</header>
+					<section className="custom-layout-content">
+						<RightTabMain />
+					</section>
+				</section>
 			</section>
 		</section>
 	);

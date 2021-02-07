@@ -10,7 +10,7 @@ class Index extends Component {
 	render() {
 		return (
 			<div className="layout">
-				<Layout style={{ minHeight: '100vh' }}>
+				<Layout style={{ minHeight: '100vh', height: '100vh', overflow: 'hidden' }}>
 					<TopHeader/>
 					<Layout>
 						<SideMenu/>

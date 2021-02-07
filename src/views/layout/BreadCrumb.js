@@ -52,7 +52,8 @@ class BreadCrumb extends React.Component {
 		// console.log(routes);
 		if (!routes.length) return null;
 		const itemRender = (route, params, routes, paths) => {
-			if (!route.breadcrumb) return null;
+			console.log('routes', routes);
+			if (!route.breadCrumb) return null;
 			const last = routes.indexOf(route) === routes.length - 1;
 			return last ? (
 				<Link to={route.path}>

@@ -2,40 +2,39 @@ import React, { useState, useEffect } from 'react';
 import { Tag, Button, Table, Checkbox } from 'antd';
 import IconFont from '@/components/IconFont';
 
-import '@/assets/css/device-list';
 const DeviceTable = (props = {}) => {
-  const [pageSize, setPageSize] = useState(10);
-  const [rowSelection, setRowSelection] = useState({});
-  const [isCheckAll, setCheckAll] = useState(false);
+	const [pageSize, setPageSize] = useState(10);
+	const [rowSelection, setRowSelection] = useState({});
+	const [isCheckAll, setCheckAll] = useState(false);
 	useEffect(() => {
 		const { showCheckBox } = props;
 		if (showCheckBox) {
 			setRowSelection({
 				onChange,
-				selectedRowKeys: [1, 5],
+				selectedRowKeys: [1, 5]
 			});
 		} else {
 			setRowSelection(null);
 		}
-  }, [props]);
-  const onChange = item => {
-    console.log(item);
-    setRowSelection({
-      onChange,
-      selectedRowKeys: item,
-    });    
-  };
-  const checkAll = () => {
-    const keys = [];
-    tableData.forEach(item => {
-      keys.push(item.key)
-    });
-    setRowSelection({
-      onChange,
-      selectedRowKeys: isCheckAll ? keys : [],
-    });   
-    setCheckAll(!isCheckAll);
-  }
+	}, [props]);
+	const onChange = item => {
+		console.log(item);
+		setRowSelection({
+			onChange,
+			selectedRowKeys: item
+		});
+	};
+	const checkAll = () => {
+		const keys = [];
+		tableData.forEach(item => {
+			keys.push(item.key);
+		});
+		setRowSelection({
+			onChange,
+			selectedRowKeys: isCheckAll ? keys : []
+		});
+		setCheckAll(!isCheckAll);
+	};
 	const tableHeader = [
 		{
 			title: () => (
@@ -110,19 +109,30 @@ const DeviceTable = (props = {}) => {
 	const setRowClass = item => {
 		return item.status === 0 ? 'disabled' : '';
 	};
+	const { showCheckBox } = props;
 	return (
 		<div className="table-wrap">
 			<Table selectedRowKeys={[1]} rowSelection={rowSelection} rowClassName={setRowClass} dataSource={tableData} columns={tableHeader} pagination={{ defaultPageSize: 10 }} className="table" />
-			<div className="table-bottom-footer">
-				<div className="check-all">
-					<Checkbox onChange={checkAll}>全选</Checkbox>
+			{showCheckBox && (
+				<div className="table-bottom-footer">
+					<div className="check-all">
+						<Checkbox onChange={checkAll}>全选</Checkbox>
+					</div>
+					<div className="check-total">已选08项</div>
+					<div className="action-item">
+						<IconFont type="icon-ziyuan" className="icon-tiaojie" />
+					</div>
+					<div className="action-item">
+						<IconFont type="icon-del" className="icon-del" />
+					</div>
+					<div className="action-item">
+						<IconFont type="icon-set" className="icon-set" />
+					</div>
+					<div className="cancel">
+						<button className="cancel-button">取消</button>
+					</div>
 				</div>
-        <div className="check-total">已选08项</div>
-        <div className="action-item"><IconFont type='icon-ziyuan' className="icon-tiaojie"/></div>
-        <div className="action-item"><IconFont type='icon-del' className="icon-del"/></div>
-        <div className="action-item"><IconFont type='icon-set' className="icon-set"/></div>
-        <div className="cancel"><button className="cancel-button">取消</button></div>
-			</div>
+			)}
 		</div>
 	);
 };

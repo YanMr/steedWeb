@@ -256,10 +256,39 @@ $borderColor: #d8d8d8;
 	flex: auto;
 	position: relative;
 	display: flex;
+	overflow-x: hidden;
+	overflow-y: auto;
 	.main-content {
 		display: flex;
 		flex: auto;
 		flex-direction: column;
 		padding: 15px;
 	}
+}
+
+.custom-layout {
+	flex: auto;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	height: calc(100vh - 60px);
+	.custom-layout-header {
+		height: 50px;
+		background: #fff;
+		display: flex;
+		align-items: center;
+		border-bottom: 1px solid #e1e1e1;
+	}	
+	.custom-layout-content {
+		flex: 1;
+		display: flex;
+		position: relative;
+		flex-direction: column;
+	}
+}
+
+@for $i from 1 to 100 {
+	.font-#{$i} {
+			font-size: $i + px;
+	 }
 }
