@@ -35,7 +35,7 @@ export const menus = [
 	{
 		path: '/system',
 		title: '系统管理',
-		icon: 'icon-xitong',
+		icon: 'icon-xitong1',
 		children: [
 			{
 				path: '/system/index',

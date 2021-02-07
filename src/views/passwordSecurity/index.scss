@@ -1,0 +1,186 @@
+.securuty-header {
+  width: 100%;
+  color: #FFFFFF;
+  height: 63px;
+  background-color: #4164F0;
+  .securuty-main {
+    width: 663px;
+    margin: 0 auto;
+    height: 63px;
+    position: relative;
+    .login-text {
+      font-size: 15px;
+      line-height: 63px;
+    }
+    .securuty-title {
+      font-size: 19px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .login-page {
+      font-size: 10px;
+      color: #D2D2D2;
+      position: absolute;
+      right: 0;
+      bottom: 5px;
+      i {
+        font-style: normal;
+        color: #FFFFFF;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.steps-container {
+  display: flex;
+  align-items: center;
+  .steps-border {
+    height: 1px;
+    background-color:#C8C8C8;
+    width: 130px;
+  }
+  .steps-main {
+    display: flex;
+    flex-direction: column;
+    width: 85px;
+    align-items: center;
+    .steps-text {
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      background: #C8C8C8;
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .steps-mess {
+      font-size: 12px;
+      color: #CBCBCB;
+    }
+    .steps-go {
+      font-size: 16px;
+    }
+  }
+  .w62 {
+    width: 62px;
+  } 
+  .w85 {
+    width: 50px;
+  }
+  .curB {
+    background-color: #4164F0;
+  }
+  .cur {
+    .steps-text {
+      background-color: #4164F0;
+    }
+    .steps-mess {
+      color: #4164F0;
+    }
+
+  }
+}
+
+.securuty-center {
+  width: 663px;
+  margin: 38px auto 0;
+  background: #FFFFFF;
+  padding: 28px 96px;
+}
+
+.copyright-name {
+  padding: 20px;
+  text-align: center;
+  .mg15 {
+    margin: 0 15px;
+  }
+}
+
+.stepnoe {
+  .step-title {
+    display: flex;
+    padding: 22px 12px 13px;
+    font-size: 16px;
+    border-bottom: 1px solid #BEBEBE;
+    align-items: flex-end;
+    color: #9a9999;
+    .step-text-vice {
+      margin-left: 10px;
+      font-size: 14px;
+    }
+  }
+  .step-z {
+    margin-top: 18px;
+    .step-from {
+      padding: 0 30px;
+      .submit {
+        text-align: center;
+        button {
+          width: 100px;
+        }
+      }
+      .phoneCode {
+        display: flex;
+      }
+      .code-click {
+        margin-left: 20px;
+      }
+    }
+  }
+  .message {
+    background: #FFFBED;
+    border: 1px solid #FFE8A8;
+    padding: 20px 31px;
+    color: #000000;
+    margin-bottom: 30px;
+    .message-h1 {
+      margin-bottom: 30px;
+    }
+    .message-con {
+      span{
+        display: block;
+      }
+    }
+  }
+}
+
+.steptwo {
+  margin-top: 30px;
+  .ant-form-item-required {
+    width: 138px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  .ant-input {
+    width: 220px;
+  }
+  .submit {
+    text-align: center;
+    .ant-btn {
+      width: 120px;
+    }
+  }
+}
+
+.stepthree {
+  text-align: center;
+  margin-top: 30px;
+  .suss-icon {
+    color: #4164F0;
+    font-size: 100px;
+  }
+  .suss-text {
+    i {
+      color: #4164F0;
+      font-style: normal;
+      cursor: pointer;
+    }
+  }
+}
+.containerStep {
+  min-height: 400px;
+}
