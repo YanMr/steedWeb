@@ -6,10 +6,14 @@ import DeviceTable from './components/DeviceTable';
 import RightTab from './components/RightTab';
 import RightTabMain from './components/RightTabMain';
 const List = () => {
-	const [showCheckBox, setShowCheckBox] = useState(true);
+  const [showCheckBox, setShowCheckBox] = useState(true);
+  const [activeTab, setActiveTab] = useState(1);
 	const toggleEdit = () => {
 		setShowCheckBox(!showCheckBox);
-	};
+  };
+  const changeRightTab = (tabIndex) => {
+    setActiveTab(tabIndex);
+  }
 	return (
 		<section className="device-page full-content">
 			<section className="device-left">
@@ -39,10 +43,10 @@ const List = () => {
 			<section className="device-right">
 				<section className="custom-layout">
 					<header className="custom-layout-header">
-						<RightTab />
+						<RightTab onClickHandle={changeRightTab} activeTab={activeTab}/>
 					</header>
 					<section className="custom-layout-content">
-						<RightTabMain />
+						<RightTabMain activeTab={activeTab} />
 					</section>
 				</section>
 			</section>

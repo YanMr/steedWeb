@@ -284,6 +284,7 @@ $borderColor: #d8d8d8;
 		display: flex;
 		position: relative;
 		flex-direction: column;
+		height: calc(100vh - 60px - 50px);
 	}
 }
 
@@ -291,4 +292,8 @@ $borderColor: #d8d8d8;
 	.font-#{$i} {
 			font-size: $i + px;
 	 }
+}
+
+.flex {
+	display: flex;
 }
