@@ -1,0 +1,52 @@
+.search-header {
+	padding-left: 20px;
+	padding-top: 10px;
+	background-color: #fff;
+	min-height: 53px;
+  display: flex;
+  align-items: center;
+	.ant-form.searh-header-form {
+		display: flex;
+		flex-wrap: wrap;
+		overflow-x: auto;
+		width: 100%;
+		.ant-input {
+			border-radius: 17px;
+		}
+		.ant-form-item {
+			margin-bottom: 10px;
+			.ant-form-item-control-input {
+				height: 34px;
+				.ant-select-selector {
+					background: #f0f0f0;
+					border-radius: 17px;
+					font-size: 14px;
+					min-width: 125px;
+					color: #656565;
+				}
+			}
+			.ant-form-item-label > label {
+				font-size: 14px;
+				color: #282828;
+			}
+			.ant-btn {
+				height: 34px;
+				padding: 0 10px;
+				border-radius: 17px;
+				overflow: hidden;
+				font-size: 16px;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				span {
+					display: inline;
+					line-height: 1;
+				}
+				.action {
+					position: relative;
+					top: 2px;
+				}
+			}
+		}
+	}
+}

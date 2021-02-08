@@ -2,9 +2,6 @@
 .light {
 	color: $light;
 }
-.full-content {
-	margin: -15px;
-}
 section.device-page {
 	flex: auto;
 	display: flex;
@@ -32,45 +29,6 @@ section.device-page {
 		}
 		*::-webkit-scrollbar-thumb {
 			background: $light;
-		}
-	}
-}
-.ant-form.searh-header-form {
-	.ant-form-item {
-		width: 200px;
-		margin-left: 50px;
-		margin-right: 0;
-		.ant-form-item-control-input {
-			height: 34px;
-			.ant-select-selector {
-				background: #f0f0f0;
-				border-radius: 17px;
-				font-size: 14px;
-				color: #656565;
-			}
-		}
-		.ant-form-item-label > label {
-			font-size: 14px;
-			color: #282828;
-		}
-		.ant-btn {
-			width: 90px;
-			height: 34px;
-			border-radius: 17px;
-			overflow: hidden;
-			font-size: 16px;
-			padding: 0;
-			display: inline-flex;
-			align-items: center;
-			justify-content: center;
-			span {
-				display: inline;
-				line-height: 1;
-			}
-			.action {
-				position: relative;
-				top: 2px;
-			}
 		}
 	}
 }

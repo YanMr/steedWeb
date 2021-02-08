@@ -95,9 +95,6 @@ $borderColor: #d8d8d8;
 
 .shadow-radius {
 	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.1);
-	border-radius: 2px;
-	padding: 15px;
-	background-color: #fff !important;
 	min-height: 85vh;
 }
 
@@ -259,10 +256,7 @@ $borderColor: #d8d8d8;
 	overflow-x: hidden;
 	overflow-y: auto;
 	.main-content {
-		display: flex;
-		flex: auto;
 		flex-direction: column;
-		padding: 15px;
 	}
 }
 
@@ -273,7 +267,7 @@ $borderColor: #d8d8d8;
 	overflow: hidden;
 	height: calc(100vh - 60px);
 	.custom-layout-header {
-		height: 50px;
+		min-height: 50px;
 		background: #fff;
 		display: flex;
 		align-items: center;
