@@ -12,6 +12,29 @@ section.device-page {
 		position: relative;
 		flex-direction: column;
 		border-right: 1px solid #e1e1e1;
+		.toggleVisibleRight {
+			width: 15px;
+			height: 115px;
+			position: absolute;
+			right: -8px;
+			top: 50%;
+			transform: translateY(-50%);
+			z-index: 2;
+			background: #C8C8C8;
+			border-radius: 0 15px 15px 0;
+			cursor: pointer;
+			.icon-arr {
+				color: #fff;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate3d(-50%, -50%, 0);
+			}
+			&.active {
+				right: 0;
+				transform: translateY(-50%) rotateY(180deg);
+			}
+		}		
 	}
 	.device-right {
 		width: 400px;
@@ -37,6 +60,7 @@ section.device-page {
 	flex: auto;
 	display: flex;
 	flex-direction: column;
+	position: relative;
 	.status-control {
 		padding-right: 100px;
 		height: 50px;
@@ -44,6 +68,7 @@ section.device-page {
 		align-items: center;
 		justify-content: flex-end;
 		border-bottom: 1px solid #e1e1e1;
+		flex: none;
 		.status-button {
 			height: 25px;
 			width: 80px;
@@ -75,7 +100,7 @@ section.device-page {
 	.ant-table-row {
 		color: #282828;
 		&.disabled {
-			.ant-table-cell {
+			.ant-table-cell, .wl-status-btns,.wl-status-btns .anticon, .wl-status-btns .name {
 				color: #8c8c8c;
 			}
 		}
@@ -91,6 +116,16 @@ section.device-page {
 		color: $light;
 		position: relative;
 		margin-right: 4px;
+		cursor: pointer;
+	}
+	.cell-action-btns {
+		.anticon {
+			margin-right: 20px;
+			color: #282828;
+			&:hover {
+				color: $light;
+			}
+		}
 	}
 	.icon-equipment {
 		font-size: 22px;
@@ -126,6 +161,30 @@ section.device-page {
 		.ant-table-selection {
 			display: none;
 		}
+	}
+	.wl-status-btns {
+		display: flex;
+		flex-wrap: wrap;
+		max-width: 420px;
+		color: #282828;
+		.item {
+			display: inline-flex;
+			align-items: center;
+			width: 80px;
+			font-size: 14px;
+			&.light {
+				color: $light;
+			}
+			&.danger {
+				color: $danger;
+			}
+			&.warn {
+				color: $warn;
+			}
+		}
+	}
+	.ant-pagination {
+		padding-right: 30px;
 	}
 }
 

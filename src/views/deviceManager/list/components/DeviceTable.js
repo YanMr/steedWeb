@@ -35,6 +35,9 @@ const DeviceTable = (props = {}) => {
 		});
 		setCheckAll(!isCheckAll);
 	};
+	const onCancel = () => {
+		props.onCancel();
+	}
 	const tableHeader = [
 		{
 			title: () => (
@@ -90,8 +93,65 @@ const DeviceTable = (props = {}) => {
 			dataIndex: 'wlStatus',
 			key: 'wlStatus',
 			render(text) {
-				return text;
+				return (
+					<div className="wl-status-btns">
+						<div className="item">
+							<IconFont type="icon-guanbi" className="font-16" />
+							<div className="name">总开关</div>
+						</div>
+						<div className="item">
+							<IconFont type="icon-yitiji" className="font-16" />
+							<div className="name">一体机</div>
+						</div>
+						<div className="item">
+							<IconFont type="icon-shexiangji" className="font-16" />
+							<div className="name">投影仪</div>
+						</div>
+						<div className="item">
+							<IconFont type="icon-xiaochengxutubiao-19" className="font-16" />
+							<div className="name">显示器</div>
+						</div>
+						<div className="item">
+							<IconFont type="icon-zuoce-anfangmenjin" className="font-16" />
+							<div className="name">门禁</div>
+						</div>
+						<div className="item">
+							<IconFont type="icon-chuanglian-shouye" className="font-16" />
+							<div className="name">窗帘</div>
+						</div>
+						<div className="item">
+							<IconFont type="icon-diandeng-shouye" className="font-16" />
+							<div className="name">灯光</div>
+						</div>
+						<div className="item warn">
+							<IconFont type="icon-fengshan-shouye" className="font-16" />
+							<div className="name">风扇</div>
+						</div>
+						<div className="item danger">
+							<IconFont type="icon-kongtiao-shouye" className="font-16" />
+							<div className="name">空调</div>
+						</div>																																																
+					</div>
+				)
 			}
+		},
+		{
+			title: () => {
+				return (
+					<div>
+						<IconFont type="icon-peizhiguanli" className="icon-wl-status" />
+						操作
+					</div>
+				);
+			},
+			render: () => {
+				return (
+					<div className="cell-action-btns">
+						<IconFont type="icon-xitong1" className="font-16" />
+						<IconFont type="icon-view" className="font-16" />
+					</div>
+				);
+			}                       			
 		}
 	];
 	const li = {
@@ -129,7 +189,7 @@ const DeviceTable = (props = {}) => {
 						<IconFont type="icon-set" className="icon-set" />
 					</div>
 					<div className="cancel">
-						<button className="cancel-button">取消</button>
+						<button className="cancel-button" onClick={onCancel}>取消</button>
 					</div>
 				</div>
 			)}

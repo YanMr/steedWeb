@@ -267,7 +267,7 @@ $borderColor: #d8d8d8;
 	overflow: hidden;
 	height: calc(100vh - 60px);
 	.custom-layout-header {
-		min-height: 50px;
+		height: 50px;
 		background: #fff;
 		display: flex;
 		align-items: center;
@@ -285,6 +285,9 @@ $borderColor: #d8d8d8;
 @for $i from 1 to 100 {
 	.font-#{$i} {
 			font-size: $i + px;
+	 }
+	 .mr-#{$i} {
+		 margin-right: $i + px;
 	 }
 }
 
