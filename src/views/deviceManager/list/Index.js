@@ -32,7 +32,7 @@ const searData = [
 			{ value: '2', name: '离线' }
 		]
 	},
-	{ type: 'input', name: 'text', width: '300', defaultValue: '0', placeholder: '输入位置、IP地址或序列号进行搜索' },
+	{ type: 'input', name: 'text', width: '270', defaultValue: '0', placeholder: '输入位置、IP地址或序列号进行搜索' },
 	{ type: 'button', icon: 'icon-sousuo', color: '#4164F0', defaultValue: '搜索', submit: true }
 ];
 

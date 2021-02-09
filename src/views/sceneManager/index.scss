@@ -1,0 +1,25 @@
+.scene-left {
+  background-color: #FFFFFF;
+  border-right: 1px solid #d8d8d8;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.scene-header {
+  background-color: #FFFFFF;
+  padding: 0;
+  border-bottom: 1px solid #d8d8d8;
+  height: auto;
+}
+
+.scene-content {
+  background: #F5F5F5;;
+  overflow: auto;
+}
+
+.scene-right {
+  background-color: #FFFFFF;
+  border-left: 2px solid #E1E1E1;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

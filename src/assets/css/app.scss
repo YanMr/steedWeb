@@ -28,7 +28,7 @@ $borderColor: #d8d8d8;
 	border: none;
 }
 .logo {
-	height: 49px;
+	height: 36px;
 	display: flex;
 	align-items: center;
 	color: #646464;
@@ -267,7 +267,7 @@ $borderColor: #d8d8d8;
 	overflow: hidden;
 	height: calc(100vh - 60px);
 	.custom-layout-header {
-		min-height: 50px;
+		min-height: 36px;
 		background: #fff;
 		display: flex;
 		align-items: center;
@@ -278,7 +278,7 @@ $borderColor: #d8d8d8;
 		display: flex;
 		position: relative;
 		flex-direction: column;
-		height: calc(100vh - 60px - 50px);
+		height: calc(100vh - 60px - 36px);
 	}
 }
 
