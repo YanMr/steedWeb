@@ -19,13 +19,13 @@ class Index extends Component {
 	operation = params => {
 		alert(params.type)
 		//  根据返回的 type 做操作判断
-	  if (params.type = 'search') {
+	  if (params.type === 'search') {
 			// 搜索 {type: 'search', data:{location: "0", status: "0", text: undefined}}
 			console.log(params.data)
-		} else if (params.type = 'task') {
+		} else if (params.type === 'task') {
 			// 新建任务 {type: 'task', data: null}
 			console.log(params.data)
-		} else if (params.type = 'refresh') {
+		} else if (params.type === 'refresh') {
 			// 刷新 {type: 'refresh', data: null}
 			console.log(params.data)
 		}

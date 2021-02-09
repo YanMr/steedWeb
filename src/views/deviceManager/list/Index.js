@@ -48,7 +48,7 @@ const List = () => {
 	};
 
 	const operation = params => {
-		if ((params.type = 'search')) {
+		if ((params.type === 'search')) {
 			// 搜索 {type: 'search', data:{location: "0", status: "0", text: undefined}}
 			console.log(params.data);
 		}

@@ -267,7 +267,7 @@ $borderColor: #d8d8d8;
 	overflow: hidden;
 	height: calc(100vh - 60px);
 	.custom-layout-header {
-		height: 50px;
+		min-height: 50px;
 		background: #fff;
 		display: flex;
 		align-items: center;
