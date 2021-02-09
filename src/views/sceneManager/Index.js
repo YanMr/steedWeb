@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Layout } from 'antd';
 import SearchHeader from '@/components/SearchHeader';
+import SceneList from './sceneList/Index'
 import './index.scss'
 
 const { Header, Sider, Content } = Layout;
@@ -10,9 +11,9 @@ class Scene extends Component {
     super(props);
     this.state = {
       searData: [
-        { type: 'input', name: 'text', width: '270', defaultValue: '0', placeholder: '请输入搜索内容' },
+        { type: 'input', name: 'text', width: '200', defaultValue: '0', placeholder: '请输入搜索内容' },
         { type: 'button', name: 'search', submit: true, icon: 'icon-sousuo', color: '#4164F0', defaultValue: '搜索' },
-        { type: 'button', name: 'task', icon: 'icon-add', color: '#4586F3', defaultValue: '新建任务' },
+        { type: 'button', name: 'task', icon: 'icon-add1', color: '#4586F3', defaultValue: '新建任务' },
         { type: 'button', name: 'refresh', icon: 'icon-ai-spin', color: '#35AA53', defaultValue: '刷新' }
       ]
     }
@@ -37,7 +38,7 @@ class Scene extends Component {
     return (
       <div className="shadow-radius">
         <Layout style={{ minHeight: '100vh', height: '100vh', overflowY: 'auto' }}>
-          <Sider className="scene-left" width={142}>左边</Sider>
+          <Sider className="scene-left" width={142}><SceneList /></Sider>
           <Layout>
             <Header className="scene-header"><SearchHeader data={this.state.searData} operation={this.operation}/></Header>
             <Content className="scene-content">Content</Content>
