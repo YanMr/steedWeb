@@ -37,12 +37,12 @@ class Scene extends Component {
     return (
       <div className="shadow-radius">
         <Layout style={{ minHeight: '100vh', height: '100vh', overflowY: 'auto' }}>
-          <Sider className="scene-left" width={125}>左边</Sider>
+          <Sider className="scene-left" width={142}>左边</Sider>
           <Layout>
             <Header className="scene-header"><SearchHeader data={this.state.searData} operation={this.operation}/></Header>
             <Content className="scene-content">Content</Content>
           </Layout>
-          <Sider className="scene-right" width={250}>右边</Sider>
+          <Sider className="scene-right" width={285}>右边</Sider>
         </Layout>
       </div>
     );
