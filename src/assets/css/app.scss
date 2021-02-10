@@ -294,3 +294,10 @@ $borderColor: #d8d8d8;
 .flex {
 	display: flex;
 }
+
+.ellipsis {
+		white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+	}
