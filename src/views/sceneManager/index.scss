@@ -1,3 +1,4 @@
+@import '@/assets/css/var.scss';
 .scene-left {
   background-color: #FFFFFF;
   border-right: 1px solid #d8d8d8;
@@ -144,7 +145,8 @@
 }
 .scene-content {
   background: #F5F5F5;
-  overflow: auto;
+  overflow-y: hidden;
+  overflow-x: auto;
   position: relative;
   height: 100%;
   .serch-container {
@@ -217,7 +219,87 @@
         }
       }
     }
+    .table-footer {
+      height: 36px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      border-top: #E1E1E1 1px solid;
+      .ant-checkbox-checked .ant-checkbox-inner::after {
+        display: none;
+      }
+      .ant-checkbox-inner {
+        width: 12px;
+        height: 12px;
+      }
+      .check-all {
+        margin-right: 12px;
+        span {
+          font-size: 12px;
+        }
+        .ant-checkbox-wrapper {
+          color: $light;
+          font-size: 14px;
+        }
+      }
+      .check-total {
+        font-size: 12px;
+        color: $light;
+        margin-right: 50px;
+      }
+      .action-item {
+        margin-right: 50px;
+        font-size: 12px;
+        .icon-tiaojie {
+          color: #282828;
+          &:hover {
+            color: $light;
+            cursor: pointer;
+          }
+        }
+        .icon-del {
+          color: #282828;
+          font-size: 12px;
+          &:hover {
+            color: #ff7d78;
+            cursor: pointer;
+          }
+        }
+        .icon-set {
+          font-size: 18px;
+          color: #282828;
+          &:hover {
+            color: $light;
+            cursor: pointer;
+          }
+        }
+      }
+      .cancel {
+        margin-left: 160px;
+      }
+      .cancel-button {
+        cursor: pointer;
+        color: #646464;
+        font-size: 16px;
+        background: none;
+        border: none;
+        font-size: 12px;
+        &:hover {
+          color: $light;
+        }
+      }
+    }
     .task-list {
+      overflow-y: auto;
+      height: calc(100vh - 137px);
+      .ant-checkbox-inner {
+        width: 12px;
+        height: 12px;
+        &:after {
+          opacity: 0;
+        }
+      }
       .anticon {
         margin-left: 8px;
         cursor: pointer;
