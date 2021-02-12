@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Layout } from 'antd';
 import SearchHeader from '@/components/SearchHeader';
-import SceneList from './sceneList/Index'
+import SceneLeft from './sceneLeft/Index'
+import ContentMain from './content/Index'
 import './index.scss'
 
 const { Header, Sider, Content } = Layout;
@@ -37,11 +38,13 @@ class Scene extends Component {
   render() {
     return (
       <div className="shadow-radius">
-        <Layout style={{ minHeight: '100vh', height: '100vh', overflowY: 'auto' }}>
-          <Sider className="scene-left" width={142}><SceneList /></Sider>
+        <Layout style={{ minHeight: 'calc(100vh - 61px)', height: 'calc(100vh - 61px)', overflowY: 'auto' }}>
+          <Sider className="scene-left" width={142}><SceneLeft /></Sider>
           <Layout>
-            <Header className="scene-header"><SearchHeader data={this.state.searData} operation={this.operation}/></Header>
-            <Content className="scene-content">Content</Content>
+            <Header className="scene-header"><SearchHeader data={this.state.searData} operation={this.operation} /></Header>
+            <Content className="scene-content">
+            <ContentMain />
+            </Content>
           </Layout>
           <Sider className="scene-right" width={285}>右边</Sider>
         </Layout>

@@ -3,7 +3,7 @@ import { Input, Popover } from 'antd';
 import IconFont from '@/components/IconFont';
 import '../index.scss'
 
-class SceneList extends Component {
+class SceneLeft extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -117,4 +117,4 @@ class SceneList extends Component {
   }
 }
 
-export default SceneList;
+export default SceneLeft;
