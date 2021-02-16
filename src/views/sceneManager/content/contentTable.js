@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Table, Checkbox, Popover } from 'antd'
+import { Select, Table, Checkbox, Tooltip, Popover } from 'antd'
 import IconFont from '@/components/IconFont';
 import '../index.scss'
 
@@ -59,11 +59,24 @@ class contentTable extends Component {
           key: 'operation',
           dataIndex: 'operation',
           render: (text) => <div className="status-task">
+            <Tooltip placement="topLeft" title='执行' arrowPointAtCenter>
             <IconFont type='icon-bofang' className="yes" />
+            </Tooltip>
+            <Popover content={this.state.content} placement="bottom" trigger="click" arrowPointAtCenter>
+            <Tooltip placement="topLeft" title='属性' arrowPointAtCenter>
             <IconFont type='icon-gantanhao' />
+            </Tooltip>
+            </Popover>
           </div>,
         },
       ],
+      content: (
+        <div className="operation-shu">
+        <div className="operationitem">创建者：我是西游记</div>
+        <div className="operationitem">创建时间：2021/1/20</div>
+        <div className="operationitem">更新时间：2021/1/25</div>
+      </div>
+      ),
       sclect: false,
       selectedRowKeys: [],
       rowSelection: null,
