@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Select, Table, Checkbox } from 'antd'
+import { Select, Table, Checkbox, Popover } from 'antd'
 import IconFont from '@/components/IconFont';
 import '../index.scss'
 
@@ -66,7 +66,13 @@ class contentTable extends Component {
       ],
       sclect: false,
       selectedRowKeys: [],
-      rowSelection: null
+      rowSelection: null,
+      contentRow: false,
+      menuStyle: {
+            position: "absolute",
+            top: "0",
+            left: "0",
+      }
     }
   }
 
@@ -93,6 +99,7 @@ class contentTable extends Component {
     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
   }
 
+  // 全选
   checkAll = (e) => {
     const selectedRowKeys = []
     this.state.data.map(item => {
@@ -108,7 +115,29 @@ class contentTable extends Component {
     })
   } 
 
-  render() {    
+  // 行操作
+  onrowFum = (e) => {
+    e.preventDefault();
+    console.log(e)
+    this.setState({
+      contentRow: true,
+      menuStyle: {
+        position: "fixed",
+        top: e.pageY,
+        left: e.pageX,
+      }
+    })
+    document.body.addEventListener("click", this.bodyClick);
+  }
+  
+  bodyClick = () => {
+    this.setState({
+      contentRow: false,
+    })
+    document.body.removeEventListener("click", this.bodyClick);
+  }
+
+  render() {   
     return (
       <div className="serch-container">
         <div className="seach-header">
@@ -128,6 +157,11 @@ class contentTable extends Component {
           rowSelection={this.state.rowSelection}
           columns={this.state.columns}
           dataSource={this.state.data}
+          onRow={record => {
+            return {
+              onContextMenu: (e)=> this.onrowFum(e, record), 
+            };
+          }}
         />
         </div>
         {
@@ -148,6 +182,16 @@ class contentTable extends Component {
 					<div className="cancel">
 						<button className="cancel-button" onClick={() => this.editTable()}>取消</button>
 					</div>
+        </div>) : ''
+        }
+        {/* 表格右点击浮动框 */}
+        {
+          this.state.contentRow ? ( <div className="tableRight" style={this.state.menuStyle}>
+          <div className="tableRightItem">修改</div>
+          <div className="tableRightItem">删除</div>
+          <div className="tableRightItem">执行</div>
+          <div className="tableRightItem">创建副本</div>
+          <div className="tableRightItem">启用/暂停</div> 
         </div>) : ''
         }
       </div>
