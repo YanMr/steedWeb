@@ -2,7 +2,6 @@ import React from 'react';
 import { withRouter, Link } from 'react-router-dom';
 import { Breadcrumb } from 'antd';
 import { menus } from '@/router/menus';
-import IconFont from '@/components/IconFont';
 
 class BreadCrumb extends React.Component {
 	createBreadCrumbData = (location, data) => {
@@ -53,21 +52,18 @@ class BreadCrumb extends React.Component {
 		if (!routes.length) return null;
 		const itemRender = (route, params, routes, paths) => {
 			console.log('routes', routes);
-			if (!route.breadCrumb) return null;
 			const last = routes.indexOf(route) === routes.length - 1;
 			return last ? (
-				<Link to={route.path}>
-					{route.icon && <IconFont type={route.icon} />} {route.title}
-				</Link>
-			) : (
 				<span>
-					{route.icon && <IconFont type={route.icon} />} {route.title}
-				</span>
+				{route.title}
+			</span>
+			) : (
+				<span>位置：<Link to={route.path}>{route.title}</Link></span>
 			);
 		};
 		return (
 			<div className="breadCrumb">
-				<Breadcrumb routes={routes} itemRender={itemRender} />
+				<Breadcrumb separator="-" routes={routes} itemRender={itemRender} />
 			</div>
 		);
 	}

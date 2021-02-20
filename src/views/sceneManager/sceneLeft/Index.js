@@ -16,7 +16,7 @@ class SceneLeft extends Component {
       newScene: true,
       serch: false,
       sceneIndex: -1,
-      isModalVisible: true,
+      isModalVisible: false,
       sceneData: [
         {status: 1, name: '日常授课场景'},
         {status: 0, name: '期末考试'},
@@ -50,14 +50,25 @@ class SceneLeft extends Component {
       sceneIndex: index
     })
   }
+  
+  // 新建场景任务
+  addScene = () => {
+    this.setState({
+      isModalVisible: true
+    })
+  }
 
   // 添加场景弹窗
   handleOk = () => {
-    
+    this.setState({
+      isModalVisible: false
+    })
   }
 
   handleCancel = () => {
-
+    this.setState({
+      isModalVisible: false
+    })
   }
 
   //  开机时间
@@ -80,7 +91,7 @@ class SceneLeft extends Component {
         {/* 搜索 begin */}
         <div className="serch-header">
           {
-            this.state.newScene ? (<div className="new-scene"><IconFont type="icon-add1" /></div>) : ''
+            this.state.newScene ? (<div className="new-scene" onClick={() => this.addScene()}><IconFont type="icon-add1" /></div>) : ''
           }
           <div className="serch-scene">
             <Input className="serch-input" ref="serchInput" onBlur={() => this.serchBlur()} style={{width: !this.state.newScene? '100%' : '', opacity:  !this.state.newScene? '1' : ''}} />
