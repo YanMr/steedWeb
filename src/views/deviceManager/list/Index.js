@@ -58,7 +58,7 @@ const List = () => {
 	};
 	return (
 		<section className="device-page full-content">
-			<section className="device-left">
+			<section className={`device-left ${showRightSider && 'showRightSider'}`}>
 				<section className="custom-layout">
 					<header className="custom-layout-header">
 						<SearchHeader data={searData} operation={operation} />

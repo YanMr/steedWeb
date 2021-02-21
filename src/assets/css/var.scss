@@ -3,3 +3,13 @@ $light: #4164f0;
 $danger: #eb4334;
 
 $warn: #ebaa4b;
+
+// 设计图 1920 px
+// 屏宽 100vw
+// 1vw = 19.2px
+// 1px = 1 / 19.2vw
+$px: (1/19.2);
+
+@function px($pxNumber) {
+  @return ($pxNumber * $px) + vw;
+}

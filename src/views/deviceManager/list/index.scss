@@ -37,7 +37,7 @@ section.device-page {
 		}		
 	}
 	.device-right {
-		width: 20%;
+		width: 285px;
 		position: relative;
 		background: #fff;
 	}
@@ -119,8 +119,12 @@ section.device-page {
 		cursor: pointer;
 	}
 	.cell-action-btns {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
 		.anticon {
-			margin-right: 20px;
+			margin:0 10px;
 			color: #282828;
 			&:hover {
 				color: $light;
@@ -327,8 +331,9 @@ section.device-page {
 				margin-right: -5px;
 				.control-item {
 					flex: inherit;
-					width: 178px;
+					width: 45%;
 					display: flex;
+					flex-shrink: 0;
 					align-items: center;
 					justify-content: space-between;
 					margin: 0 5px;
@@ -495,4 +500,13 @@ section.device-page {
 			}
 		}
 	}
+}
+.device-left {
+	width: calc(100vw - 200px);
+	&.showRightSider {
+		width: calc(100vw - 485px);
+	}
+}
+.ant-table-content {
+	width: 100%;
 }

@@ -16,13 +16,7 @@ export const menus = [
 			{
 				path: '/device/list',
 				title: '设备列表',
-			},
-			{
-				path: '/device/setting',
-				title: '设备设置',
-				breadCrumb: false,
-				noDisplay: true
-			},			
+			},		
 			{
 				path: '/device/energy',
 				title: '能耗统计',
