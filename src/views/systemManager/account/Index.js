@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, Select, Table, Tooltip } from 'antd';
+import { Form, Input, Button, Checkbox,Select, Table, Tooltip } from 'antd';
 import IconFont from '@/components/IconFont';
 import '../index.scss'
 
@@ -62,7 +62,43 @@ class Account extends Component {
           </div>,
         },
       ],
+      sclect: false,
+      selectedRowKeys: [],
     }
+  }
+  
+  // 全选
+  checkAll = (e) => {
+    const selectedRowKeys = []
+    this.state.data.map(item => {
+      selectedRowKeys.push(item.key)
+    })
+    this.setState({
+      selectedRowKeys: e.target.checked ? selectedRowKeys : [],
+      rowSelection: {
+        type: 'checkbox',
+        onChange: this.onChange,
+        selectedRowKeys: e.target.checked ? selectedRowKeys : []
+      }
+    })
+  } 
+
+  // 编辑
+  editTable = () => {
+    this.setState({
+      sclect: !this.state.sclect,
+      rowSelection: !this.state.sclect ? {
+        type: 'checkbox',
+        onChange: this.onChange,
+      } : null
+    })
+  }
+
+  onChange = (selectedRowKeys, selectedRows) => {
+    this.setState({
+      selectedRowKeys
+    })
+    console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
   }
 
   render() {
@@ -104,9 +140,7 @@ class Account extends Component {
             </Form>
           </div>
           <div className="search-right">
-            <Button type="primary" style={{ background: '#4164F0', borderColor: "#4164F0" }}>
-              编辑
-				    </Button>
+          <div className={!this.state.sclect ? 'task-btn task-edit': 'task-btn task-close'} onClick={() => this.editTable()}>{!this.state.sclect? '编辑' : '取消'}</div>
           </div>
         </div>
 
@@ -118,6 +152,27 @@ class Account extends Component {
           dataSource={this.state.data}
         />
         </div>
+        {
+          this.state.sclect ? (<div className="table-footer">
+					<div className="check-all">
+						<Checkbox onChange={(e) => this.checkAll(e)}>全选</Checkbox>
+					</div>
+					<div className="check-total">已选{this.state.selectedRowKeys.length ? this.state.selectedRowKeys.length: 0}项</div>
+					<div className="action-item">
+						<IconFont type="icon-ziyuan" className="icon-tiaojie" />
+					</div>
+					<div className="action-item">
+						<IconFont type="icon-del" className="icon-del" />
+					</div>
+					<div className="action-item">
+						<IconFont type="icon-set" className="icon-set" />
+					</div>
+					<div className="cancel">
+						<button className="cancel-button" onClick={() => this.editTable()}>取消</button>
+					</div>
+        </div>) : ''
+        }
+        
 
       </div>
     );
