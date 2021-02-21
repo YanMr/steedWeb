@@ -1,5 +1,160 @@
+@import '@/assets/css/var.scss';
 .account {
+.systemMessage {
+  .system-img-main {
+    .system-img-title {
+      font-size: 12px;
+    }
+    .system-img-setting-img {
+      display: flex;
+      .img-system {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 199px;
+        height: 199px;
+        font-size: 130px;
+        border: solid 1px #f1f0f0;
+        background: #f9f9f9;
+      }
+      .img-setting {
+        display: flex;
+        flex-direction: column;
+        align-self: flex-end;
+        font-size: 12px;
+        text-align: center;
+        color: #fff;
+        margin-left: 10px;
+        .img-bottom {
+          width: 78px;
+          height: 31px;
+          line-height: 31px;
+          background: #4164F0;
+          margin-bottom: 15px;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .system-main {
+    display: flex;
+    margin-top: 40px;
+    font-size: 12px;
+    .label-value {
+      display: flex;
+      flex: 1;
+      justify-content: space-between;
+      padding-bottom: 11px;
+      border-bottom: solid 1px #E1E1E1;
+      margin-left: 10px;
+      font-size: 12px;
+      .no {
+        color: #646464;
+      }
+      .system-setting {
+          width: 57px;
+          font-size: 12px;
+          height: 21px;
+          line-height: 21px;
+          background: #4164F0;
+          color: #fff;
+          text-align: center;
+          cursor: pointer;
+          border-radius: 3px;
+      }
+    }
+  }
+}
  color: #292929;
+ .user-table {
+  overflow-y: auto;
+  height: calc(100vh - 391px);
+  .ant-checkbox-inner {
+    width: 12px;
+    height: 12px;
+    &:after {
+      opacity: 0;
+    }
+  }
+  .ant-table-selection-column {
+    .ant-table-selection {
+      display: none;
+    }
+  }
+}
+ .table-footer {
+  height: 36px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  border-top: #E1E1E1 1px solid;
+  .ant-checkbox-checked .ant-checkbox-inner::after {
+    display: none;
+  }
+  .ant-checkbox-inner {
+    width: 12px;
+    height: 12px;
+  }
+  .check-all {
+    margin-right: 12px;
+    span {
+      font-size: 12px;
+    }
+    .ant-checkbox-wrapper {
+      color: $light;
+      font-size: 14px;
+      height: 23px;
+    }
+  }
+  .check-total {
+    font-size: 12px;
+    color: $light;
+    margin-right: 50px;
+  }
+  .action-item {
+    margin-right: 50px;
+    font-size: 12px;
+    .icon-tiaojie {
+      color: #282828;
+      &:hover {
+        color: $light;
+        cursor: pointer;
+      }
+    }
+    .icon-del {
+      color: #282828;
+      font-size: 12px;
+      &:hover {
+        color: #ff7d78;
+        cursor: pointer;
+      }
+    }
+    .icon-set {
+      font-size: 18px;
+      color: #282828;
+      &:hover {
+        color: $light;
+        cursor: pointer;
+      }
+    }
+  }
+  .cancel {
+    margin-left: 160px;
+  }
+  .cancel-button {
+    cursor: pointer;
+    color: #646464;
+    font-size: 16px;
+    background: none;
+    border: none;
+    font-size: 12px;
+    &:hover {
+      color: $light;
+    }
+  }
+}
  .user-table {
   .user-task {
     cursor: pointer;
@@ -20,6 +175,25 @@
     display: flex;
     justify-content: space-between;
     padding: 20px 11px;
+    .search-right {
+      .task-btn {
+        user-select:none;
+        color: #fff;
+        font-size: 12px;
+        height: 26px;
+        line-height: 26px;
+        width: 43px;
+        cursor: pointer;
+        text-align: center;
+        border-radius: 12px;
+      }
+      .task-edit {
+        background: #4164F0;
+      }
+      .task-close {
+        background: #afabab;
+      }
+    }
     .ant-select:not(.ant-select-customize-input) .ant-select-selector {
       border-radius: 20px;
       font-size: 12px;
@@ -52,7 +226,7 @@
       height: calc(100vh - 200px);
       overflow-x: hidden;
       overflow-y: auto;
-      padding: 30px;
+      padding: 30px 30px 10px;
     }
   }
   .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
