@@ -22,7 +22,7 @@ export const menus = [
 				title: '能耗统计',
 			},
 			{
-				path: '/device/statistical',
+				path: '/device/statistics',
 				title: '设备统计',
 			}
 		]

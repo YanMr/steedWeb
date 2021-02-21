@@ -18,20 +18,19 @@ const LineChart = () => {
 				trigger: 'axis'
 			},
 			legend: {
-        data: ['邮件营销', '联盟广告', '视频广告'],
-        bottom:  0
+				data: ['邮件营销', '联盟广告', '视频广告'],
+				bottom: 0
 			},
 			grid: {
 				top: 20,
 				bottom: 50,
 				left: 40,
-				right:  20,
+				right: 20,
 				containLabel: false,
 				borderWidth: 0
 			},
 			toolbox: {
-				feature: {
-				}
+				feature: {}
 			},
 			xAxis: {
 				type: 'category',
@@ -59,8 +58,8 @@ const LineChart = () => {
 						borderWidth: 5
 					},
 					lineStyle: {
-            width: 4,
-            color: '#ff0000'
+						width: 4,
+						color: '#ff0000'
 					}
 				},
 				{
@@ -72,8 +71,8 @@ const LineChart = () => {
 						borderWidth: 5
 					},
 					lineStyle: {
-            width: 4,
-            color: 'blue'
+						width: 4,
+						color: 'blue'
 					}
 				},
 				{
@@ -85,8 +84,8 @@ const LineChart = () => {
 						borderWidth: 5
 					},
 					lineStyle: {
-            width: 4,
-            color: 'yellow'
+						width: 4,
+						color: 'yellow'
 					}
 				}
 			]
@@ -95,9 +94,7 @@ const LineChart = () => {
 		option && myChart.setOption(option);
 	};
 	useEffect(() => {
-		setTimeout(() => {
-			renderChart();
-		}, 1000);
+		renderChart();
 	}, []);
 	return (
 		<section className="module">
