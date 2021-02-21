@@ -1,0 +1,67 @@
+.account {
+ color: #292929;
+ .user-table {
+  .user-task {
+    cursor: pointer;
+    .edit {
+      color: #4164F0;
+      margin-right: 5px;
+    }
+    .del {
+      color: #FF7878;
+      margin-right: 5px;
+    }
+    .setting {
+      color: #323232;
+    }
+  }
+ }
+ .account-search {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 11px;
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+      border-radius: 20px;
+      font-size: 12px;
+    }
+    .ant-input:placeholder-shown {
+      border-radius: 20px;
+      font-size: 12px;
+    }
+    .ant-btn-primary {
+      border-radius: 20px;
+      font-size: 12px;
+      height: 26px;
+    }
+  }
+ .account-header {
+   border-bottom: #E1E1E1 solid 1px;
+   padding: 0px 20px 20px;
+   font-size: 14px;
+ }
+}
+
+.system-user {
+  .ant-tabs {
+    .ant-tabs-nav {
+      height: 35px;
+    }
+    .ant-tabs-content-holder {
+      background: #fff;
+      margin: 20px 43px;
+      height: calc(100vh - 200px);
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: 30px;
+    }
+  }
+  .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
+    margin-left: 43px;
+    .ant-tabs-tab {
+      margin: 0 100px 0 0;
+    }
+  }
+  .ant-tabs-top > .ant-tabs-nav::before {
+    border-bottom: 1px solid #E1E1E1;
+  }
+}

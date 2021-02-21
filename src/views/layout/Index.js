@@ -14,7 +14,6 @@ class Index extends Component {
 					<Layout>
 						<SideMenu/>
 						<Layout>
-							{/* <BreadCrumb /> */}
 							<MainContent />
 						</Layout>
 				  </Layout>

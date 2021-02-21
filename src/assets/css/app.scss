@@ -28,7 +28,7 @@ $borderColor: #d8d8d8;
 	border: none;
 }
 .logo {
-	height: 49px;
+	height: 36px;
 	display: flex;
 	align-items: center;
 	color: #646464;
@@ -95,7 +95,7 @@ $borderColor: #d8d8d8;
 
 .shadow-radius {
 	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1), 0 1px 4px rgba(0, 0, 0, 0.1);
-	min-height: 85vh;
+	min-height: calc(100vh - 61px);
 }
 
 .public-title {
@@ -205,8 +205,13 @@ $borderColor: #d8d8d8;
 	}
 }
 .breadCrumb .ant-breadcrumb{
-	padding: 15px;
+	height: 35px;
 	padding-bottom: 0;
+	display: flex;
+	align-items: center;
+	background-color: #fff;
+	padding-left: 21px;
+	border-bottom: 1px solid #e1e1e1;
 	&:empty {
 		display: none;
 	}
@@ -267,7 +272,7 @@ $borderColor: #d8d8d8;
 	overflow: hidden;
 	height: calc(100vh - 60px);
 	.custom-layout-header {
-		height: 50px;
+		min-height: 36px;
 		background: #fff;
 		display: flex;
 		align-items: center;
@@ -278,7 +283,7 @@ $borderColor: #d8d8d8;
 		display: flex;
 		position: relative;
 		flex-direction: column;
-		height: calc(100vh - 60px - 50px);
+		height: calc(100vh - 60px - 36px);
 	}
 }
 
@@ -294,3 +299,10 @@ $borderColor: #d8d8d8;
 .flex {
 	display: flex;
 }
+
+.ellipsis {
+		white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-all;
+	}

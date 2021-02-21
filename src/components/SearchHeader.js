@@ -7,9 +7,6 @@ import '@/assets/css/searchHeader.scss'
 /** 设备列表页 头部搜索 */
 class SearchHeader extends Component {
 	formRef = React.createRef();
-  constructor(props) {
-		super(props);
-	}
 	componentDidMount() {
 	}
 	
