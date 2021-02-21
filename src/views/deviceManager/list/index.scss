@@ -37,7 +37,7 @@ section.device-page {
 		}		
 	}
 	.device-right {
-		width: 400px;
+		width: 20%;
 		position: relative;
 		background: #fff;
 	}
@@ -323,12 +323,15 @@ section.device-page {
 			margin-bottom: 15px;
 			&.control-row-small {
 				justify-content: space-between;
+				margin-left: -5px;
+				margin-right: -5px;
 				.control-item {
 					flex: inherit;
 					width: 178px;
 					display: flex;
 					align-items: center;
 					justify-content: space-between;
+					margin: 0 5px;
 				}
 			}
 		}
@@ -338,7 +341,7 @@ section.device-page {
 			background: #ffffff;
 			border: 1px solid #c8c8c8;
 			border-radius: 8px;
-			padding: 0 20px;
+			padding: 0 14px;
 			flex: 1;
 			justify-content: space-between;
 			align-items: center;
@@ -349,7 +352,7 @@ section.device-page {
 				}
 			}
 			.li {
-				font-size: 14px;
+				font-size: 10px;
 				line-height: 1;
 				color: #282828;
 				display: inline-flex;
@@ -361,6 +364,10 @@ section.device-page {
 				user-select: none;
 				.anticon {
 					color: #8c8c8c;
+				}
+				.control-name {
+					white-space: nowrap;
+					padding-top: 3px;
 				}
 				&.mini-li {
 					flex-direction: row;
@@ -394,18 +401,18 @@ section.device-page {
 					color: $light;
 				}
 				.icon-guanbi {
-					font-size: 35px;
+					font-size: 25px;
 				}
 				.icon-kongzhi1 {
-					font-size: 30px;
+					font-size: 20px;
 					color: $light;
 				}
 				.icon-danxuan {
-					font-size: 35px;
+					font-size: 30px;
 					color: $light;
 				}
 				.icon-yitiji {
-					font-size: 30px;
+					font-size: 25px;
 				}
 			}
 			.control-conditioner {
@@ -421,8 +428,8 @@ section.device-page {
 				.conditioner-action {
 					width: 100%;
 					display: flex;
-					justify-content: space-around;
-					padding: 5px 80px;
+					justify-content: center;
+					padding: 5px 0px;
 					.anticon:hover {
 						color: $light;
 					}
@@ -431,21 +438,25 @@ section.device-page {
 					user-select: none;
 					font-size: 16px;
 					color: #282828;
+					width: 50px;
+					text-align: center;
 				}
 			}
 			.li-channel {
 				color: #8c8c8c;
 				font-size: 12px;
-				border: 2px solid #c8c8c8;
+				border: 1px solid #c8c8c8;
 				border-radius: 3px;
-				width: 36px;
-				height: 36px;
+				width: 26px;
+				height: 26px;
 				display: inline-flex;
 				align-items: center;
 				justify-content: center;
 				.text {
 					margin: 0;
-					line-height: 1.3;
+					line-height: 1;
+					white-space: nowrap;
+					transform: scale(.6);
 				}
 				&.light {
 					color: $light;

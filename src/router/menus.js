@@ -19,6 +19,12 @@ export const menus = [
 				breadCrumb: false
 			},
 			{
+				path: '/device/setting',
+				title: '设备设置',
+				breadCrumb: false,
+				noDisplay: true
+			},			
+			{
 				path: '/device/energy',
 				title: '能耗统计',
 			},

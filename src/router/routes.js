@@ -5,7 +5,8 @@
 
 import Dashboard from '../views/dashboard/Index'; // 首页
 import Energy from '../views/deviceManager/Energy'; // 能耗统计
-import DeviceList from '../views/deviceManager/list/Index'; // 设备列表
+import DeviceList from '../views/deviceManager/list'; // 设备列表
+import DeviceSetting from '../views/deviceManager/deviceSetting'; // 设备设置
 import Statistical from '../views/deviceManager/Statistical'; // 设备统计
 import Error404 from '../views/error/Error404'; // 404
 import Error500 from '../views/error/Error500'; // 500
@@ -21,6 +22,7 @@ export const routes = [
 	{ path: '/dashboard', component: Dashboard },
 	{ path: '/device/energy', component: Energy },
 	{ path: '/device/list', component: DeviceList },
+	{ path: '/device/setting', component: DeviceSetting },
 	{ path: '/device/statistical', component: Statistical },
 	{ path: '/sevice', component: Scene },
 	{ path: '/userSystem', component: UserSystem },

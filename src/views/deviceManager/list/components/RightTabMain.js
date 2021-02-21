@@ -93,7 +93,7 @@ const renderInternet = () => {
 			<div className="control-row">
 				<div className="control-item">
 					<div className="li light">
-						<IconFont type="icon-kongtiao-shouye" className="icon-shexiangji font-28" />
+						<IconFont type="icon-kongtiao-shouye" className="icon-shexiangji font-22" />
 						<div className="control-name">空调</div>
 					</div>
 					<div className="li control-conditioner">
@@ -117,23 +117,23 @@ const renderInternet = () => {
 			<div className="control-row">
 				<div className="control-item">
 					<div className="li light">
-						<IconFont type="icon-songfengmoshi" className="icon-shexiangji font-28" />
+						<IconFont type="icon-songfengmoshi" className="icon-shexiangji font-22" />
 						<div className="control-name">风扇</div>
 					</div>
 					<div className="li light">
-						<IconFont type="icon-fengshanyidang" className="icon-shexiangji font-24" />
+						<IconFont type="icon-fengshanyidang" className="icon-shexiangji font-20" />
 						<div className="control-name font-12">一档</div>
 					</div>
 					<div className="li">
-						<IconFont type="icon-fengshanyidang" className="icon-shexiangji font-24" />
+						<IconFont type="icon-fengshanyidang" className="icon-shexiangji font-20" />
 						<div className="control-name font-12">二档</div>
 					</div>
 					<div className="li">
-						<IconFont type="icon-fengshansandang" className="icon-shexiangji font-24" />
+						<IconFont type="icon-fengshansandang" className="icon-shexiangji font-20" />
 						<div className="control-name font-12">三档</div>
 					</div>
 					<div className="li">
-						<IconFont type="icon-fengshansandang" className="icon-shexiangji font-24" />
+						<IconFont type="icon-fengshansandang" className="icon-shexiangji font-20" />
 						<div className="control-name font-12">四档</div>
 					</div>
 					<div className="li light">
@@ -145,7 +145,7 @@ const renderInternet = () => {
 			<div className="control-row">
 				<div className="control-item">
 					<div className="li light">
-						<IconFont type="icon-songfengmoshi" className="icon-shexiangji font-28" />
+						<IconFont type="icon-songfengmoshi" className="icon-shexiangji font-22" />
 						<div className="control-name">频道</div>
 					</div>
 					<div className="li light"></div>
@@ -182,17 +182,17 @@ const renderInternet = () => {
 			<div className="control-row">
 				<div className="control-item">
 					<div className="li light">
-						<IconFont type="icon-chuanglian-shouye" className="icon-shexiangji font-28" />
+						<IconFont type="icon-chuanglian-shouye" className="icon-shexiangji font-22" />
 						<div className="control-name">窗帘</div>
 					</div>
 					<div className="li light">
-						<IconFont type="icon-xiaochengxutubiao-46" className="icon-shexiangji font-36" />
+						<IconFont type="icon-xiaochengxutubiao-46" className="icon-shexiangji font-32" />
 					</div>
 					<div className="li">
-						<IconFont type="icon-xiaochengxutubiao-47" className="icon-shexiangji font-36" />
+						<IconFont type="icon-xiaochengxutubiao-47" className="icon-shexiangji font-32" />
 					</div>
 					<div className="li">
-						<IconFont type="icon-xiaochengxutubiao-48" className="icon-shexiangji font-36" />
+						<IconFont type="icon-xiaochengxutubiao-48" className="icon-shexiangji font-32" />
 					</div>
 				</div>
 			</div>
