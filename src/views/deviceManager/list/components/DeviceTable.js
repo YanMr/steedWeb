@@ -97,7 +97,7 @@ const DeviceTable = (props = {}) => {
 			dataIndex: 'wlStatus',
 			key: 'wlStatus',
 			textWrap: 'word-break',
-			width: 380,			
+			width: 440,			
 			render(text) {
 				return (
 					<div className="wl-status-btns">
