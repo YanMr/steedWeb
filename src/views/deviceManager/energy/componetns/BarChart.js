@@ -38,18 +38,16 @@ const BarChart = () => {
 				data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
 				axisTick: {
 					alignWithLabel: true,
-					length: 5
+					length: 0
 				},
-
-				splitLine: {
+				axisLine: {
 					show: false
 				}
 			},
 			yAxis: {
 				type: 'value',
 				axisTick: false,
-
-				splitLine: {
+				axisLine: {
 					show: false
 				}
 			},
@@ -71,12 +69,7 @@ const BarChart = () => {
 			renderChart();
 		}, 50);
 	}, []);
-	return (
-		<section className="bar-chart-wrapper">
-			<div className="chart-title">积累使用时间</div>
-			<div id="BarChart" className="BarChart BarChart2"></div>
-		</section>
-	);
+	return <div id="BarChart" className="BarChart"></div>;
 };
 
 export default BarChart;

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Back from '@/components/Back/index';
-import { Button } from 'antd';
+import { Select } from 'antd';
+import LineChart from './componetns/LineChart';
 import BarChart from './componetns/BarChart';
 import Pie from './componetns/Pie';
 import ElectricTable from './componetns/ElectricTable';
@@ -19,31 +20,27 @@ const Statistics = () => {
 				<header className="custom-layout-header">
 					<Back />
 					<div className="select-input">
-						 <Button className="expot-button" type='primary'>数据导出</Button>
+						<Select value={value} onChange={onChange}>
+							<Select.Option value="全部">全部</Select.Option>
+							<Select.Option value="全部1">全部1</Select.Option>
+						</Select>
 					</div>
 				</header>
 				<section className="custom-layout-content main">
 					<section className="module mb-20">
 						<header className="module-title">设备状态</header>
-						<div className="module-main">
-							<div className="flex-box">
-								<BarChart />
-								<ElectricTable />
-							</div>
-						</div>
+						<LineChart />
 					</section>
-
 					<section className="module">
 						<header className="module-title">设备使用率</header>
 						<div className="module-main">
-							<div className="charts-group">
-								<div className="pie-box pie-box2">
-									<Pie id="pie1" />
-								</div>
-								<div className="pie-box pie-box2">
-									<Pie id="pie2" />
+							<div className="charts-group mb-20">
+								<BarChart />
+								<div className="pie-box">
+									<Pie />
 								</div>
 							</div>
+							<ElectricTable />
 						</div>
 					</section>
 				</section>

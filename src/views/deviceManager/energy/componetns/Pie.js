@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import * as echarts from 'echarts';
 
-const Pie = (props) => {
+const Pie = () => {
 	const renderChart = () => {
-		var chartDom = document.getElementById(props.id);
+		var chartDom = document.getElementById('pie');
 		var myChart = echarts.init(
 			chartDom,
 			{},
@@ -21,13 +21,13 @@ const Pie = (props) => {
 
 			series: [
 				{
-					name: '空调1利用率',
+					name: '访问来源',
 					type: 'pie',
 					radius: ['30%', '50%'],
 					color: ['#4FB956', '#e1e1e1'],
 					data: [
-						{ value: 484222, name: '联盟广告' },
-						{ value: 300222, name: '视频广告' }
+						{ value: 484, name: '联盟广告' },
+						{ value: 300, name: '视频广告' }
 					],
 					hoverAnimation: false,
 					label: {
@@ -53,8 +53,7 @@ const Pie = (props) => {
 	}, []);
 	return (
 		<div className="pie-wrap">
-			<div className="pie-title">空调1利用率</div>
-			<div className="pie pie2" id={props.id}></div>
+			<div id="pie" className="pie"></div>
 			<div className="pie-legend">
 				<div className="item on">在线</div>
 				<div className="item off">离线</div>
