@@ -1,38 +1,112 @@
-@import "../../../assets/css/var.scss";
+@import '../../../assets/css/var.scss';
 .statistics-page {
-  .select-input {
-    .ant-select-selector {
-      height: 24px;
-      width: 200px;
-      height: 24px;
-      background: #F0F0F0;
-      border-radius: 12px;
+	.select-input {
+		.ant-select-selector {
+			height: 24px;
+			width: 200px;
+			height: 24px;
+			background: #f0f0f0;
+			border-radius: 12px;
+			font-size: 12px;
+		}
+		.ant-select-selection-item {
+			line-height: 22px;
+		}
+	}
+	.main {
+		overflow-y: auto;
+		padding: 20px;
+	}
+	.module {
+		background: #fff;
+		border-radius: 4px;
+		.module-title {
+			height: 36px;
+			line-height: 36px;
+			border-bottom: 1px solid #e1e1e1;
+			padding: 0 20px;
+			font-size: 12px;
+			color: #282828;
+		}
+		.line-chart-container {
+			padding: 30px;
+    }
+    .module-main {
+      padding: 20px 30px;
+    }
+	}
+	.lineChart {
+		height: 263px;
+	}
+	.mb-20 {
+		margin-bottom: 20px;
+	}
+	.BarChart {
+		height: 240px;
+		width: 60%;
+	}
+	.charts-group {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	.pie-box {
+		width: 40%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.pie {
+		width: 240px;
+		height: 240px;
+	}
+	.pie-wrap {
+		display: flex;
+		.pie-legend {
+			margin-left: 100px;
+			font-size: 12px;
+			.item {
+        margin-bottom: 10px;
+				&::before {
+          content: '';
+          display: inline-block;
+					width: 10px;
+					height: 10px;
+					border-radius: 100%;
+          background-color: currentColor;
+          margin-right: 5px;
+          position: relative;
+          top: 1px;
+				}
+				&.on {
+					color: #4fb956;
+				}
+				&.off {
+					color: #656565;
+				}
+			}
+		}
+	}
+}
+.electric-table-wrapper {
+  .electric-table-title {
+    height: 35px;
+    line-height: 35px;
+    background: #f5f5f5;
+    border-bottom: 1px solid #e1e1e1;
+    border-top: 1px solid #e1e1e1;
+    font-size: 12px;
+    color: #636363;
+    padding-left: 30px;
+  }
+  .electric-table {
+    .ant-table-thead > tr > th {
+      background: none;
+    }
+    .ant-table .ant-table-cell {
       font-size: 12px;
+      color: #636363;
+      height: 35px;
     }
-    .ant-select-selection-item {
-      line-height: 22px;
-    }
-  }
-  .main {
-    overflow-y: auto;
-    padding: 20px;
-  }
-  .module {
-    background: #fff;
-    border-radius: 4px;
-    .module-title {
-      height: 36px;
-      line-height: 36px;
-      border-bottom: 1px solid #e1e1e1;
-      padding: 0 20px;
-      font-size: 12px;
-      color: #282828;
-    }
-    .line-chart-container {
-      padding: 30px;
-    }
-  }
-  .lineChart {
-    height: 263px;
   }
 }

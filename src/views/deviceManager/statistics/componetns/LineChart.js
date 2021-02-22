@@ -1,10 +1,18 @@
 import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import * as echarts from 'echarts';
+import _ from 'lodash';
 
-const LineChart = () => {
+let myChart = null;
+const LineChart = props => {
+	const isCollapsed = useSelector(state => state.collapse.isCollapsed);
+	console.log('isCollapsed', isCollapsed);
 	const renderChart = () => {
+		myChart && myChart.clear();
+		myChart = null;
 		var chartDom = document.getElementById('lineChart');
-		var myChart = echarts.init(
+		console.log('chartDom.clientWidth', chartDom.clientWidth);
+		myChart = echarts.init(
 			chartDom,
 			{},
 			{
@@ -93,16 +101,31 @@ const LineChart = () => {
 
 		option && myChart.setOption(option);
 	};
+	const watchWindowSize = () => {
+		console.log('执行');
+		_.delay(() => {
+			myChart.resize({
+				width: document.getElementById('lineChart').clientWidth
+			});
+		}, 300);
+	};
 	useEffect(() => {
-		renderChart();
-	}, []);
+		_.delay(() => {
+			renderChart();
+		}, 50);
+		return () => myChart && myChart.clear();
+	});
+	useEffect(() => {
+		window.addEventListener('resize', watchWindowSize, false);
+		return () => window.removeEventListener('size', watchWindowSize, false);
+	});
+	useEffect(() => {
+		watchWindowSize();
+	}, [isCollapsed]);
 	return (
-		<section className="module">
-			<header className="module-title">设备状态</header>
-			<div className="line-chart-container">
-				<div id="lineChart" className="lineChart"></div>
-			</div>
-		</section>
+		<div className="line-chart-container">
+			<div id="lineChart" className="lineChart"></div>
+		</div>
 	);
 };
 
