@@ -32,7 +32,7 @@ export const menus = [
 		]
 	},
 	{
-		path: '/sevice',
+		path: '/sevice/sevice',
 		title: '场景管理',
 		icon: 'icon-changjingguanli-xuanzhong',
 	},

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Layout } from 'antd';
 import SearchHeader from '@/components/SearchHeader';
 import SceneLeft from './sceneLeft/Index'
@@ -31,6 +32,7 @@ class Scene extends Component {
       console.log(params.data)
     } else if (params.type === 'task') {
       // 新建任务 {type: 'task', data: null}
+      this.props.history.push('/sevice/newtask')
       console.log(params.data)
     } else if (params.type === 'refresh') {
       // 刷新 {type: 'refresh', data: null}
@@ -69,4 +71,4 @@ class Scene extends Component {
   }
 }
 
-export default Scene;
+export default withRouter(Scene);
