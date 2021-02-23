@@ -7,7 +7,7 @@ import Dashboard from '../views/dashboard/Index'; // 首页
 import Energy from '../views/deviceManager/energy/Index'; // 能耗统计
 import DeviceList from '../views/deviceManager/list/Index'; // 设备列表
 import DeviceSetting from '../views/deviceManager/deviceSetting'; // 设备设置
-import Statistics from '../views/deviceManager/statistics/Index'; // 设备统计
+import Statistics from '../views/deviceManager/statistics/'; // 设备统计
 import Error404 from '../views/error/Error404'; // 404
 import Error500 from '../views/error/Error500'; // 500
 import Intercept from '../views/permission/Intercept'; // 路由拦截

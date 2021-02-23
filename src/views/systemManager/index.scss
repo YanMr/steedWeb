@@ -4,9 +4,11 @@
   .system-img-main {
     .system-img-title {
       font-size: 12px;
+      margin: 30px 20px;
     }
     .system-img-setting-img {
       display: flex;
+      margin-left: 50px;
       .img-system {
         display: flex;
         align-items: center;
@@ -25,6 +27,15 @@
         text-align: center;
         color: #fff;
         margin-left: 10px;
+        .ant-upload.ant-upload-select-picture-card {
+          width: 78px;
+          height: 31px;
+          margin: 0;
+          border: none;
+        }
+        .ant-upload-list-picture-card-container {
+          display: none;
+        }
         .img-bottom {
           width: 78px;
           height: 31px;
@@ -32,6 +43,8 @@
           background: #4164F0;
           margin-bottom: 15px;
           border-radius: 5px;
+          color: #fff;
+          font-size: 12px;
           cursor: pointer;
         }
       }
@@ -41,6 +54,7 @@
     display: flex;
     margin-top: 40px;
     font-size: 12px;
+    padding-left: 20px;
     .label-value {
       display: flex;
       flex: 1;
