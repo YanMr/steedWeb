@@ -17,6 +17,7 @@ import System  from '../views/systemManager/Index'; // 系统与安全
 import User  from '../views/systemManager/User'; // 用户管理
 import Device  from '../views/systemManager/Device'; // 物联设备管理
 import UserSystem  from '../views/userSystem/Index'; // 个人中心
+import NewTask  from '../views/sceneManager/newTask/Index'; // 新建任务
 
 export const routes = [
 	{ path: '/dashboard', component: Dashboard },
@@ -24,7 +25,8 @@ export const routes = [
 	{ path: '/device/list', component: DeviceList },
 	{ path: '/device/setting', component: DeviceSetting },
 	{ path: '/device/statistics', component: Statistics },
-	{ path: '/sevice', component: Scene },
+	{ path: '/sevice/sevice', component: Scene },
+	{ path: '/sevice/newtask', component: NewTask },
 	{ path: '/userSystem', component: UserSystem },
 	{ path: '/system/index', component: System },
 	{ path: '/system/user', component: User },
