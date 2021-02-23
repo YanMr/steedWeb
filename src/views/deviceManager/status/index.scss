@@ -1,0 +1,235 @@
+@import '../../../assets/css/var.scss';
+.status-page {
+	.select-input {
+		.ant-select-selector {
+			height: 24px;
+			width: 200px;
+			height: 24px;
+			background: #f0f0f0;
+			border-radius: 12px;
+			font-size: 12px;
+		}
+		.ant-select-selection-item {
+			line-height: 22px;
+		}
+	}
+	.mini-button {
+		height: 24px;
+		line-height: 24px;
+		border-radius: 12px;
+		color: #fff;
+		padding: 0 20px;
+		font-size: 14px;
+		&.green-button {
+			background: $green;
+			border-color: $green;
+		}
+	}
+	.main {
+		padding: 30px;
+		min-width: 1100px;
+		overflow: auto;
+	}
+	.number-radio-card {
+		height: 440px;
+	}
+	.proportion {
+		margin-bottom: 20px;
+		.prop-header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-bottom: 24px;
+			.prop-title {
+				font-size: 14px;
+				color: #646464;
+			}
+			.type-list {
+				display: flex;
+				.item {
+					font-size: 12px;
+					margin-left: 25px;
+					&::before {
+						content: '';
+						display: inline-block;
+						width: 10px;
+						height: 10px;
+						border-radius: 100%;
+						background-color: currentColor;
+						margin-right: 5px;
+					}
+					&.item-type-1 {
+						color: $green;
+					}
+					&.item-type-2 {
+						color: #656565;
+					}
+					&.item-type-3 {
+						color: $danger;
+					}
+					&.item-type-4 {
+						color: #ffa200;
+					}
+				}
+			}
+		}
+	}
+
+	.gauge-list {
+		display: flex;
+		justify-content: space-between;
+	}
+	.gauge-box {
+		width: 100px;
+		height: 100px;
+		background: #f5f5f5;
+		border-radius: 100%;
+		.gauge {
+			width: 100px;
+			height: 100px;
+		}
+	}
+
+	.top-left-table {
+		.table-title {
+			font-size: 14px;
+			color: #646464;
+			margin-bottom: 15px;
+		}
+		.ant-table .ant-table-cell {
+			height: 35px;
+			font-size: 12px;
+			color: #636363;
+			text-align: center;
+		}
+		.ant-table-thead > tr > th {
+			background: #fafafa;
+		}
+	}
+	.mb-30 {
+		margin-bottom: 30px;
+	}
+	.status-page-bottom-card {
+		.ant-card-body {
+			padding: 0;
+		}
+		.tow-charts {
+			padding: 0 30px;
+		}
+	}
+	.bottom-card-header {
+		height: 50px;
+		padding: 0 30px;
+		border-bottom: 1px solid #e1e1e1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		.header-title {
+			font-size: 16px;
+			color: #282828;
+			position: absolute;
+			left: 30px;
+		}
+		.status-types {
+			display: inline-flex;
+			.item {
+				font-size: 12px;
+				margin: 0 12px;
+				&::before {
+					content: '';
+					display: inline-block;
+					width: 10px;
+					height: 10px;
+					border-radius: 100%;
+					background-color: currentColor;
+					margin-right: 5px;
+					position: relative;
+					top: 1px;
+				}
+				&.item-1 {
+					color: $green;
+				}
+				&.item-2 {
+					color: #828282;
+				}
+				&.item-3 {
+					color: #ff564c;
+				}
+				&.item-4 {
+					color: #ffa200;
+				}
+			}
+		}
+	}
+	.contrastBar {
+		height: 390px;
+	}
+	.bottom-right-table {
+		padding-top: 40px;
+		.table-title {
+			color: $light;
+			font-size: 14px;
+			margin-bottom: 30px;
+		}
+		.ant-table-thead > tr > th {
+			background: #fafafa;
+		}
+		.ant-table .ant-table-cell {
+			font-size: 14px;
+			color: #636363;
+		}		
+	}
+	.utilization {
+		.ant-card-body {padding: 0;}
+		.header-title {
+			font-size: 16px;
+			color: #282828;
+			height: 50px;
+			padding-left: 30px;
+			line-height: 50px;
+			border-bottom: 1px solid #e1e1e1;
+		}
+		.utilization-pies {
+			height: 390px;
+			display: flex;
+			.pie-wrap {
+				display: flex;
+				flex: 1;
+				position: relative;
+				align-items: center;
+				justify-content: center;
+				.pie-legend {
+					font-size: 12px;
+					position: absolute;
+					right: 50px;
+					top: 100px;
+					.item {
+						margin-bottom: 10px;
+						&::before {
+							content: '';
+							display: inline-block;
+							width: 10px;
+							height: 10px;
+							border-radius: 100%;
+							background-color: currentColor;
+							margin-right: 5px;
+							position: relative;
+							top: 1px;
+						}
+						&.on {
+							color: #4fb956;
+						}
+						&.off {
+							color: #656565;
+						}
+					}
+				}
+				.pie {
+					width: 280px;
+					height: 280px;
+				}
+			}
+		}
+	}
+}

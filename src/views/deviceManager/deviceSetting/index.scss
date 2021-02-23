@@ -11,17 +11,17 @@
 }
 
 .tab-header-container {
-	height: 50px;
-	padding-left: 20px;
+	height: 35px;
+	padding-left: 43px;
 	border-bottom: 1px solid #e1e1e1;
 	.tab-header {
 		display: flex;
 		margin-bottom: 60px;
 		.item {
-			line-height: 50px;
+			line-height: 35px;
 			padding: 0 18px;
 			position: relative;
-			font-size: 16px;
+			font-size: 14px;
 			margin-right: 60px;
 			cursor: pointer;
 			&::after {

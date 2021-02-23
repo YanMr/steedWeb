@@ -1,0 +1,68 @@
+@import '@/assets/css/var.scss';
+.partition-page {
+	.container-box {
+		padding: 40px;
+	}
+	.tree-wrapper {
+		background: #fff;
+		padding: 0 40px 40px;
+		box-shadow: 0px 1px 4px 0px rgba(16, 15, 12, 0.2);
+	}
+	.page-title {
+		height: 64px;
+		line-height: 64px;
+		padding-left: 14px;
+		font-size: 14px;
+		color: #282828;
+	}
+	.partition-tree {
+		.ant-tree .ant-tree-treenode {
+			width: 100%;
+		}
+		.ant-tree .ant-tree-node-content-wrapper {
+			flex: 1;
+			border-bottom: 1px solid #e1e1e1;
+		}
+		.tree-item {
+			border-bottom: 1px solid #e1e1e1;
+			margin-top: -1px;
+			font-size: 14px;
+			color: #282828;
+			&:last-of-type {
+				border: none;
+			}
+			.icon-arrow {
+				margin-right: 5px;
+			}
+			.item-name {
+				.text {
+					margin-left: 5px;
+				}
+				.anticon {
+					font-size: 14px;
+				}
+			}
+			.item-action-buttons {
+				display: inline-flex;
+				span {
+					margin-left: 30px;
+					color: $light;
+					font-size: 14px;
+					cursor: pointer;
+				}
+			}
+		}
+		.tree-children {
+			border-top: 1px solid #e1e1e1;
+		}
+		.item-content {
+			height: 28px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+		}
+	}
+}
+.none {
+	display: none;
+}

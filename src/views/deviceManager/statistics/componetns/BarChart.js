@@ -47,11 +47,15 @@ const BarChart = () => {
 			},
 			yAxis: {
 				type: 'value',
-				axisTick: false,
-
 				splitLine: {
 					show: false
-				}
+				},
+				axisLine: {
+					show: true
+				},
+				axisTick: {
+					show: true
+				}				
 			},
 			series: [
 				{

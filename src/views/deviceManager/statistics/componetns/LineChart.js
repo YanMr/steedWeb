@@ -6,7 +6,6 @@ import _ from 'lodash';
 let myChart = null;
 const LineChart = props => {
 	const isCollapsed = useSelector(state => state.collapse.isCollapsed);
-	console.log('isCollapsed', isCollapsed);
 	const renderChart = () => {
 		myChart && myChart.clear();
 		myChart = null;
@@ -102,7 +101,6 @@ const LineChart = props => {
 		option && myChart.setOption(option);
 	};
 	const watchWindowSize = () => {
-		console.log('执行');
 		_.delay(() => {
 			myChart.resize({
 				width: document.getElementById('lineChart').clientWidth

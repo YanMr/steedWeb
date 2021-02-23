@@ -24,7 +24,11 @@ export const menus = [
 			{
 				path: '/device/statistics',
 				title: '设备统计',
-			}
+			},
+			{
+				path: '/device/status',
+				title: '物联状态',
+			},			
 		]
 	},
 	{
@@ -48,6 +52,10 @@ export const menus = [
 			{
 				path: '/system/device',
 				title: '物联设备管理',
+			},
+			{
+				path: '/system/partition',
+				title: '分区设置',
 			}
 		]
 	},
