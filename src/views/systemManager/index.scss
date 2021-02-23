@@ -1,5 +1,166 @@
 @import '@/assets/css/var.scss';
 .account {
+  .log-query-main {
+    .ant-table .ant-table-cell {
+      font-size: 12px;
+    }
+    .ant-tabs {
+      .ant-tabs-nav {
+        height: 35px;
+        margin-bottom: 3px;
+      }
+      .ant-tabs-content-holder {
+        background: #fff;
+        margin: 0;
+        height: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        padding: 0;
+      }
+    }
+    .ant-tabs > .ant-tabs-nav .ant-tabs-nav-list {
+      margin-left: 20px;
+      .ant-tabs-tab {
+        margin: 0 50px 0 0;
+      }
+    }
+    .ant-tabs-top > .ant-tabs-nav::before {
+      border-bottom: 1px solid #E1E1E1;
+    }
+  }
+  .log-query-select {
+    padding-top: 21px;
+    margin-bottom: 30px;
+    .ant-select:not(.ant-select-customize-input) .ant-select-selector {
+      border-radius: 15px;
+      color: #646464;
+      border: solid 1px #646464;
+    }
+  }
+  .other-table {
+    .ant-table .ant-table-cell {
+      font-size: 12px;
+    }
+    .del {
+      color: #FF8C8C;
+    }
+  }
+  .other {
+    font-size: 12px;
+    margin: 20px 0 15px 20px;
+  }
+  .user-login-message {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    padding: 30px 0 0 20px ;
+  }
+  .message-setting-qr {
+    padding: 21px 14px 8px;
+    border-bottom: 1px solid #E1E1E1;
+    .message-qrcode {
+      display: flex;
+      margin: 21px 11px 14px 18px;
+      .qrcode-text {
+        font-size: 12px;
+        display: flex;
+        align-items: flex-end;
+      }
+      .qrcode-img {
+        width: 114px;
+        height: 114px;
+        margin-right: 11px;
+        border: solid 1px #646464;
+        img {
+          padding: 4px;
+          width: 100%;
+        }
+      }
+    }
+    .message-title-header {
+      border: solid 1px #78B4FF;
+      height: 25px;
+      line-height: 25px;
+      font-size: 12px;
+      text-align: center;
+      color: #78B4FF;
+      background: #EBF5FF;
+    }
+  }
+  .network-main {
+    .network-setting {
+      .ant-table .ant-table-cell {
+        font-size: 12px;
+      }
+      .user-task {
+        cursor: pointer;
+        .edit {
+          color: #4164F0;
+          margin-right: 6px;
+        }
+        .del {
+          color:#FF8C8C;
+          font-size: 16px;
+        }
+        .setting {
+          color: #4164F0;
+          font-size: 18px;
+          margin-right: 6px;
+        }
+      }
+      .network-setting-title {
+        border-bottom: solid 1px #E1E1E1;
+        padding: 22px 15px;
+      }
+    }
+    .network-dns {
+      .network-dns-title {
+        margin-bottom: 24px;
+      }
+      .network-dns-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 24px;
+        .networl-value {
+          input {
+            border-radius: 5px;
+          }
+        }
+        .network-label {
+          margin-right: 26px;
+        }
+      }
+      padding: 21px 16px;
+      font-size: 12px;
+    }
+  }
+  .account-header-s {
+    border-bottom: #E1E1E1 solid 1px;
+    padding: 0px 20px 20px;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    .account-btn {
+      Button {
+        font-size: 12px;
+        height: 26px;
+        border-radius: 5px;
+      }
+    }
+  }
+  .system-btn {
+    padding-left: 16px;
+    Button {
+      margin-right: 28px;
+      border-radius: 5px;
+      font-size: 12px;
+      height: 26px;
+    }
+  }
+  .system-text {
+    padding: 29px 16px;
+    font-size: 14px;
+  }
 .systemMessage {
   .system-img-main {
     .system-img-title {
