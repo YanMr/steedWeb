@@ -28,6 +28,62 @@
       display: flex;
       align-items: center;
       margin-bottom: 21px;
+      font-size: 12px;
+      .task-cf-label {
+        background: #969696;
+        color: #fff;
+        padding: 0 5px;
+        border-radius: 5px;
+        margin-right: 20px;
+      }
+      .task-cf-value-item {
+        margin-right: 20px;
+        text-align: center;
+        line-height: 16px;
+        flex-shrink: 0;
+        min-width: 32px;
+        border-radius: 5px;
+        height: 16px;
+        border: solid 1px #fff;
+        color: #969696;
+        cursor: pointer;
+      }
+      .cur {
+        color: #4164F0;
+        border: solid 1px #4164F0;
+      }
+      .task-bf-value {
+        display: flex;
+        align-items: center;
+        font-size: 22px;
+        .anticon {
+          cursor: pointer;
+          color: #4164F0;
+        }
+        .del {
+          color: #FF2929;
+        }
+        .ant-picker {
+          border-radius: 12px;
+          height: 26px;
+          margin-right: 20px;
+          input {
+            font-size: 12px;
+          }
+        }
+      }
+      .task-cf-value { 
+        display: flex;
+        align-items: center;
+        .anticon {
+          font-size: 22px;
+          cursor: pointer;
+          color: #4164F0;
+        }
+        .task-cf-rq {
+          display: flex;
+        }
+      }
       .task-label {
         width: 60px;
         text-align: right;
