@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Input, Switch, Select, Radio, Button, TimePicker } from 'antd';
-import BreadCrumb from '@/views/layout/BreadCrumb';
+import Back from '@/components/Back/index';
 import CheckCalendar from '@/components/CheckCalendar/Index'
 import IconFont from '@/components/IconFont';
 import moment from 'moment';
@@ -80,7 +80,9 @@ class NewTask extends Component {
   render() {
     return (
       <div className="new-task">
-        <BreadCrumb/>
+        	<header className="custom-layout-header">
+					<Back />
+				</header>
         <div className="new-task-main">
           <div className="new-task-list">
             <div className="new-task-title">

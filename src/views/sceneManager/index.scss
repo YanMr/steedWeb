@@ -1,4 +1,13 @@
 @import '@/assets/css/var.scss';
+.new-task {
+  .custom-layout-header {
+    min-height: 36px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e1e1e1;
+  }
+}
 .new-task-main {
   .btn-task {
     margin-top: 20px;
