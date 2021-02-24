@@ -40,7 +40,7 @@ const treeData = [
 							</div>
 						</div>
 					);
-				},				
+				},
 				children: [
 					{
 						key: '0-0-0-0',
@@ -58,7 +58,7 @@ const treeData = [
 									</div>
 								</div>
 							);
-						},						
+						}
 					},
 					{
 						key: '0-0-0-1',
@@ -76,7 +76,7 @@ const treeData = [
 									</div>
 								</div>
 							);
-						},						
+						}
 					}
 				]
 			},
@@ -97,7 +97,7 @@ const treeData = [
 							</div>
 						</div>
 					);
-				},				
+				},
 				children: [
 					{
 						key: '0-0-2-1',
@@ -115,10 +115,10 @@ const treeData = [
 									</div>
 								</div>
 							);
-						},						
+						}
 					},
 					{
-						key: '0-0-2-1',
+						key: '0-0-2-2',
 						title: () => {
 							return (
 								<div className="tree-item">
@@ -133,16 +133,14 @@ const treeData = [
 									</div>
 								</div>
 							);
-						},						
+						}
 					}
 				]
-			}			
+			}
 		]
 	}
 ];
-const iconArrowDown = 'icon-sanjiaoxing';
-const iconArrowUp = 'icon-sanjiaoxing1';
-const iconArrow = iconArrowDown;
+
 const PartitionSetting = (props = {}) => {
 	const onSelect = (selectedKeys, info) => {
 		console.log('selected', selectedKeys, info);
@@ -153,9 +151,12 @@ const PartitionSetting = (props = {}) => {
 	};
 
 	return (
-		<section className="partition-tree">
-			<Tree defaultExpandedKeys={['0-0', '0-0-0']} defaultSelectedKeys={['0-0']} defaultCheckedKeys={['0-0-0', '0-0-1']} onSelect={onSelect} onCheck={onCheck} treeData={treeData} />
-		</section>
+		<div className="tree-wrapper">
+			<header className="page-title">分区设置</header>
+			<section className="partition-tree">
+				<Tree blockNode defaultExpandedKeys={['0-0', '0-0-0']} defaultCheckedKeys={['0-0-0', '0-0-1']} key="key" onSelect={onSelect} onCheck={onCheck} treeData={treeData} />
+			</section>
+		</div>
 	);
 };
 
