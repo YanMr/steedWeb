@@ -8,7 +8,7 @@ class AddMessageModal extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isModalVisible: true
+      isModalVisible: false
     }
   }
 

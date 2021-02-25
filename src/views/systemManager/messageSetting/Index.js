@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Switch, Table, Tooltip } from 'antd';
+import { Switch, Table, Tooltip, Button } from 'antd';
+import AddMessage from '../addMessageModal/Index'
 import IconFont from '@/components/IconFont';
 import '../index.scss'
 
@@ -38,7 +39,7 @@ class MessageSetting extends Component {
           dataIndex: 'frequency',
         },
         {
-          title: '操作+',
+          title: '操作',
           align: 'center',
           key: 'operation',
           dataIndex: 'operation',
@@ -52,11 +53,17 @@ class MessageSetting extends Component {
       ],
     }
   }
+  // 添加消息
+  addMessage = () => {
+    this.refs.addMessage.showModal()
+  }
 
   render() {
     return (
       <div className="account">
-        <div className="account-header">消息设置</div>
+        <div className="account-header">
+          消息设置
+        </div>
         <div className="message-setting-qr">
           <div className="message-title-header">提醒：消息接收人员，请设置手机号与关注铠硕达科技安全助手微信公众号 , 点击查看操作指引。</div>
           <div className="message-qrcode">
@@ -68,7 +75,10 @@ class MessageSetting extends Component {
             <div className="user-mess-text">用户登录信息</div>
             <div className="user-mess-radio"><Switch defaultChecked></Switch></div>
         </div>
-        <div className="other">其他消息</div>
+        <div className="other">
+        <div className="account-title">其他消息</div>
+          <div className="account-btn"><Button type="primary" onClick={() => this.addMessage()}>添加消息</Button></div>
+        </div>
         <div className="other-table">
         <Table
               pagination={{ defaultPageSize: 10, hideOnSinglePage: true }}
@@ -76,7 +86,8 @@ class MessageSetting extends Component {
               columns={this.state.columns}
               dataSource={this.state.data}
             />
-        </div>    
+        </div>  
+        <AddMessage ref="addMessage" />
       </div>
     );
   }
