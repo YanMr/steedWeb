@@ -1,4 +1,111 @@
 @import '@/assets/css/var.scss';
+.add-message {
+  .ant-form-item-label {
+    width: 80px;
+    text-align: left;
+  }
+  .ant-form-item {
+    margin: 0 auto 20px;
+  }
+}
+.steps-three {
+  display: flex;
+  justify-content: center;
+  padding-top: 30px;
+  padding-bottom: 30px;
+  align-items: center;
+  font-size: 25px;
+  .anticon {
+    color: #4164F0;
+  }
+  .suss-text {
+    margin-left: 20px;
+    color: #4164F0;
+  }
+}
+.steps-two {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 20px;
+}
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 20px;
+  .ant-btn {
+    margin-left: 20px;
+    border-radius: 10px;
+  }
+}
+.content-main-user {
+  .ant-form-item {
+    margin: 0 auto 20px;
+  }
+  .ant-form-item-label {
+    width: 80px;
+    text-align: left;
+  }
+}
+.add-user-Modal-herder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    .user {
+      display: flex;
+      align-items: center;
+      .user-border {
+        width: 80px;
+        height: 2px;
+        background: #afabab;
+      }
+      .user-text {
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        border: solid 2px #afabab;
+        color: #afabab;
+      }
+    }
+    .zong {
+      .add-user-title {
+        margin-top: 10px;
+      }
+    }
+    .one {
+      .add-user-title {
+        margin-left: -16px;
+      }
+    }
+    .two {
+      .add-user-title {
+        text-align: center;
+      }
+    }
+    .three {
+      text-align: right;
+      margin-right: -10px;
+    }
+    .cur {
+        .add-user-title {
+          color: #38c2a6;
+        }
+        .user {
+        .user-border {
+          background: #38c2a6;
+        }
+        .user-text {
+          background: #38c2a6;
+          color: #fff;
+          border: solid 2px #38c2a6;
+        }
+      }
+    }
+  }
 .account {
   .log-query-main {
     .ant-table .ant-table-cell {

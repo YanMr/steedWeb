@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, Checkbox,Select, Table, Tooltip } from 'antd';
 import IconFont from '@/components/IconFont';
+import AddUser from '../addUserModal/Index'
+import AddMessage from '../addMessageModal/Index'
 import '../index.scss'
 
 
@@ -63,8 +65,7 @@ class Account extends Component {
         },
       ],
       sclect: false,
-      selectedRowKeys: [],
-    }
+      selectedRowKeys: []    }
   }
   
   // 全选
@@ -99,6 +100,15 @@ class Account extends Component {
       selectedRowKeys
     })
     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+  } 
+  //  添加用户
+  adduser = () => {
+    this.refs.addUser.showModal()
+  }
+
+  // 添加消息
+  addMessage = () => {
+    this.refs.addMessage.showModal()
   }
 
   render() {
@@ -128,12 +138,12 @@ class Account extends Component {
 				        </Button>
               </Form.Item>
               <Form.Item >
-                <Button type="primary" style={{ background: '#4586F3', borderColor: "#4586F3" }}>
+                <Button type="primary" onClick={() => this.adduser()} style={{ background: '#4586F3', borderColor: "#4586F3" }}>
                   添加用户
 				        </Button>
               </Form.Item>
               <Form.Item >
-                <Button type="primary" style={{ background: '#35AA53', borderColor: "#35AA53" }}>
+                <Button type="primary" onClick={() => this.addMessage()} style={{ background: '#35AA53', borderColor: "#35AA53" }}>
                   部门与用户类型
 				        </Button>
               </Form.Item>
@@ -172,8 +182,8 @@ class Account extends Component {
 					</div>
         </div>) : ''
         }
-        
-
+        <AddUser ref="addUser" />
+        <AddMessage ref="addMessage" />
       </div>
     );
   }
