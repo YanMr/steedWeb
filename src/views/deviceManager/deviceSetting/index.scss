@@ -209,3 +209,17 @@
 		margin-bottom: 30px;
 	}
 }
+.edit-modal-actions {
+	.icon {
+		color: $light;
+		cursor: pointer;
+	}
+	.icon-del {
+		color: #eb4334;
+	}
+}
+.ant-table-thead th.ant-table-cell-fix-right,
+.ant-table-thead th.ant-table-cell-fix-left
+ {
+	background: #fff;
+}

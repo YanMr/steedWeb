@@ -94,6 +94,7 @@ section.device-page {
 	.table-wrap {
 		position: relative;
 		flex: 1;
+	background: #fff;
 	}
 }
 .table {
@@ -240,6 +241,7 @@ section.device-page {
 	}
 	.action-item {
 		margin-right: 50px;
+		user-select: none;
 		.icon-tiaojie {
 			color: #282828;
 			&:hover {
@@ -288,10 +290,10 @@ section.device-page {
 	width: 100%;
 	.tab-item {
 		flex: 1;
-		height: 50px;
-		line-height: 50px;
+		height: 35px;
+		line-height: 35px;
 		text-align: center;
-		font-size: 16px;
+		font-size: 14px;
 		color: #282828;
 		position: relative;
 		cursor: pointer;

@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { Tag, Button, Table, Checkbox } from 'antd';
+import { Table, Checkbox, Tooltip, Modal, message, Form, Select, Space, Radio } from 'antd';
 import IconFont from '@/components/IconFont';
 const DeviceTable = (props = {}) => {
 	const [pageSize, setPageSize] = useState(10);
 	const [rowSelection, setRowSelection] = useState({});
 	const [isCheckAll, setCheckAll] = useState(false);
+	const [isModalVisible, setIsModalVisible] = useState(false);
 	const history = useHistory();
 	useEffect(() => {
 		const { showCheckBox } = props;
@@ -63,7 +64,7 @@ const DeviceTable = (props = {}) => {
 			),
 			dataIndex: 'ip',
 			key: 'ip',
-			textWrap: 'word-break',
+			textWrap: 'word-break'
 		},
 		{
 			title: () => (
@@ -97,7 +98,7 @@ const DeviceTable = (props = {}) => {
 			dataIndex: 'wlStatus',
 			key: 'wlStatus',
 			textWrap: 'word-break',
-			width: 440,			
+			width: 440,
 			render(text) {
 				return (
 					<div className="wl-status-btns">
@@ -156,8 +157,12 @@ const DeviceTable = (props = {}) => {
 			render: v => {
 				return (
 					<div className="cell-action-btns">
-						<IconFont type="icon-xitong1" className="font-16" onClick={() => toSettingPage(v)} />
-						<IconFont type="icon-view" className="font-16" />
+						<Tooltip title="设备设置">
+							<IconFont type="icon-xitong1" className="font-16" onClick={() => toSettingPage(v)} />
+						</Tooltip>
+						<Tooltip title="设备替换/参数复制">
+							<IconFont type="icon-view" className="font-16" onClick={() => setIsModalVisible(true)} />
+						</Tooltip>
 					</div>
 				);
 			}
@@ -182,9 +187,24 @@ const DeviceTable = (props = {}) => {
 	const toSettingPage = item => {
 		history.push(`/device/setting?id=${item.key}`);
 	};
+	const handleOk = () => {
+		setIsModalVisible(false);
+		message.success('保存成功');
+	};
+	const onDel = () => {
+			Modal.confirm({
+				title: '提示',
+				content: '确认要删除？',
+				okText: '确认',
+				cancelText: '取消',
+				onOk() {
+					message.success('删除成功');
+				}
+			});
+	}
 	return (
 		<div className="table-wrap">
-			<Table scroll={{x: 1000}} selectedRowKeys={[1]} rowSelection={rowSelection} rowClassName={setRowClass} dataSource={tableData} columns={tableHeader} pagination={{ defaultPageSize: 10 }} className="table" />
+			<Table scroll={{ x: 1000 }} selectedRowKeys={[1]} rowSelection={rowSelection} rowClassName={setRowClass} dataSource={tableData} columns={tableHeader} pagination={{ defaultPageSize: 10 }} className="table" />
 			{showCheckBox && (
 				<div className="table-bottom-footer">
 					<div className="check-all">
@@ -195,7 +215,7 @@ const DeviceTable = (props = {}) => {
 						<IconFont type="icon-ziyuan" className="icon-tiaojie" />
 					</div>
 					<div className="action-item">
-						<IconFont type="icon-del" className="icon-del" />
+						<IconFont type="icon-del" className="icon-del" onClick={onDel}/>
 					</div>
 					<div className="action-item">
 						<IconFont type="icon-set" className="icon-set" />
@@ -207,6 +227,32 @@ const DeviceTable = (props = {}) => {
 					</div>
 				</div>
 			)}
+			<Modal title="设备替换/参数复制" cancelText="取消" okText="确定" visible={isModalVisible} onOk={handleOk} onCancel={() => setIsModalVisible(false)}>
+				<Form colon={false} labelAlign='left' wrapperCol={{ span: 12, offset: 1 }} labelCol={{ span: 3 }}>
+					<Form.Item label="操作">
+						<Space>
+							<Radio.Group>
+								<Radio value="radio1">参数复制</Radio>
+								<Radio value="radio2">设备替换</Radio>
+							</Radio.Group>
+						</Space>
+					</Form.Item>
+					<Form.Item label="参数">
+						<Space>
+							<Radio.Group>
+								<Radio value="radio1">高级设置</Radio>
+								<Radio value="radio2">网络设置</Radio>
+							</Radio.Group>
+						</Space>
+					</Form.Item>
+					<Form.Item label="目标设备">
+						<Select placeholder='选择目标设备'>
+							<Select.Option value="1">目标设备1</Select.Option>
+							<Select.Option value="2">目标设备2</Select.Option>
+						</Select>
+					</Form.Item>
+				</Form>
+			</Modal>
 		</div>
 	);
 };
