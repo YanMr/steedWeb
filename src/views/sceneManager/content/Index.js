@@ -7,8 +7,14 @@ class Content extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      details: true
+      details: false
     }
+  }
+  
+  showSceneDetails = () => {
+    this.setState({
+      details: true
+    })
   }
 
   close = () => {
@@ -22,7 +28,7 @@ class Content extends Component {
       <div className="serch-container">
         <ContentTable />
         {this.state.details ? 
-        (<SceneDetails  close={this.close}/>) 
+        (<SceneDetails ref="sceneDetails"  seceneType={this.props.seceneType} seceneDetails={this.props.seceneDetails}  close={this.close}/>) 
         : ''}
       </div>
     );

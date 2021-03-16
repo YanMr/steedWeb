@@ -1,4 +1,18 @@
 @import '@/assets/css/var.scss';
+.calendarInput {
+  border-radius: 2px;
+  border: #D9D9D9 solid 1px;
+  min-height: 32px;
+  line-height: 32px;
+  padding-left: 10px;
+  .init {
+   color: #bfbfbf
+  }
+}
+.ant-modal-body {
+  max-height: 400px;
+  overflow-y: auto;
+}
 .new-task {
   .custom-layout-header {
     min-height: 36px;

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { message } from 'antd';
 const $axios = axios.create({
-	baseURL: process.env.REACT_APP_BASE_URL,
+	headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 	timeout: 6000,
 	retry:4,
 	retryDelay:1000
@@ -20,7 +20,7 @@ $axios.interceptors.request.use(
 	},
 	function(error) {
 		// 对请求错误做些什么
-		message.error(error);
+		message.error(error.result.text);
 		return Promise.reject(error);
 	}
 );
@@ -29,10 +29,10 @@ $axios.interceptors.request.use(
 $axios.interceptors.response.use(
 	function(response) {
 		// 对响应数据做点什么
-		if (response.data.success === false) {
-			message.error(response.data.message);
+		if (response.data.result.code !== 0) {
+			message.error(response.data.result.text);
 		}
-		return response;
+		return response.data;
 	},
 	function(error) {
 		if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {

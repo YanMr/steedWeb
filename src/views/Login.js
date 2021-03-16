@@ -4,12 +4,14 @@ import 'react-simple-verify/dist/react-simple-verify.css'
 import { Form, Input, Button, Tabs, Select } from 'antd';
 import { connect } from 'react-redux';
 import SchoolList from './login/SchoolList'
+import { getShortmessage, setCloudserver, getCloudserver } from '@/server/login'
 import { setUserInfo } from '@/redux/actions/userInfo';
 import Security from '@/views/passwordSecurity/Index';
-import '@/assets/css/login';
 import banner from '@/assets/img/banber.png'
 import computer from '@/assets/img/computer.png'
 import qrcode from '@/assets/img/qrcode.png'
+import '@/assets/css/login';
+
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -40,28 +42,48 @@ class Login extends Component {
 			liked: true,
 			action: true,
 			server: false,
-			userMessage: {},
+			dataList: {},
 			security: true
 		};
 	}
 	
-	login = e => {
+	login = (e, type) => {
 		e.preventDefault();
-		this.formRef.current.validateFields().then((values) => {
-			localStorage.setItem('isLogin', '1');
-			// 开始选择院校
-			this.setState({
-				server: true,
-				userMessage: values
+		if (type === 1) {
+			alert('请选择短信登录')
+			return 
+		} else {
+			this.formRef.current.validateFields().then( async (values) => {
+			const data = await setCloudserver({
+				"login": {
+					"name": values.phone,
+					"code": values.phoneCode
+			}
 			})
-			// 模拟生成一些数据
-			this.props.setUserInfo(Object.assign({}, values, { role: { type: 1, name: '超级管理员' } }));
-			localStorage.setItem('userInfo', JSON.stringify(Object.assign({}, values, { role: { type: 1, name: '超级管理员' } })));
-			// this.props.history.push('/dashboard');	
-		}).catch((errorInfo ) => {
-			console.log(errorInfo );
-		})
+			if (data.server_token) {
+				localStorage.setItem('server_token', data.server_token);
+			 await this.getCloudserverFun(data.server_token)
+				// 开始选择院校
+				this.setState({
+					server: true
+				})
+			}
+			}).catch((errorInfo ) => {
+				console.log(errorInfo );
+			})
+		}
 	};
+
+	// 获取服务器列表
+	getCloudserverFun = async (server_token) => {
+		const data =  await getCloudserver({
+			server_token: server_token
+		})
+		this.setState({
+			dataList: data.server_list
+		})
+	}
+	
 	componentDidMount() {
 		window.addEventListener('resize', this.onResize);
 	}
@@ -154,11 +176,16 @@ class Login extends Component {
 	}
 
   // 发送验证码
-	handleClick = () => {
+  handleClick = async () => {
     const {liked} = this.state;
     if (!liked) {
       return;
+		}
+		await getShortmessage({
+			"phone_login": {
+        "phone": this.state.phone
     }
+		})
     this.countDown();
 	};
 	
@@ -172,6 +199,9 @@ class Login extends Component {
 	// 院校选择关闭
 	serverClose = () => {
 		localStorage.removeItem('isLogin');
+		this.setState({
+			server: false
+		})
 	}
 
 	// 忘记密码
@@ -209,7 +239,7 @@ class Login extends Component {
 									<Input placeholder="密码"  onChange={this.passwordFun}/>
 								</FormItem>
 								<FormItem>
-								  <Button type="primary" disabled={!this.state.submitType}  htmlType="submit" block onClick={this.login}>
+								  <Button type="primary" disabled={!this.state.submitType}  htmlType="submit" block onClick={(e) => this.login(e, 1)}>
 										登录
 									</Button>
 									<div className="forget-pass" onClick={this.securityFun}>忘记密码</div>
@@ -245,7 +275,7 @@ class Login extends Component {
 										</div>
 								</FormItem>
 								<FormItem>
-									<Button type="primary" disabled={!this.state.submitTypePhone}  htmlType="submit" block onClick={this.login}>
+									<Button type="primary" disabled={!this.state.submitTypePhone}  htmlType="submit" block onClick={(e) => this.login(e,2)}>
 										登录
 									</Button>
 								</FormItem>
@@ -258,7 +288,7 @@ class Login extends Component {
 						</div>)}
 						<div className="action-s" onClick={this.actionFun}>{this.state.action?'扫一扫登录':'账号密码登录'}</div>
 						<div className="action-img" onClick={this.actionFun}><img alt="banner" src={this.state.action?qrcode:computer}/></div>
-					  </div>):(<SchoolList prop={this.props} close={this.serverClose} value={this.state.userMessage} />)}
+					  </div>):(<SchoolList prop={this.props} close={this.serverClose} refresh={() => this.getCloudserverFun(localStorage.getItem('server_token'))} value={this.state.dataList} />)}
 					</div>
 					</div>
 					</div>

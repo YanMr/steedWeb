@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'antd';
 import IconFont from '@/components/IconFont'
+import { setLocalServer } from '@/server/login'
 import { setUserInfo } from '@/redux/actions/userInfo';
 import '@/assets/css/login';
 
@@ -22,11 +23,17 @@ class SchoolList extends Component {
   }
   
   // 跳转首页
-  goDashboard = (serverName) => {
-    // 模拟生成一些数据
-    this.props.setUserInfo(Object.assign({}, this.props.value, { role: { type: 1, name: '超级管理员' } }));
-    localStorage.setItem('serverName', serverName)
-    localStorage.setItem('userInfo', JSON.stringify(Object.assign({}, this.props.value, { role: { type: 1, name: '超级管理员' } })));
+  goDashboard = async (server) => {
+    const data = await setLocalServer({
+      server_token: localStorage.getItem('server_token'),
+      server_id: server.server_id
+    })
+    localStorage.setItem('isLogin', '1');
+    localStorage.setItem('logo', data.server.logo)
+    localStorage.setItem('ui', data.login_info.ui)
+    this.props.setUserInfo(Object.assign({}, this.props.value, { role: { type: data.login_info.role_level, name: data.login_info.user } }));
+    localStorage.setItem('serverName', server.name)
+    localStorage.setItem('userInfo', JSON.stringify(Object.assign({}, this.props.value, { role: { type: data.login_info.role_level, name: data.login_info.user } })));
     this.props.prop.history.push('/dashboard');
   }
 
@@ -35,27 +42,21 @@ class SchoolList extends Component {
 			<div className="server-list">
 			<div className="server-title">选择院校</div>
       <div className="server-main">
-        {/* 在线 */}
-        <div className="server-item status-yes" onClick={() => this.goDashboard('深圳新中外国语学校')}>
+
+        {this.props.value.map((item, index) => {
+          return(<div key={index} className={item.is_online ? 'server-item status-yes' : 'server-item status-no'} onClick={() => this.goDashboard(item)}>
           <div className="server-left">
             <IconFont type='icon-xuexiao'/>
-            <div className="server-name">深圳新中外国语学校</div>
+            <div className="server-name">{item.name}</div>
           </div>
           <div className="server-go"><IconFont type='icon-jinru'/></div>
-        </div>
-        {/* 离线 */}
-        <div className="server-item status-no">
-          <div className="server-left">
-            <IconFont type='icon-xuexiao'/>
-            <div className="server-name">深圳新中外国语学校</div>
-          </div>
-          <div className="server-go"><IconFont type='icon-jinru'/></div>
-        </div>
+        </div>)
+        })}
 
       </div>
 
        <div className="server-btn">
-          <Button type="primary">刷新</Button>
+          <Button type="primary" onClick={this.props.refresh}>刷新</Button>
           <Button onClick={this.props.close}>取消</Button>
        </div>
 

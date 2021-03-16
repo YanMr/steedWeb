@@ -20,6 +20,8 @@ class Scene extends Component {
         { type: 'button', name: 'task', icon: 'icon-add1', color: '#4586F3', defaultValue: '新建任务' },
         { type: 'button', name: 'refresh', icon: 'icon-ai-spin', color: '#35AA53', defaultValue: '刷新' }
       ],
+      seceneType: '',
+      seceneDetails: {},
       showRightSider: 0,
     }
   }
@@ -46,15 +48,28 @@ class Scene extends Component {
     })
   }
 
+  sceneDetail = (type, details) => {
+    console.log(type, details)
+    this.setState({
+      seceneType: type,
+      seceneDetails: details
+    })
+    this.refs.content.showSceneDetails()
+  }
+
+  closemodel = () => {
+    this.refs.content.close()
+  }
+
   render() {
     return (
       <div className="shadow-radius">
         <Layout style={{ minHeight: 'calc(100vh - 61px)', height: 'calc(100vh - 61px)', overflowY: 'auto' }}>
-          <Sider className="scene-left" width={142}><SceneLeft /></Sider>
+          <Sider className="scene-left" width={142}><SceneLeft sceneDetail={this.sceneDetail} close={this.closemodel}/></Sider>
           <Layout>
             <Header className="scene-header"><SearchHeader data={this.state.searData} operation={this.operation} /></Header>
             <Content className="scene-content">
-            <ContentMain />
+            <ContentMain ref="content" seceneType={this.state.seceneType} seceneDetails={this.state.seceneDetails}/>
             </Content>
           </Layout>
           <Sider className="scene-right-main" width={this.state.showRightSider}>
