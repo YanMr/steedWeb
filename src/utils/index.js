@@ -1,15 +1,15 @@
 
-// 数组去重
-const unique = arr => {
-	const res = [];
-	const json = {};
-	for (let i = 0; i < arr.length; i++) {
-		if (!json[arr[i]]) {
-			res.push(arr[i]);
-			json[arr[i]] = 1;
-		}
-	}
-	return res;
+// 数组对象去重
+const unique = (arr, key) => {
+	let result  = [];
+				let obj = {};
+				for (let i = 0; i < arr.length; i ++) {
+					if(!obj[arr[i][key]]){
+						result.push(arr[i]);
+						obj[arr[i][key]] = true;
+					}
+				}
+return result	
 };
 
 export { unique };

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { cloneDeep, chunk } from "lodash";
+import { unique } from "@/utils"
 import PropTypes from 'prop-types';
 import "./index.scss"
 
@@ -20,13 +21,26 @@ class CheckCalendar extends Component {
 
     initDateTable() {
         let temp = []
-        for (let i = 0; i < 11; i++) {  // 取近12个月内的日期
+        for (let i = 0; i < 1; i++) {  // 取近12个月内的日期
             let obj = this.getDateTable(i);
             temp.push(obj);
         }
         this.setState({
+            isCheck: this.props.isCheckData,
             dateTable: temp
         });
+    }
+
+    dateFun (year, month, day) {
+        let months = month;
+        let days = day
+        if (months < 10) {
+            months= `0${months}`
+        }
+        if (days < 10) {
+            days = `0${day}` 
+        }
+        return `${year}-${months}-${days}`
     }
 
     getDateTable(plus) {
@@ -52,16 +66,41 @@ class CheckCalendar extends Component {
         date2.setDate(1);
         let day = date2.getDay(); // 当月第一天是星期几
         // console.log(`当月第一天是星期${day}.`);
-
+        
         let list = [];
 
         for (let i = 0; i < days + day; i++) {
+            
             if (i < day) {  // 头部补零
                 list.push({
                     isActive: false,
                     number: 0
                 });
             } else {
+                const riqi = this.dateFun(year, month, i - day + 1)
+                for(let j = 0; j < this.props.isCheckData.length; j++) {
+                    if (riqi == this.props.isCheckData[j]){
+                        if (plus === 0) {
+                            if ((i - day + 1) < curDay) {
+                                list.push({
+                                    disable: true,
+                                    isActive: true,
+                                    number: i - day + 1
+                                });
+                            } else {
+                                list.push({
+                                    isActive: true,
+                                    number: i - day + 1
+                                });
+                            }
+                        } else {
+                            list.push({
+                                isActive: true,
+                                number: i - day + 1
+                            });
+                        }
+                    }
+                }
                 if (plus === 0) {
                     if ((i - day + 1) < curDay) {
                         list.push({
@@ -81,9 +120,11 @@ class CheckCalendar extends Component {
                         number: i - day + 1
                     });
                 }
+                
             }
         }
-        let hlist = chunk(list, 7); // 转换为二维数组
+       const data = unique(list,'number')
+        let hlist = chunk(data, 7); // 转换为二维数组
         let len = hlist.length;
         let to = 7 - hlist[len - 1].length;
 
@@ -296,7 +337,8 @@ const RenderConfirm = (props) => {
 CheckCalendar.propTypes = {
     onCancel: PropTypes.func,
     onConfirm: PropTypes.func,
-    visible: PropTypes.bool
+    visible: PropTypes.bool,
+    isCheckData: PropTypes.array
 }
 
 export default CheckCalendar;

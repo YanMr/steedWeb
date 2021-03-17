@@ -16,7 +16,16 @@ export const getSceneList = (query) => {
 }
 
 // 场景详情获取
-
 export const getSceneDetails = (query) => {
   return post(`/app/task/scene?source=4&cmd=2` , query)
+}
+
+// 场景状态设置
+export const getSceneStatus = (query) => {
+  return post(`/app/task/scene?source=4&cmd=6` , query)
+}
+
+// 场景删除
+export const setDelScene = (query) => {
+  return post(`/app/task/scene?source=4&cmd=5` , query)
 }

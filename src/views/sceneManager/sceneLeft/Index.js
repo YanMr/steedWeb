@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Input, Popover, Modal, Form, Select, Radio, TimePicker, Tree } from 'antd';
+import { Input, Popover, Modal, Form, Select, Radio, TimePicker, Tree, message } from 'antd';
 import IconFont from '@/components/IconFont';
 import CheckCalendar from '@/components/CheckCalendar/Index'
-import { getScenePlace, setTaskScene, getSceneList, getSceneDetails } from '@/server/scene'
+import { getScenePlace, setTaskScene, getSceneList, getSceneDetails, getSceneStatus, setDelScene } from '@/server/scene'
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import locale from 'antd/es/date-picker/locale/zh_CN';
@@ -27,6 +27,7 @@ class SceneLeft extends Component {
       serchInputValue: '',
       sceneData: [],
       sceneDetails: {},
+      sceneDetailsFu: {},
       treeData:[],
       checkedKeys: [],
       checkedKeysfu: [],
@@ -97,6 +98,8 @@ class SceneLeft extends Component {
   // 新建场景任务
   addScene = () => {
     this.setState({
+      sceneDetailsFu: {},
+      radioCalendar: '1',
       isModalVisible: true
     })
   }
@@ -278,16 +281,67 @@ class SceneLeft extends Component {
     })
   }
 
+  // 场景状态设置
+  setSceneState = async (e,id, state) => {
+    e.stopPropagation()
+    const data = await getSceneStatus({
+      "task_scene_id": id,
+      "state": state === 0 ? 1 : 0
+    })
+    if (data.result.code === 0) {
+      message.success("操作成功");
+      this.getSceneListFun()
+    }
+  }
+
+  // 场景删除
+  delScene = async (e, id) => {
+    e.stopPropagation()
+    const data = await setDelScene({
+      "task_scene_id": id
+    })
+    if (data.result.code === 0) {
+      message.success("操作成功");
+      this.getSceneListFun()
+    }
+  }
+
+  // 场景修改
+  editScene = async(e, id) => {
+    e.stopPropagation()
+      const data = await getSceneDetails({
+        "task_scene_id": id
+    })
+
+    this.setState({
+      sceneDetailsFu: data,
+      radioCalendar: String(data.state),
+      isModalVisible: true
+    })
+    if (data.time.type === 2) {
+      this.setState({
+        isCheck: data.time.date
+      })
+    }
+  }
+
+  // 星期转换
+  weekFun = (time) => {
+    let text = [];
+    if (time?.type === 1) {
+      time.week.map(item => {
+        text.push(String(item))
+      })
+    } else {
+      text = ''
+      text = time?.date.join('/')
+    }
+   
+      
+    return text
+  }
+
   render() {
-     // 场景悬浮框内容
-      const content = (
-        <div className="operation">
-          <div className="operationitem">修改</div>
-          <div className="operationitem">删除</div>
-          <div className="operationitem">创建副本</div>
-          <div className="operationitem">启用/暂停</div>
-        </div>
-      );
     return (
       <div className="serch-container">
         {/* 搜索 begin */}
@@ -310,7 +364,14 @@ class SceneLeft extends Component {
                   <div className="scene-itme-icon"><IconFont type={item.state?'icon-bofang': 'icon-tingzhi'} /></div>
                   <div className={this.state.sceneIndex === index ? ' scene-itme-text ellipsis cur' : 'scene-itme-text ellipsis' }>{item.name}</div>
                   <div className="scene-itme-more">
-                  <Popover placement="bottomLeft" content={content}>
+                  <Popover placement="bottomLeft" content={(
+                      <div className="operation">
+                        <div className="operationitem" onClick={(e) => this.editScene(e, item.id)}>修改</div>
+                        <div className="operationitem" onClick={(e) => this.delScene(e,item.id)}>删除</div>
+                        <div className="operationitem">创建任务</div>
+                        <div className="operationitem" onClick={(e) => this.setSceneState(e,item.id, item.state)}>启用/暂停</div>
+                      </div>
+                    )}>
                     <IconFont type="icon-gengduo" />
                   </Popover>  
                   </div>
@@ -346,18 +407,20 @@ class SceneLeft extends Component {
         {/* 场景详情 end */}</>) : ''}
         </div>
         {/* 添加场景弹窗 begin */}
-        <Modal title="场景添加"  okText="确定" cancelText="取消" visible={this.state.isModalVisible} onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}>
+        {this.state.isModalVisible ? (<Modal title="场景添加" zIndex="1050"   okText="确定" cancelText="取消" visible={this.state.isModalVisible} onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}>
             <Form ref={this.formRef} labelAlign="left" className="login-form">
                 <FormItem 
                   label="场景名称"
-									name="scenename"
+                  name="scenename"
+                  initialValue={this.state.sceneDetailsFu.name}
 									rules={[{ required: true, message: '请填写场景名称!' }]}
 								>
-									<Input placeholder="任务名称" />
+									<Input placeholder="场景名称" />
 								</FormItem>
                 <FormItem 
                   label="优先级别"
-									name="priority"
+                  name="priority"
+                  initialValue={this.state.sceneDetailsFu.priority}
 									rules={[{ required: true, message: '请填写优先级别' }, {
                     validator: this.checkAccount,
                 }]}
@@ -366,18 +429,20 @@ class SceneLeft extends Component {
 								</FormItem>
                 <FormItem 
                   label="场景状态"
-									name="scenestate"
+                  name="scenestate"
+                  initialValue={String(this.state.sceneDetailsFu.state)}
 									rules={[{ required: true, message: '请选择场景状态!' }]}
 								>
 									<Radio.Group>
+                    <Radio value="0">禁用</Radio>
                     <Radio value="1">启用</Radio>
-                    <Radio value="2">禁用</Radio>
                   </Radio.Group>
 								</FormItem>
 
                 <FormItem 
                   label="场景重复"
-									name="scenerepeat"
+                  name="scenerepeat"
+                  initialValue={String(this.state.sceneDetailsFu.time?.type)}
 									rules={[{ required: true, message: '请选择场景重复模式!' }]}
 								>
 									<Radio.Group onChange={(e) => this.sceneType(e)}>
@@ -388,7 +453,8 @@ class SceneLeft extends Component {
 
                 <FormItem 
                   label="场景周期"
-									name="scenecycle"
+                  name="scenecycle"
+                  initialValue={this.weekFun(this.state.sceneDetailsFu.time)}
 									rules={[{ required: true, message: '请选场景周期!' }]}
 								>
                   {this.state.radioCalendar === '1' ? (<Select
@@ -433,10 +499,11 @@ class SceneLeft extends Component {
 								</FormItem>
 							
 							</Form>
-        </Modal>
+        </Modal>):''}
+        
         {/* 添加场景弹窗 end */}
         {/* 位置选择弹窗 begin */}
-        <Modal title="选择位置" zIndex="1001"  okText="确定" cancelText="取消" visible={this.state.locationSerch} onOk={() => this.locationSerchOk()} onCancel={() => this.locationSerchCancel()}>
+        <Modal title="选择位置" zIndex="2002"  okText="确定" cancelText="取消" visible={this.state.locationSerch} onOk={() => this.locationSerchOk()} onCancel={() => this.locationSerchCancel()}>
         {
           this.state.locationSerch ? (<Tree
             checkable
@@ -450,15 +517,19 @@ class SceneLeft extends Component {
         </Modal>
         {/* 位置选择弹窗 bend */}
         {/* 指定日期 begin */}
-        <CheckCalendar
-          visible={this.state.showCalendar}
-          onCancel={()=>{
-                this.setState({
-                    showCalendar:false
-                })
-          }}
-          onConfirm={(isCheck)=> this.confirmCalendal(isCheck)}
-       />
+        {
+          this.state.showCalendar ? (<CheckCalendar
+            isCheckData={this.state.isCheck}
+            visible={this.state.showCalendar}
+            onCancel={()=>{
+                  this.setState({
+                      showCalendar:false
+                  })
+            }}
+            onConfirm={(isCheck)=> this.confirmCalendal(isCheck)}
+         />) : ''
+        }
+        
        {/* 指定日期 end */}
       </div>
     );
