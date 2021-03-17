@@ -383,7 +383,7 @@ class SceneLeft extends Component {
                   <div key={index} className={item.state?'scene-itme open':'scene-itme close'} onClick={() => this.sceneDetails(item.id, index)}>
                   <div className="scene-itme-icon"><IconFont type={item.state?'icon-bofang': 'icon-tingzhi'} /></div>
                   <div className={this.state.sceneIndex === index ? ' scene-itme-text ellipsis cur' : 'scene-itme-text ellipsis' }>{item.name}</div>
-                  <div className="scene-itme-more">
+                  <div className="scene-itme-more" onClick={e => e.stopPropagation()}>
                   <Popover placement="bottomLeft" content={(
                       <div className="operation">
                         <div className="operationitem" onClick={(e) => this.editScene(e, item.id)}>修改</div>
