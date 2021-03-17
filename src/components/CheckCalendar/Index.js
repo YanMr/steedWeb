@@ -21,7 +21,7 @@ class CheckCalendar extends Component {
 
     initDateTable() {
         let temp = []
-        for (let i = 0; i < 1; i++) {  // 取近12个月内的日期
+        for (let i = 0; i < 11; i++) {  // 取近12个月内的日期
             let obj = this.getDateTable(i);
             temp.push(obj);
         }

@@ -16,8 +16,8 @@ const MainContent = ({ location }) => {
 	};
 
 	return (
-		<TransitionGroup className="main-content-parent">
-			<CSSTransition classNames="fade" key={location.pathname} timeout={500}>
+		// <TransitionGroup className="main-content-parent">
+		// 	<CSSTransition classNames="fade" key={location.pathname} timeout={500}>
 				<Content className="main-content">
 					<Switch>
 						{routes.map(ele => handleFilter(ele.permission) && <Route render={() => <ele.component />} key={ele.path} path={ele.path} />)}
@@ -25,8 +25,8 @@ const MainContent = ({ location }) => {
 						<Redirect to="/error/404" />
 					</Switch>
 				</Content>
-			</CSSTransition>
-		</TransitionGroup>
+		// 	</CSSTransition>
+		// </TransitionGroup>
 	);
 };
 

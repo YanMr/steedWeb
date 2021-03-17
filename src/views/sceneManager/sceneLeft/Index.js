@@ -32,7 +32,8 @@ class SceneLeft extends Component {
       checkedKeys: [],
       checkedKeysfu: [],
       checkedTitle: [],
-      checkedTitlefu: []
+      checkedTitlefu: [],
+      sceneId: undefined,
     }
   }
 
@@ -109,6 +110,7 @@ class SceneLeft extends Component {
     this.formRef.current.validateFields().then(async(values) => {
       const params = {
         "task_scene_info": {
+            "id": this.state.sceneId,
             "name": values.scenename,
             "state": Number(values.scenestate),
             "priority": Number(values.priority),
@@ -136,9 +138,14 @@ class SceneLeft extends Component {
         "end_time": moment(values.sceneEndDate).format('LTS')
       }
     }
-      await setTaskScene(params)
+    const data =  await setTaskScene(params)
       this.setState({
         isModalVisible: false
+      }, () => {
+        if (data.result.code === 0) {
+          message.success("操作成功");
+          this.getSceneListFun()
+        }
       })
     })
   }
@@ -165,7 +172,7 @@ class SceneLeft extends Component {
   locationSerchCancel = () => {
     console.log(this.state.checkedKeysfu)
     console.log(this.state.checkedKeys)
-   
+    
       this.setState({
         locationSerch: false,
         checkedKeys: this.state.checkedKeysfu,
@@ -242,6 +249,7 @@ class SceneLeft extends Component {
 
   onCheck = (checkedKeys, info) => {
     let checkedTitlefu = []
+    
     info.checkedNodes.map(item => {
       if (!item.children) {
         checkedTitlefu.push(item.title)
@@ -312,11 +320,24 @@ class SceneLeft extends Component {
       const data = await getSceneDetails({
         "task_scene_id": id
     })
-
+    let text = []
+    data.place_list.map(item => {
+      item.room.map(flag => {
+        text.push(flag.name)
+      })
+    })
     this.setState({
+      sceneId: id,
+      checkedTitle: text,
       sceneDetailsFu: data,
-      radioCalendar: String(data.state),
+      checkedKeys:data.place_id,
+      radioCalendar: String(data.time?.type),
       isModalVisible: true
+    }, () => {
+      this.formRef.current.setFieldsValue({
+        scenelocation: data.place_id,
+        // scenecycle: data.time.date,
+      })
     })
     if (data.time.type === 2) {
       this.setState({
@@ -336,8 +357,7 @@ class SceneLeft extends Component {
       text = ''
       text = time?.date.join('/')
     }
-   
-      
+    console.log(text)
     return text
   }
 
@@ -476,7 +496,8 @@ class SceneLeft extends Component {
 
                 <FormItem 
                   label="开始时间"
-									name="sceneStarDate"
+                  name="sceneStarDate"
+                  initialValue={ this.state.sceneDetailsFu.time ? moment(this.state.sceneDetailsFu.time?.start_time, 'HH:mm:ss') : ''}
 									rules={[{ required: true, message: '请选场景开始时间!' }]}
 								>
 									<TimePicker style={{ width: '100%' }} locale={locale} onChange={this.sceneStarDate}  placeholder="请选场景开始时间"/>
@@ -484,7 +505,8 @@ class SceneLeft extends Component {
 
                 <FormItem 
                   label="结束时间"
-									name="sceneEndDate"
+                  name="sceneEndDate"
+                  initialValue={this.state.sceneDetailsFu.time ? moment(this.state.sceneDetailsFu.time?.end_time, 'HH:mm:ss'): ''}
 									rules={[{ required: true, message: '请选场景结束时间!' }]}
 								>
                   <TimePicker style={{ width: '100%' }} locale={locale} onChange={this.sceneEndDate}  placeholder="请选场景结束时间"/>
@@ -496,8 +518,7 @@ class SceneLeft extends Component {
 									rules={[{ required: true, message: '请选场景位置!' }]}
 								>
 								<div className="calendarInput" onClick={() => this.selectLocation()}>{this.state.checkedTitle.length <= 0 ? (<div className="init">请选择场景位置</div>): (<div>{this.state.checkedTitle.join(' / ')}</div>)}</div>
-								</FormItem>
-							
+								</FormItem>							
 							</Form>
         </Modal>):''}
         
