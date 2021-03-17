@@ -1,6 +1,6 @@
 import React from 'react';
 import { Redirect, withRouter, Route, Switch } from 'react-router-dom';
-import { TransitionGroup, CSSTransition } from 'react-transition-group';
+// import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import { routes } from '@/router/routes';
 import { connect } from 'react-redux';
 import { Layout } from 'antd';

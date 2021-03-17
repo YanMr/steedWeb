@@ -1,11 +1,34 @@
 import axios from 'axios';
-import { message } from 'antd';
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import { message, Spin } from 'antd';
 const $axios = axios.create({
 	headers: {'Content-Type': 'application/x-www-form-urlencoded'},
 	timeout: 6000,
 	retry:4,
 	retryDelay:1000
 });
+
+// 当前正在请求的数量
+let requestCount = 0
+
+function showLoading () {
+	if (requestCount === 0) {
+			var dom = document.createElement('div')
+			dom.setAttribute('id', 'loading')
+			document.body.appendChild(dom)
+			ReactDOM.render(<Spin tip="加载中..." size="large"/>, dom)
+	}
+	requestCount++
+}
+
+// 隐藏loading
+function hideLoading () {
+	requestCount--
+	if (requestCount === 0) {
+			document.body.removeChild(document.getElementById('loading'))
+	}
+}
 
 //请求拦截
 $axios.interceptors.request.use(
@@ -16,11 +39,13 @@ $axios.interceptors.request.use(
 		// const token = store.getState().user.token || localStorage.getItem('token');
 		const token = 'FA2019';
 		config.headers['X-Token'] = token;
+		showLoading ()
 		return config;
 	},
 	function(error) {
 		// 对请求错误做些什么
 		message.error(error.result.text);
+		hideLoading ()
 		return Promise.reject(error);
 	}
 );
@@ -32,9 +57,11 @@ $axios.interceptors.response.use(
 		if (response.data.result.code !== 0) {
 			message.error(response.data.result.text);
 		}
+		hideLoading ()
 		return response.data;
 	},
 	function(error) {
+		hideLoading ()
 		if (error.code === 'ECONNABORTED' && error.message.indexOf('timeout') !== -1) {
 			var config = error.config;
 			config.__retryCount = config.__retryCount || 0;
