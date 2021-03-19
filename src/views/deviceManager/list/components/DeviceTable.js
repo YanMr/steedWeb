@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Table, Checkbox, Tooltip, Modal, message, Form, Select, Space, Radio } from 'antd';
 import IconFont from '@/components/IconFont';
+import _ from 'lodash';
+
 const DeviceTable = (props = {}) => {
-	const [pageSize, setPageSize] = useState(10);
 	const [rowSelection, setRowSelection] = useState({});
 	const [isCheckAll, setCheckAll] = useState(false);
 	const [isModalVisible, setIsModalVisible] = useState(false);
@@ -28,9 +29,6 @@ const DeviceTable = (props = {}) => {
 	};
 	const checkAll = () => {
 		const keys = [];
-		tableData.forEach(item => {
-			keys.push(item.key);
-		});
 		setRowSelection({
 			onChange,
 			selectedRowKeys: isCheckAll ? keys : []
@@ -40,6 +38,22 @@ const DeviceTable = (props = {}) => {
 	const onCancel = () => {
 		props.onCancel();
 	};
+	const getIotType = type => {
+		const iotTypes = {
+			0: 'icon-guanbi',
+			1: 'icon-diandeng-shouye',
+			2: 'icon-kongtiao-shouye',
+			3: 'icon-shexiangji',
+			4: 'icon-fengshan-shouye',
+			5: 'icon-tongyongleiyihuamian', //幕布
+			6: 'icon-yitiji',
+			7: 'icon-zuoce-anfangmenjin',
+			8: 'icon-chuanglian-shouye',
+			9: 'icon-xiaochengxutubiao-19',
+			10: 'icon-qita' //其他
+		};
+		return iotTypes[type] || '';
+	};
 	const tableHeader = [
 		{
 			title: () => (
@@ -48,8 +62,8 @@ const DeviceTable = (props = {}) => {
 					设备
 				</div>
 			),
-			dataIndex: 'equipment',
-			key: 'equipment',
+			dataIndex: 'place',
+			key: 'cell_1',
 			textWrap: 'word-break',
 			render(str) {
 				return <div className="device-name">{str}</div>;
@@ -63,7 +77,7 @@ const DeviceTable = (props = {}) => {
 				</div>
 			),
 			dataIndex: 'ip',
-			key: 'ip',
+			key: 'cell_2',
 			textWrap: 'word-break'
 		},
 		{
@@ -73,12 +87,19 @@ const DeviceTable = (props = {}) => {
 					设备状态
 				</div>
 			),
-			dataIndex: 'status',
-			key: 'status',
 			textWrap: 'word-break',
-			render(status) {
+			key: 'cell_3',
+			render(row) {
+				const status = _.get(row, 'device_iot_state.device_state', 0);
 				const icon = +status === 1 ? 'icon-duigou' : 'icon-cha1';
-				const text = +status === 1 ? '在线' : '离线';
+				let text = '';
+				if (status == 0) {
+					text = '关机';
+				} else if (status == 1) {
+					text = '开机';
+				} else if (status == 2) {
+					text = '离线';
+				}
 				const className = +status === 1 ? 'light' : 'disabled';
 				return (
 					<div className="status-icon-box">
@@ -95,49 +116,22 @@ const DeviceTable = (props = {}) => {
 					物联状态
 				</div>
 			),
-			dataIndex: 'wlStatus',
-			key: 'wlStatus',
 			textWrap: 'word-break',
 			width: 440,
-			render(text) {
+			key: 'cell_4',
+			render(row) {
+				const iotState = _.get(row, 'device_iot_state.iot_state', []);
+				const device_state =  _.get(row, 'device_iot_state.device_state', []);
 				return (
 					<div className="wl-status-btns">
-						<div className="item">
-							<IconFont type="icon-guanbi" className="font-16" />
-							<div className="name">总开关</div>
-						</div>
-						<div className="item">
-							<IconFont type="icon-yitiji" className="font-16" />
-							<div className="name">一体机</div>
-						</div>
-						<div className="item">
-							<IconFont type="icon-shexiangji" className="font-16" />
-							<div className="name">投影仪</div>
-						</div>
-						<div className="item">
-							<IconFont type="icon-xiaochengxutubiao-19" className="font-16" />
-							<div className="name">显示器</div>
-						</div>
-						<div className="item">
-							<IconFont type="icon-zuoce-anfangmenjin" className="font-16" />
-							<div className="name">门禁</div>
-						</div>
-						<div className="item">
-							<IconFont type="icon-chuanglian-shouye" className="font-16" />
-							<div className="name">窗帘</div>
-						</div>
-						<div className="item">
-							<IconFont type="icon-diandeng-shouye" className="font-16" />
-							<div className="name">灯光</div>
-						</div>
-						<div className="item warn">
-							<IconFont type="icon-fengshan-shouye" className="font-16" />
-							<div className="name">风扇</div>
-						</div>
-						<div className="item danger">
-							<IconFont type="icon-kongtiao-shouye" className="font-16" />
-							<div className="name">空调</div>
-						</div>
+						{_.map(iotState, (li, key) => {
+							return (
+								<div className={`item ${device_state == 2 && 'disbaled'}`} key={key}>
+									<IconFont type={getIotType(li.type)} className="icon font-16" />
+									<div className="name">{li.name}</div>
+								</div>
+							);
+						})}
 					</div>
 				);
 			}
@@ -151,60 +145,87 @@ const DeviceTable = (props = {}) => {
 					</div>
 				);
 			},
-			key: 'key',
+			key: 'cell_5',
 			fixed: 'right',
 			align: 'center',
-			render: v => {
+			render: item => {
 				return (
 					<div className="cell-action-btns">
 						<Tooltip title="设备设置">
-							<IconFont type="icon-xitong1" className="font-16" onClick={() => toSettingPage(v)} />
+							<IconFont type="icon-xitong1" className="font-16" onClick={() => toSettingPage(item)} />
 						</Tooltip>
 						<Tooltip title="设备替换/参数复制">
-							<IconFont type="icon-view" className="font-16" onClick={() => setIsModalVisible(true)} />
+							<IconFont type="icon-view" className="font-16" onClick={() => onEditClick(item)} />
 						</Tooltip>
 					</div>
 				);
 			}
 		}
 	];
-	const li = {
-		equipment: '教学楼1',
-		ip: '192.168.1.002,192.168.1.005',
-		status: '0', //1在线 0 离线
-		wlStatus: '1111',
-		key: 0
-	};
-	const tableData = [];
-	Array.from(new Array(30)).forEach((item, key) => {
-		tableData.push({ ...li, key: key, status: key % 2 === 0 ? 1 : 0 });
-	});
 
-	const setRowClass = item => {
-		return item.status === 0 ? 'disabled' : '';
-	};
 	const { showCheckBox } = props;
 	const toSettingPage = item => {
-		history.push(`/device/setting?id=${item.key}`);
+		console.log('item', item);
+		const state = _.get(item, 'device_iot_state.device_state');
+		if (state == 2) {
+			message.error('设备离线，不可操作');
+		} else {
+			history.push(`/device/setting?id=${item.id}`);
+		}
+	};
+	const onEditClick = item => {
+		const state = _.get(item, 'device_iot_state.device_state');
+		if (state == 2) {
+			message.error('设备离线，不可操作');
+		} else {
+			setIsModalVisible(true);
+		}
 	};
 	const handleOk = () => {
 		setIsModalVisible(false);
 		message.success('保存成功');
 	};
 	const onDel = () => {
-			Modal.confirm({
-				title: '提示',
-				content: '确认要删除？',
-				okText: '确认',
-				cancelText: '取消',
-				onOk() {
-					message.success('删除成功');
-				}
-			});
-	}
+		Modal.confirm({
+			title: '提示',
+			content: '确认要删除？',
+			okText: '确认',
+			cancelText: '取消',
+			onOk() {
+				message.success('删除成功');
+			}
+		});
+	};
+	const pageSizeChange = e => {
+		console.log(e);
+		const { current } = e;
+		props.onPageSizeChange(current);
+	};
 	return (
 		<div className="table-wrap">
-			<Table scroll={{ x: 1000 }} selectedRowKeys={[1]} rowSelection={rowSelection} rowClassName={setRowClass} dataSource={tableData} columns={tableHeader} pagination={{ defaultPageSize: 10 }} className="table" />
+			<Table
+				scroll={{ x: 1000 }}
+				selectedRowKeys={[1]}
+				rowSelection={rowSelection}
+				dataSource={props.data}
+				columns={tableHeader}
+				pagination={{
+					defaultPageSize: 10,
+					hideOnSinglePage: true,
+					total: props.total,
+					current: props.current
+				}}
+				onChange={pageSizeChange}
+				onRow={item => {
+					return {
+						onClick() {
+							props.onItemClick(item);
+						}
+					};
+				}}
+				rowKey={item => `row${item.id}`}
+				className="table"
+			/>
 			{showCheckBox && (
 				<div className="table-bottom-footer">
 					<div className="check-all">
@@ -215,7 +236,7 @@ const DeviceTable = (props = {}) => {
 						<IconFont type="icon-ziyuan" className="icon-tiaojie" />
 					</div>
 					<div className="action-item">
-						<IconFont type="icon-del" className="icon-del" onClick={onDel}/>
+						<IconFont type="icon-del" className="icon-del" onClick={onDel} />
 					</div>
 					<div className="action-item">
 						<IconFont type="icon-set" className="icon-set" />
@@ -228,7 +249,7 @@ const DeviceTable = (props = {}) => {
 				</div>
 			)}
 			<Modal title="设备替换/参数复制" cancelText="取消" okText="确定" visible={isModalVisible} onOk={handleOk} onCancel={() => setIsModalVisible(false)}>
-				<Form colon={false} labelAlign='left' wrapperCol={{ span: 12, offset: 1 }} labelCol={{ span: 3 }}>
+				<Form colon={false} labelAlign="left" wrapperCol={{ span: 12, offset: 1 }} labelCol={{ span: 3 }}>
 					<Form.Item label="操作">
 						<Space>
 							<Radio.Group>
@@ -246,7 +267,7 @@ const DeviceTable = (props = {}) => {
 						</Space>
 					</Form.Item>
 					<Form.Item label="目标设备">
-						<Select placeholder='选择目标设备'>
+						<Select placeholder="选择目标设备">
 							<Select.Option value="1">目标设备1</Select.Option>
 							<Select.Option value="2">目标设备2</Select.Option>
 						</Select>

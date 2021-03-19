@@ -170,13 +170,14 @@ section.device-page {
 	.wl-status-btns {
 		display: flex;
 		flex-wrap: wrap;
-		max-width: 420px;
+		max-width: 480px;
 		color: #282828;
 		.item {
 			display: inline-flex;
 			align-items: center;
-			width: 80px;
+			width: 100px;
 			font-size: 14px;
+			white-space: nowrap;
 			&.light {
 				color: $light;
 			}
@@ -185,6 +186,11 @@ section.device-page {
 			}
 			&.warn {
 				color: $warn;
+			}
+			&.disbaled {
+				.icon,.name {
+					color: #8c8c8c;
+				}
 			}
 		}
 	}
@@ -384,8 +390,16 @@ section.device-page {
 					}
 				}
 				&.li-group {
+					display: flex;
+					flex-direction: row;
+					flex-wrap: wrap;
+					padding: 0 10px;
 					.li {
-						padding: 10px 0;
+						padding: 8px 0;
+						width: 50%;
+						flex-basis: auto;
+						text-align: left;
+						justify-content: flex-start;
 					}
 				}
 				&.light {
@@ -463,7 +477,7 @@ section.device-page {
 					margin: 0;
 					line-height: 1;
 					white-space: nowrap;
-					transform: scale(.6);
+					transform: scale(.8);
 				}
 				&.light {
 					color: $light;
@@ -511,4 +525,21 @@ section.device-page {
 }
 .ant-table-content {
 	width: 100%;
+}
+.off-line-container {
+	display: flex;
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	color: #999;
+	.off-line-icon {
+		margin-bottom: 20px;
+	}
+	.offline-icon {
+		font-size: 80px;
+	}
+	.off-line-text {
+		font-size: 16px;
+	}
 }

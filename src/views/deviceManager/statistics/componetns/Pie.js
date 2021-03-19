@@ -49,7 +49,7 @@ const Pie = (props) => {
 	useEffect(() => {
 		setTimeout(() => {
 			renderChart();
-		}, 50);
+		}, 150);
 	}, []);
 	return (
 		<div className="pie-wrap">
