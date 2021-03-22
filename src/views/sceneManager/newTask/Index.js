@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-import { Input, Switch, Select, Radio, Button, TimePicker, Modal, Checkbox, Tree, message } from 'antd';
+import { Input, Switch, Radio, Button, TimePicker, Modal, Checkbox, Tree, message } from 'antd';
 import Back from '@/components/Back/index';
 import CheckCalendar from '@/components/CheckCalendar/Index'
 import IconFont from '@/components/IconFont';
 import iconFun from '@/components/IconType';
-import { getAiControl, getScenePlace, getTaskAdd } from '@/server/scene'
+import { getAiControl, getScenePlace, getTaskAdd, getTaskDetails } from '@/server/scene'
 import moment from 'moment';
 import locale from 'antd/es/date-picker/locale/zh_CN';
 import '../index.scss'
+import _  from 'lodash'
 import { getConfirmLocale } from 'antd/lib/modal/locale';
 
 
@@ -52,11 +53,59 @@ class NewTask extends Component {
       })
       if (this.props.location.state.task_id) {
         // TODO
-        alert('修改任务')
+        this.getTaskDetailsFun(this.props.location.state.task_id)
       }
       console.log(this.props.location.state.sceneId)
     } else {
       this.props.history.goBack()
+    }
+    
+  }
+
+  // 获取任务详情
+  getTaskDetailsFun = async (taskId) => {
+    const { task_property } = await getTaskDetails({
+      task_id: taskId
+    })
+    const iot_control = []
+    _.map(task_property.iot_control, item =>  {
+      _.assign(item, {checkbox: true})
+      iot_control.push(item)
+    })
+    let text = []
+    task_property.placelist.map(item => {
+      item.room.map(flag => {
+        text.push(flag.name)
+      })
+    })
+    let weekDate = this.state.weekDate
+
+    if (task_property.time_type === 1) {
+      _.map(weekDate, (item, index) => {
+        _.map(task_property.time.week, flag => {
+          if (Number(item.state) === flag) {
+            weekDate[index].cur = true
+          }
+        })
+      })
+
+      console.log(weekDate)
+    }
+    this.setState({
+      taskId,
+      taskName: task_property.name,
+      controDate: iot_control,
+      checkedKeys: task_property.place_id,
+      checkedKeysfu: task_property.place_id,
+      checkedTitle: text,
+      radioValue: task_property.time_type,
+      weekDate,
+      palyList: task_property.time.time
+    })
+    if (task_property.time_type === 2) {
+      this.setState({
+        isCheck: task_property.time.date
+      })
     }
     
   }
@@ -236,6 +285,7 @@ class NewTask extends Component {
 
   // 显示位置选择弹窗
   selectLocation = async () => {
+    console.log(this.state.checkedKeys)
     const {placelist} =   await getScenePlace({
        "search": {
          "keyword": ""
@@ -471,7 +521,7 @@ class NewTask extends Component {
                 return( <div className="task-item" key={index}>
                 <div className="task-cf-label">播放时间{index + 1}</div>
                 <div className="task-bf-value">
-                <TimePicker  style={{width: '220px'}} locale={locale} onChange={(time, timeString) => this.taskDate(time, timeString,index)}  placeholder="请选择播放时间"/>
+                <TimePicker  style={{width: '220px'}} locale={locale} value={itme ? moment(itme, 'HH:mm:ss'): undefined} onChange={(time, timeString) => this.taskDate(time, timeString,index)}  placeholder="请选择播放时间"/>
                 {
                   index === 0 ? (<IconFont type="icon-tianjia1" onClick={() => this.addPlay()} />) :
                   (<IconFont type="icon-jianshao" className="del" onClick={() => this.delPlay(index)} />)
@@ -488,8 +538,9 @@ class NewTask extends Component {
           <div className="btn-task" onClick={() => this.submintTask()}>
           <Button type="primary">确认提交</Button>
           </div>
-          <CheckCalendar
+          {this.state.showCalendar ? <CheckCalendar
           visible={this.state.showCalendar}
+          isCheckData={this.state.isCheck}
           onCancel={()=>{
                 this.setState({
                     showCalendar:false
@@ -501,7 +552,7 @@ class NewTask extends Component {
                     showCalendar:false
                 })
           }}
-       />
+       /> : ''}
 
         </div>
         {/* 添加物联设备弹窗begin */}

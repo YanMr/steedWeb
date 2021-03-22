@@ -324,7 +324,7 @@ class SceneLeft extends Component {
         "task_scene_id": id
     })
     let text = []
-    data.place_list.map(item => {
+    data.place_list && data.place_list.map(item => {
       item.room.map(flag => {
         text.push(flag.name)
       })
@@ -333,6 +333,7 @@ class SceneLeft extends Component {
       sceneId: id,
       checkedTitle: text,
       sceneDetailsFu: data,
+      checkedKeysfu:data.place_id,
       checkedKeys:data.place_id,
       radioCalendar: String(data.time?.type),
       isModalVisible: true
@@ -358,7 +359,7 @@ class SceneLeft extends Component {
       })
     } else {
       text = ''
-      text = time?.date.join('/')
+      text = time?.date?.join('/')
     }
     console.log(text)
     return text
@@ -506,7 +507,7 @@ class SceneLeft extends Component {
                 <FormItem 
                   label="开始时间"
                   name="sceneStarDate"
-                  initialValue={ this.state.sceneDetailsFu.time ? moment(this.state.sceneDetailsFu.time?.start_time, 'HH:mm:ss') : ''}
+                  initialValue={ this.state.sceneDetailsFu.time ? moment(this.state.sceneDetailsFu.time?.start_time, 'HH:mm:ss') : undefined}
 									rules={[{ required: true, message: '请选场景开始时间!' }]}
 								>
 									<TimePicker style={{ width: '100%' }} locale={locale} onChange={this.sceneStarDate}  placeholder="请选场景开始时间"/>
@@ -515,7 +516,7 @@ class SceneLeft extends Component {
                 <FormItem 
                   label="结束时间"
                   name="sceneEndDate"
-                  initialValue={this.state.sceneDetailsFu.time ? moment(this.state.sceneDetailsFu.time?.end_time, 'HH:mm:ss'): ''}
+                  initialValue={this.state.sceneDetailsFu.time ? moment(this.state.sceneDetailsFu.time?.end_time, 'HH:mm:ss'): undefined}
 									rules={[{ required: true, message: '请选场景结束时间!' }]}
 								>
                   <TimePicker style={{ width: '100%' }} locale={locale} onChange={this.sceneEndDate}  placeholder="请选场景结束时间"/>
