@@ -67,6 +67,7 @@ class contentTable extends Component {
       </div>
       ),
       sclect: false,
+      task_type: 0,
       selectedRowKeys: [],
       rowSelection: null,
       contentRow: false,
@@ -142,7 +143,7 @@ class contentTable extends Component {
           "size": this.state.size
       },
       "task_search": {
-          "type": 1,
+          "type": this.state.task_type,
           "scene_id": id,
           "order": 1,
           "keyword": this.state.keyword
@@ -161,7 +162,11 @@ class contentTable extends Component {
 
   // 任务搜索
   handleChange = (value) => {
-    console.log(value)
+    this.setState({
+      task_type: Number(value)
+    }, () => {
+      this.getTaskListFun(this.state.scene_id)
+    })
   }
 
   // 编辑
@@ -225,10 +230,10 @@ class contentTable extends Component {
       <div className="serch-container">
         <div className="seach-header">
           <div className="select-task">
-          <Select defaultValue="全部任务" style={{ width: 130 }} bordered={false}  onChange={this.handleChange}>
-            <Option value="全部任务">全部任务</Option>
-            <Option value="手动任务">手动任务</Option>
-            <Option value="自动任务">自动任务</Option>
+          <Select defaultValue="0" style={{ width: 130 }} bordered={false}  onChange={this.handleChange}>
+            <Option value="0">全部任务</Option>
+            <Option value="1">手动任务</Option>
+            <Option value="2">自动任务</Option>
           </Select>
           </div>
           <div className={!this.state.sclect ? 'task-btn task-edit': 'task-btn task-close'} onClick={() => this.editTable()}>{!this.state.sclect? '编辑' : '取消'}</div>

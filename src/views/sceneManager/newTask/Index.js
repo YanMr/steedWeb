@@ -100,7 +100,7 @@ class NewTask extends Component {
       checkedTitle: text,
       radioValue: task_property.time_type,
       weekDate,
-      palyList: task_property.time.time
+      palyList: task_property?.time?.time || []
     })
     if (task_property.time_type === 2) {
       this.setState({
@@ -517,7 +517,7 @@ class NewTask extends Component {
 
             {/* 播放时间 begin */}
             {
-              this.state.radioValue !==3 && this.state.palyList.map((itme, index) => {
+              this.state.radioValue !== 3 && this.state.palyList.map((itme, index) => {
                 return( <div className="task-item" key={index}>
                 <div className="task-cf-label">播放时间{index + 1}</div>
                 <div className="task-bf-value">
