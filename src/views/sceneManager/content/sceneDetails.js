@@ -68,12 +68,12 @@ class SceneDetails extends Component {
 
           <div className="model-container">
           {
-            this.props.seceneType === '接收成员' && this.props.seceneDetails.place_list.map((item, index) => {
+            this.props.seceneType === '接收成员' && this.props.seceneDetails.place_list?.map((item, index) => {
               return (
                 <div className="model-list" key={index}>
                 <div className="model-list-name cur">{item.name}</div>
                 {
-                  item.room.map((flag, num) => {
+                  item.room?.map((flag, num) => {
                     return (
                       <div className="model-list-name" key={num}>{flag.name}</div>
                     )

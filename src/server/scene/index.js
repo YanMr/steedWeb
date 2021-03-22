@@ -29,3 +29,22 @@ export const getSceneStatus = (query) => {
 export const setDelScene = (query) => {
   return post(`/app/task/scene?source=4&cmd=5` , query)
 }
+
+// 任务列表获取
+export const getTaskList = (query) => {
+  return post(`/app/task?source=4&cmd=18` , query)
+}
+
+// 任务执行
+export const setTaskExecution = (query) => {
+  return post(`/app/task?source=4&cmd=7` , query)
+}
+
+// 任务控制项获取
+export const getAiControl = (query) => {
+  return post(`/app/task?source=4&cmd=20` , query)
+}
+// 任务添加和修改
+export const getTaskAdd = (query) => {
+  return post(`/app/task?source=4&cmd=1` , query)
+}

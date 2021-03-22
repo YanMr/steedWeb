@@ -18,7 +18,7 @@ class SceneLeft extends Component {
     this.state = {
       newScene: true,
       serch: false,
-      sceneIndex: -1,
+      sceneIndex: 0,
       isModalVisible: false,
       showCalendar: false,
       isCheck: [],
@@ -78,6 +78,8 @@ class SceneLeft extends Component {
     this.setState({
       sceneData: data.task_scene_list
     })
+    this.props.sceneId(data.task_scene_list[0].id)
+    this.getSceneDetailsFun(data.task_scene_list[0].id)
   }
 
   // 失去焦点
@@ -94,6 +96,7 @@ class SceneLeft extends Component {
       sceneIndex: index
     })
     this.props.close()
+    this.props.sceneId(id)
   }
   
   // 新建场景任务
@@ -275,10 +278,10 @@ class SceneLeft extends Component {
   
   // 验证优先级
   checkAccount = (rule, value, callback) => {
-    if ((value > 0 &&  value <=  10) || !value) {
+    if ((value > 0 &&  value <=  100) || !value) {
       callback();
   } else {
-      callback('优先级范围1 - 10');
+      callback('优先级范围1 - 100');
   }
   }
 
@@ -361,6 +364,12 @@ class SceneLeft extends Component {
     return text
   }
 
+  // 创建任务
+  createrTask = (e, id) => {
+    e.stopPropagation()
+    this.props.prop.history.push({pathname: '/sevice/newtask', state: {sceneId: id}})
+  }
+
   render() {
     return (
       <div className="serch-container">
@@ -379,7 +388,7 @@ class SceneLeft extends Component {
         {/* 场景 begin */}
           <div className="scene-main-list">
             {
-              this.state.sceneData.map((item, index) =>  (
+              this.state.sceneData?.map((item, index) =>  (
                   <div key={index} className={item.state?'scene-itme open':'scene-itme close'} onClick={() => this.sceneDetails(item.id, index)}>
                   <div className="scene-itme-icon"><IconFont type={item.state?'icon-bofang': 'icon-tingzhi'} /></div>
                   <div className={this.state.sceneIndex === index ? ' scene-itme-text ellipsis cur' : 'scene-itme-text ellipsis' }>{item.name}</div>
@@ -388,7 +397,7 @@ class SceneLeft extends Component {
                       <div className="operation">
                         <div className="operationitem" onClick={(e) => this.editScene(e, item.id)}>修改</div>
                         <div className="operationitem" onClick={(e) => this.delScene(e,item.id)}>删除</div>
-                        <div className="operationitem">创建任务</div>
+                        <div className="operationitem" onClick={(e) => this.createrTask(e,item.id)}>创建任务</div>
                         <div className="operationitem" onClick={(e) => this.setSceneState(e,item.id, item.state)}>启用/暂停</div>
                       </div>
                     )}>

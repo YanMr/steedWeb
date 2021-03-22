@@ -7,6 +7,7 @@ import ContentMain from './content/Index'
 import SceneRight from './sceneRight/Index'
 import IconFont from '@/components/IconFont';
 import './index.scss'
+import { times } from 'lodash';
 
 const { Header, Sider, Content } = Layout;
 
@@ -23,22 +24,21 @@ class Scene extends Component {
       seceneType: '',
       seceneDetails: {},
       showRightSider: 0,
+      sceneId: undefined
     }
   }
 
   operation = params => {
-    alert(params.type)
     //  根据返回的 type 做操作判断
     if (params.type === 'search') {
       // 搜索 {type: 'search', data:{location: "0", status: "0", text: undefined}}
-      console.log(params.data)
+      this.refs.content.operation('search', params.data.text)
     } else if (params.type === 'task') {
       // 新建任务 {type: 'task', data: null}
-      this.props.history.push('/sevice/newtask')
-      console.log(params.data)
+      this.props.history.push({pathname: '/sevice/newtask', state: {sceneId: this.state.sceneId}})
     } else if (params.type === 'refresh') {
       // 刷新 {type: 'refresh', data: null}
-      console.log(params.data)
+      this.refs.content.operation('refresh', this.state.sceneId)
     }
   }
 
@@ -61,15 +61,23 @@ class Scene extends Component {
     this.refs.content.close()
   }
 
+  sceneId = (id) => {
+    this.setState({
+      sceneId: id
+    })
+    this.refs.content.getSceneId(id)
+    this.refs.search.clearKeyText()
+  }
+
   render() {
     return (
       <div className="shadow-radius">
         <Layout style={{ minHeight: 'calc(100vh - 61px)', height: 'calc(100vh - 61px)', overflowY: 'auto' }}>
-          <Sider className="scene-left" width={142}><SceneLeft sceneDetail={this.sceneDetail} close={this.closemodel}/></Sider>
+          <Sider className="scene-left" width={142}><SceneLeft prop={this.props} sceneId={this.sceneId} sceneDetail={this.sceneDetail} close={this.closemodel}/></Sider>
           <Layout>
-            <Header className="scene-header"><SearchHeader data={this.state.searData} operation={this.operation} /></Header>
+            <Header className="scene-header"><SearchHeader ref="search" data={this.state.searData} operation={this.operation} /></Header>
             <Content className="scene-content">
-            <ContentMain ref="content" seceneType={this.state.seceneType} seceneDetails={this.state.seceneDetails}/>
+            <ContentMain prop={this.props} sceneId={this.state.sceneId} ref="content" seceneType={this.state.seceneType} seceneDetails={this.state.seceneDetails}/>
             </Content>
           </Layout>
           <Sider className="scene-right-main" width={this.state.showRightSider}>

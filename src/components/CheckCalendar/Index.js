@@ -26,7 +26,7 @@ class CheckCalendar extends Component {
             temp.push(obj);
         }
         this.setState({
-            isCheck: this.props.isCheckData,
+            isCheck: this.props.isCheckData || [],
             dateTable: temp
         });
     }
@@ -78,8 +78,9 @@ class CheckCalendar extends Component {
                 });
             } else {
                 const riqi = this.dateFun(year, month, i - day + 1)
-                for(let j = 0; j < this.props.isCheckData.length; j++) {
-                    if (riqi == this.props.isCheckData[j]){
+                const dataList = this.props.isCheckData || []
+                for(let j = 0; j < dataList.length; j++) {
+                    if (riqi == dataList[j]){
                         if (plus === 0) {
                             if ((i - day + 1) < curDay) {
                                 list.push({

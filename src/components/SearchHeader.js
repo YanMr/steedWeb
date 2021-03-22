@@ -6,8 +6,30 @@ import '@/assets/css/searchHeader.scss'
 
 /** 设备列表页 头部搜索 */
 class SearchHeader extends Component {
-	formRef = React.createRef();
+	formRef = React.createRef()
+	constructor(props) {
+		super(props)
+		this.state = {
+			keyText: ''
+		}
+}
 	componentDidMount() {
+	}
+
+	// 清空搜索
+	clearKeyText = () => {
+		this.formRef.current.setFieldsValue({
+			text: '',
+		})
+		this.setState({
+			keyText: ''
+		})
+	}
+
+	inputValue = (e) => {
+		this.setState({
+			keyText: e.target.value
+		})
 	}
 	
 	// 表单校验
@@ -15,6 +37,7 @@ class SearchHeader extends Component {
 		// item.name = search: 搜索 / task: 新建任务 / refresh: 刷新
 		//  item.submit  验证操作
 		if (item.submit) {
+		
 			this.formRef.current.validateFields().then((values) => {
 				this.props.operation({type:item.name,data:values})
 			 }).catch((errorInfo ) => {
@@ -51,8 +74,9 @@ class SearchHeader extends Component {
 				<Form.Item
 				name={item.name}
 				rules={[{ required: item.required, message: item.message }]}
+				initialValue={this.state.keyText}
 				label={item.label} key={index}>
-					<Input style={{width: item.width+'px'}}  placeholder={item.placeholder}/>
+					<Input style={{width: item.width+'px'}} onChange={this.inputValue}  placeholder={item.placeholder}/>
 				</Form.Item>
 			)
 		}
@@ -82,10 +106,4 @@ class SearchHeader extends Component {
 	}
 }
 
-const mapStateToProps = state => state;
-const mapDispatchToProps = dispatch => ({
-});
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(SearchHeader);
+export default SearchHeader;

@@ -23,10 +23,26 @@ class Content extends Component {
     })
   }
 
+  getSceneId = (id) => {
+    this.refs.contentTable.qiehTaskList(id)
+  }
+
+  operation = (type, params) => {
+    if (type === 'search') {
+      // 搜索
+      this.refs.contentTable.serchTaskList(params)
+    }
+    if (type === 'refresh') {
+      // 刷新
+      this.refs.contentTable.refresh()
+    }
+  }
+  
+
   render() {
     return (
       <div className="serch-container">
-        <ContentTable />
+        {this.props.sceneId ?  <ContentTable prop={this.props} ref="contentTable" /> : ''}
         {this.state.details ? 
         (<SceneDetails ref="sceneDetails"  seceneType={this.props.seceneType} seceneDetails={this.props.seceneDetails}  close={this.close}/>) 
         : ''}

@@ -1,4 +1,41 @@
 @import '@/assets/css/var.scss';
+.task-table {
+  border: 1px solid #f0f0f0;
+  width: 100%;
+  .task-he {
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    margin-bottom: -1px;
+    .task-tr {
+      flex: 1;
+      display: inline-block;
+      justify-content: center;
+      height: 30px;
+      align-items: center;
+      display: flex;
+    }
+    .del {
+      font-size: 16px;
+      color: #FF7878;
+      cursor: pointer;
+    }
+    .task-tr-right {
+      border-right: 1px solid #f0f0f0;
+    }
+
+    .task-tr-k {
+      border-left: 1px solid #f0f0f0;
+      border-right: 1px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      .type-icon {
+        font-size: 16px;
+        margin-right: 10px;
+      }
+    }
+  }
+}
+
 .calendarInput {
   border-radius: 2px;
   border: #D9D9D9 solid 1px;
@@ -107,6 +144,7 @@
           display: flex;
         }
       }
+
       .task-label {
         width: 60px;
         text-align: right;
@@ -115,6 +153,18 @@
         color: #636363;
       }
       .task-value {
+        .calendarInput {
+          border-radius: 2px;
+          border: #D9D9D9 solid 1px;
+          min-height: 32px;
+          line-height: 32px;
+          padding-left: 10px;
+          padding-right: 10px;
+          width: 300px;
+          .init {
+           color: #bfbfbf
+          }
+        }
         .ant-radio-wrapper {
           font-size: 12px;
         }
@@ -136,6 +186,12 @@
         .task-kz {
           display: flex;
           font-size: 12px;
+          .ant-switch {
+            background-color:#FF7878;
+          }
+          .ant-switch-checked {
+            background-color: #4164F0;
+          }
           .task-kz-text {
             cursor: pointer;
             margin-right: 20px;
@@ -176,6 +232,12 @@
       align-items: center;
       margin-bottom: 21px;
       margin-top: 20px;
+      .addWl {
+        color: #4164F0;
+        font-size: 25px;
+        margin-left: 20px;
+        cursor: pointer;
+      }
       .icon {
         color: #37ACFE;
         margin-right: 10px;
@@ -524,6 +586,9 @@
       .yes {
         color: #4164F0;
       }
+      .edit {
+        color: rgb(53, 170, 83);
+      }
       .no {
         color: #FF7878;
       }
@@ -688,6 +753,9 @@
         }
         .yes {
           color: #4164F0;
+        }
+        .edit {
+          color: rgb(53, 170, 83);
         }
         .no {
           color: #E1E1E1;

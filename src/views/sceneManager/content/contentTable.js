@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Select, Table, Checkbox, Tooltip, Popover } from 'antd'
+import { Select, Table, Checkbox, Tooltip, Popover, message} from 'antd'
 import IconFont from '@/components/IconFont';
+import { getTaskList, setTaskExecution } from '@/server/scene'
 import '../index.scss'
 
 const { Option } = Select
@@ -11,21 +12,6 @@ class contentTable extends Component {
     this.state = {
       data:[
       //  model 1手动 0自动  status: 1 启用  0未启用
-        {  key: 0, name: '高二级开灯', status: 1, model: 1},
-        {  key: 1, name: '高三级电脑开机', status: 0, model: 0},
-        {  key: 2, name: '多媒体课室开灯', status: 1, model: 1},
-        {  key: 3, name: '高二级开灯', status: 1, model: 1},
-        {  key: 4, name: '高三级电脑开机', status: 0, model: 0},
-        {  key: 5, name: '多媒体课室开灯', status: 1, model: 1},
-        {  key: 6, name: '高二级开灯', status: 1, model: 1},
-        {  key: 7, name: '高三级电脑开机', status: 0, model: 0},
-        {  key: 8, name: '多媒体课室开灯', status: 1, model: 1},
-        {  key: 9, name: '高二级开灯', status: 1, model: 1},
-        {  key: 10, name: '高三级电脑开机', status: 0, model: 0},
-        {  key: 11, name: '多媒体课室开灯', status: 1, model: 1},
-        {  key: 12, name: '高二级开灯', status: 1, model: 1},
-        {  key: 13, name: '高三级电脑开机', status: 0, model: 0},
-        {  key: 14, name: '多媒体课室开灯', status: 1, model: 1},
       ],
       columns: [
         {
@@ -50,7 +36,7 @@ class contentTable extends Component {
           key: 'model',
           dataIndex: 'model',
           render: (text) => <div className="status-task">
-            <span className={text?'yes':'no'}><IconFont type={text?'icon-shoudong': 'icon-zidongshibie'} /> </span>{text?'手动任务': '自动任务'}
+            <span className={text===3?'yes':'no'}><IconFont type={text===3?'icon-shoudong': 'icon-zidongshibie'} /> </span>{text===3?'手动任务': '自动任务'}
           </div>,
         },
         {
@@ -58,9 +44,12 @@ class contentTable extends Component {
           align: 'center',
           key: 'operation',
           dataIndex: 'operation',
-          render: (text) => <div className="status-task">
-            <Tooltip placement="topLeft" title='执行' arrowPointAtCenter>
+          render: (text, record) => <div className="status-task">
+            <Tooltip placement="topLeft" title='执行' arrowPointAtCenter onClick={() => this.serTaskExecutionFun(record.id)}>
             <IconFont type='icon-bofang' className="yes" />
+            </Tooltip>
+            <Tooltip placement="topLeft" title='编辑' arrowPointAtCenter  onClick={() => this.editTaskList(record.id)}>
+            <IconFont type='icon-bi' className="edit" />
             </Tooltip>
             <Popover content={this.state.content} placement="bottom" trigger="click" arrowPointAtCenter>
             <Tooltip placement="topLeft" title='属性' arrowPointAtCenter>
@@ -85,8 +74,89 @@ class contentTable extends Component {
             position: "absolute",
             top: "0",
             left: "0",
-      }
+      },
+      page: 1,
+      size: 10,
+      total: 0,
+      keyword: '',
+      scene_id: undefined
     }
+  }
+
+  componentDidMount() {
+    // this.getTaskListFun()
+  }
+
+  // 任务编辑
+  editTaskList = (id) => {
+    this.props.prop.prop.history.push({pathname: '/sevice/newtask', state: {sceneId: this.state.scene_id, task_id: id }})
+  }
+  
+  // 搜索
+  serchTaskList = (text) => {
+    this.setState({
+      keyword: text
+    },() => {
+      this.getTaskListFun(this.state.scene_id)
+    })
+  }
+
+  // 分页切换
+  onChangeTable = (e) => {
+    this.setState({
+      page: e
+    }, () => {
+      this.getTaskListFun(this.state.scene_id)
+    })
+  }
+
+  // 任务执行
+  serTaskExecutionFun = async(id) => {
+   const data = await setTaskExecution({
+    "task_id": id
+   })
+   if (data.result.code === 0) {
+     message.success('操作成功')
+   }
+  }
+
+  // 刷新
+  refresh = () => {
+    this.qiehTaskList(this.state.scene_id)
+  }
+
+  // 切换场景搜索任务 
+  qiehTaskList = (id) => {
+    this.setState({
+      keyword: ''
+    }, () => {
+      this.getTaskListFun(id)
+    })
+  }
+
+  // 获取任务列表
+ getTaskListFun = async (id) => {
+    const data = await getTaskList({
+      "page": {
+          "page": this.state.page,
+          "size": this.state.size
+      },
+      "task_search": {
+          "type": 1,
+          "scene_id": id,
+          "order": 1,
+          "keyword": this.state.keyword
+      }
+    })
+    const list = []
+    data.task_infos.task_lists && data.task_infos.task_lists.map((item,index) => {
+      list.push({key: index, id: item.id, name: item.name, status: item.state, model: item.time_type},)
+    })
+    this.setState({
+      total:data.task_infos.total,
+      data:list,
+      scene_id: id
+    })
   }
 
   // 任务搜索
@@ -166,7 +236,7 @@ class contentTable extends Component {
         
         <div className="task-list" style={{ height: `calc(100vh - ${this.state.sclect?'175':'137'}px)`}}>
         <Table
-          pagination={{ defaultPageSize: 10, hideOnSinglePage: true }}
+          pagination={{ defaultPageSize: 10, hideOnSinglePage: true, total: this.state.total, onChange: this.onChangeTable }}
           rowSelection={this.state.rowSelection}
           columns={this.state.columns}
           dataSource={this.state.data}
@@ -203,7 +273,7 @@ class contentTable extends Component {
           <div className="tableRightItem">修改</div>
           <div className="tableRightItem">删除</div>
           <div className="tableRightItem">执行</div>
-          <div className="tableRightItem">创建副本</div>
+          <div className="tableRightItem">创建任务</div>
           <div className="tableRightItem">启用/暂停</div> 
         </div>) : ''
         }
