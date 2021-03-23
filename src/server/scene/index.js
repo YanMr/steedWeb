@@ -54,3 +54,13 @@ export const getTaskAdd = (query) => {
 export const getTaskDetails = (query) => {
   return post(`/app/task?source=4&cmd=7` , query)
 }
+
+// 任务删除
+export const getTaskDel = (query) => {
+  return post(`/app/task?source=4&cmd=4` , query)
+}
+
+// 任务状态更新
+export const getTaskState = (query) => {
+  return post(`/app/task?source=4&cmd=9` , query)
+}

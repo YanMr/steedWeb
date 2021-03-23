@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Select, Table, Checkbox, Tooltip, Popover, message} from 'antd'
 import IconFont from '@/components/IconFont';
-import { getTaskList, setTaskExecution } from '@/server/scene'
+import { getTaskList, setTaskExecution, getTaskDel, getTaskState } from '@/server/scene'
 import '../index.scss'
+import _ from 'lodash'
 
 const { Option } = Select
 
@@ -51,7 +52,13 @@ class contentTable extends Component {
             <Tooltip placement="topLeft" title='编辑' arrowPointAtCenter  onClick={() => this.editTaskList(record.id)}>
             <IconFont type='icon-bi' className="edit" />
             </Tooltip>
-            <Popover content={this.state.content} placement="bottom" trigger="click" arrowPointAtCenter>
+            <Popover content={(
+              <div className="operation-shu">
+              <div className="operationitem">创建者：{record.creator}</div>
+              <div className="operationitem">创建时间：{record.create_time}</div>
+              <div className="operationitem">更新时间：{record.update_time}</div>
+            </div>
+            )} placement="bottom" trigger="click" arrowPointAtCenter>
             <Tooltip placement="topLeft" title='属性' arrowPointAtCenter>
             <IconFont type='icon-gantanhao' />
             </Tooltip>
@@ -59,13 +66,6 @@ class contentTable extends Component {
           </div>,
         },
       ],
-      content: (
-        <div className="operation-shu">
-        <div className="operationitem">创建者：我是西游记</div>
-        <div className="operationitem">创建时间：2021/1/20</div>
-        <div className="operationitem">更新时间：2021/1/25</div>
-      </div>
-      ),
       sclect: false,
       task_type: 0,
       selectedRowKeys: [],
@@ -80,7 +80,9 @@ class contentTable extends Component {
       size: 10,
       total: 0,
       keyword: '',
-      scene_id: undefined
+      scene_id: undefined,
+      selectedRows: [],
+      recordData: {}
     }
   }
 
@@ -151,7 +153,7 @@ class contentTable extends Component {
     })
     const list = []
     data.task_infos.task_lists && data.task_infos.task_lists.map((item,index) => {
-      list.push({key: index, id: item.id, name: item.name, status: item.state, model: item.time_type},)
+      list.push({key: index, id: item.id, name: item.name, status: item.state, model: item.type, creator: item.creator, create_time: item.create_time, update_time: item.update_time})
     })
     this.setState({
       total:data.task_infos.total,
@@ -182,7 +184,8 @@ class contentTable extends Component {
 
   onChange = (selectedRowKeys, selectedRows) => {
     this.setState({
-      selectedRowKeys
+      selectedRowKeys,
+      selectedRows
     })
     console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
   }
@@ -204,11 +207,12 @@ class contentTable extends Component {
   } 
 
   // 行操作
-  onrowFum = (e) => {
+  onrowFum = (e, record) => {
     e.preventDefault();
-    console.log(e)
+    console.log(record)
     this.setState({
       contentRow: true,
+      recordData: record,
       menuStyle: {
         position: "fixed",
         top: e.pageY,
@@ -217,12 +221,83 @@ class contentTable extends Component {
     })
     document.body.addEventListener("click", this.bodyClick);
   }
-  
-  bodyClick = () => {
+
+  // 右键修改
+  rightTaskEdit = () => {
+    const { id } = this.state.recordData
+    this.editTaskList(id)
+  }
+
+  // 右键执行
+  rightTaskExecution = () => {
+    const { id } = this.state.recordData
+    this.serTaskExecutionFun(id)
     this.setState({
       contentRow: false,
     })
-    document.body.removeEventListener("click", this.bodyClick);
+  }
+
+  // 右键创建任务
+  rightCreatTask = () => {
+    this.props.prop.prop.history.push({pathname: '/sevice/newtask', state: {sceneId: this.state.scene_id }})
+  }
+
+  // 右键启用暂停
+  rightStateTask = () => {
+    this.setState({
+      contentRow: false,
+    }, async () => {
+      const { status, id } = this.state.recordData
+      const data = await getTaskState({
+        "task": {
+          "state": status ? 0 : 1,
+          "ids": [
+              {
+                  "id": id
+              }
+          ]
+      }
+      })
+      if (_.get(data,'result.code') === 0) {
+        this.getTaskListFun(this.state.scene_id)
+        message.success('操作成功!')
+      }
+    })
+  }
+
+  delTask = async(idArr) => {
+    const data = await getTaskDel({
+      "task_lists": idArr
+    })
+    if (_.get(data,'result.code') === 0) {
+      this.getTaskListFun(this.state.scene_id)
+      message.success('操作成功!')
+      this.editTable()
+    }
+  }
+
+  // 右键删除
+  rightDelTask = () => {
+    const { id } = this.state.recordData
+    this.delTask([{id}])
+  }
+  
+  bodyClick = (e) => {
+    if (e.target.parentNode.className !== 'tableRight') {
+      this.setState({
+        contentRow: false,
+      })
+      document.body.removeEventListener("click", this.bodyClick);
+    }
+  }
+
+  // 批量删除
+  delTable = () => {
+    const idList = []
+    this.state.selectedRows.map(item => {
+      idList.push({id: item.id})
+    })
+    this.delTask(idList)
   }
 
   render() {   
@@ -258,15 +333,15 @@ class contentTable extends Component {
 						<Checkbox onChange={(e) => this.checkAll(e)}>全选</Checkbox>
 					</div>
 					<div className="check-total">已选{this.state.selectedRowKeys.length ? this.state.selectedRowKeys.length: 0}项</div>
-					<div className="action-item">
+					{/* <div className="action-item">
 						<IconFont type="icon-ziyuan" className="icon-tiaojie" />
-					</div>
-					<div className="action-item">
+					</div> */}
+					<div className="action-item" onClick={() => this.delTable()}>
 						<IconFont type="icon-del" className="icon-del" />
 					</div>
-					<div className="action-item">
+					{/* <div className="action-item">
 						<IconFont type="icon-set" className="icon-set" />
-					</div>
+					</div> */}
 					<div className="cancel">
 						<button className="cancel-button" onClick={() => this.editTable()}>取消</button>
 					</div>
@@ -275,11 +350,11 @@ class contentTable extends Component {
         {/* 表格右点击浮动框 */}
         {
           this.state.contentRow ? ( <div className="tableRight" style={this.state.menuStyle}>
-          <div className="tableRightItem">修改</div>
-          <div className="tableRightItem">删除</div>
-          <div className="tableRightItem">执行</div>
-          <div className="tableRightItem">创建任务</div>
-          <div className="tableRightItem">启用/暂停</div> 
+          <div className="tableRightItem" onClick={() => this.rightTaskEdit()}>修改</div>
+          <div className="tableRightItem" onClick={() => this.rightDelTask()}>删除</div>
+          <div className="tableRightItem" onClick={() => this.rightTaskExecution()}>执行</div>
+          <div className="tableRightItem" onClick={() => this.rightCreatTask()}>创建任务</div>
+          <div className="tableRightItem" onClick={() => this.rightStateTask()} >启用/暂停</div> 
         </div>) : ''
         }
       </div>
