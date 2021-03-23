@@ -219,7 +219,7 @@ const DeviceTable = (props = {}) => {
 				onRow={item => {
 					return {
 						onClick() {
-							props.onItemClick(item);
+							props.onItemClick(item.id);
 						}
 					};
 				}}

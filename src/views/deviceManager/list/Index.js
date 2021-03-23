@@ -65,7 +65,6 @@ const List = () => {
 	});
 	const [searchTimeStamp, setsearchTimeStamp] = useState('');
 	const [deviceDetail, setDeviceDetail] = useState({});
-	const [rowState, setRowState] = useState('0');
 	const toggleEdit = () => {
 		setShowCheckBox(!showCheckBox);
 	};
@@ -131,13 +130,12 @@ const List = () => {
 	};
 
 	/** 查询单个设备详情 */
-	const fetchDeviceDetail = async item => {
-		console.log('row item', item);
-		setRowState(_.get(item, 'device_iot_state.device_state', 0));
+	const fetchDeviceDetail = async id => {
+		console.log('row item id', id);
 		setShowRightSider(true);
 		const res = await getDeviceDetail({
 			device: {
-				id: item.id
+				id
 			}
 		});
 		if (_.get(res, 'result.code') == 0) {
@@ -195,7 +193,7 @@ const List = () => {
 							<RightTab onClickHandle={changeRightTab} activeTab={activeTab} />
 						</header>
 						<section className="custom-layout-content">
-							<RightTabMain activeTab={activeTab} data={deviceDetail} state={rowState} />
+							<RightTabMain activeTab={activeTab} data={deviceDetail} fetchDeviceDetail={fetchDeviceDetail}/>
 						</section>
 					</section>
 				</section>

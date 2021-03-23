@@ -377,6 +377,9 @@ section.device-page {
 				user-select: none;
 				.anticon {
 					color: #8c8c8c;
+					&.light {
+						color: $light;
+					}
 				}
 				.control-name {
 					white-space: nowrap;

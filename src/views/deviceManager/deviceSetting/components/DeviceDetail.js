@@ -1,7 +1,12 @@
 import React from 'react';
 import IconFont from '@/components/IconFont';
 import { Table } from 'antd';
-
+import { getDeviceSettingDetail } from '@/server/device';
+import _ from 'lodash';
+import { useHistory } from 'react-router';
+const DeviceDetail = () => {
+const history = useHistory();
+console.log('history', history)
 const RenderHeader = () => {
 	return (
 		<header className="module-header">
@@ -34,7 +39,7 @@ const RenderDetailContent = () => {
 		</section>
 	)
 };
-const DeviceDetail = () => {
+
 	return (
 		<section className="AdvancedSetting">
 			<RenderHeader />
