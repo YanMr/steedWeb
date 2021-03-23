@@ -7,7 +7,6 @@ import ContentMain from './content/Index'
 import SceneRight from './sceneRight/Index'
 import IconFont from '@/components/IconFont';
 import './index.scss'
-import { times } from 'lodash';
 
 const { Header, Sider, Content } = Layout;
 

@@ -16,14 +16,14 @@ class SceneDetails extends Component {
     let text = '';
     let num = 0;
     if (type === '接收成员') {
-      num = this.props.seceneDetails.place_id.length
+      num = this.props.seceneDetails.place_id?.length
       text = `已选择${num}个`
     }
     if (type === '重复') {
       if (this.props.seceneDetails.time.type === 1) {
-        num = this.props.seceneDetails.time.week.length
+        num = this.props.seceneDetails.time.week?.length
       } else {
-        num = this.props.seceneDetails.time.date.length
+        num = this.props.seceneDetails.time.date?.length
       }
       text = `已选择${num}个`
     }

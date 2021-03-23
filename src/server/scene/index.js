@@ -32,7 +32,7 @@ export const setDelScene = (query) => {
 
 // 任务列表获取
 export const getTaskList = (query) => {
-  return post(`/app/task?source=4&cmd=18` , query)
+  return post(`/app/task?source=4&cmd=10` , query)
 }
 
 // 任务执行
@@ -44,7 +44,23 @@ export const setTaskExecution = (query) => {
 export const getAiControl = (query) => {
   return post(`/app/task?source=4&cmd=20` , query)
 }
+
 // 任务添加和修改
 export const getTaskAdd = (query) => {
   return post(`/app/task?source=4&cmd=1` , query)
+}
+
+// 任务详情获取
+export const getTaskDetails = (query) => {
+  return post(`/app/task?source=4&cmd=7` , query)
+}
+
+// 任务删除
+export const getTaskDel = (query) => {
+  return post(`/app/task?source=4&cmd=4` , query)
+}
+
+// 任务状态更新
+export const getTaskState = (query) => {
+  return post(`/app/task?source=4&cmd=9` , query)
 }
