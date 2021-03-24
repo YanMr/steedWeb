@@ -23,8 +23,6 @@ const RightTabMain = props => {
 		};
 		/*设备点击*/
 		const onButtonClick = async (e, item, power = false) => {
-			console.log('操作 item', item);
-			console.log('是否开关', power);
 			e.stopPropagation();
 			let params = {
 				device_id: data.device_id,

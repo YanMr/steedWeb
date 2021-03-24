@@ -2,12 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Table, Checkbox, Tooltip, Modal, message, Form, Select, Space, Radio } from 'antd';
 import IconFont from '@/components/IconFont';
+import { deviceSettingCopy, deviceSettingReplce } from '@/server/device';
 import _ from 'lodash';
 
 const DeviceTable = (props = {}) => {
 	const [rowSelection, setRowSelection] = useState({});
 	const [isCheckAll, setCheckAll] = useState(false);
 	const [isModalVisible, setIsModalVisible] = useState(false);
+	const [radio1, setRadio1] = useState('');
+	const [radio2, setRadio2] = useState([]);
+	const [selecedPlace, setSelecedPlace] = useState([]);
+	const placeList = props.placeList || [];
+	const [currentDeviceId, setCurrentDeviceId] = useState('');
 	const history = useHistory();
 	useEffect(() => {
 		const { showCheckBox } = props;
@@ -21,7 +27,6 @@ const DeviceTable = (props = {}) => {
 		}
 	}, [props]);
 	const onChange = item => {
-		console.log(item);
 		setRowSelection({
 			onChange,
 			selectedRowKeys: item
@@ -62,11 +67,14 @@ const DeviceTable = (props = {}) => {
 					设备
 				</div>
 			),
-			dataIndex: 'place',
 			key: 'cell_1',
 			textWrap: 'word-break',
-			render(str) {
-				return <div className="device-name">{str}</div>;
+			render(item) {
+				return (
+					<div className="device-name" onClick={e => onPlaceNameClick(e, item)}>
+						{item.place}
+					</div>
+				);
 			}
 		},
 		{
@@ -121,7 +129,7 @@ const DeviceTable = (props = {}) => {
 			key: 'cell_4',
 			render(row) {
 				const iotState = _.get(row, 'device_iot_state.iot_state', []);
-				const device_state =  _.get(row, 'device_iot_state.device_state', []);
+				const device_state = _.get(row, 'device_iot_state.device_state', []);
 				return (
 					<div className="wl-status-btns">
 						{_.map(iotState, (li, key) => {
@@ -164,8 +172,11 @@ const DeviceTable = (props = {}) => {
 	];
 
 	const { showCheckBox } = props;
+	const onPlaceNameClick = (e, item) => {
+		e.stopPropagation();
+		props.onItemClick(item.id);
+	};
 	const toSettingPage = item => {
-		console.log('item', item);
 		const state = _.get(item, 'device_iot_state.device_state');
 		if (state == 2) {
 			message.error('设备离线，不可操作');
@@ -174,16 +185,14 @@ const DeviceTable = (props = {}) => {
 		}
 	};
 	const onEditClick = item => {
+		console.log('当前设备', item);
 		const state = _.get(item, 'device_iot_state.device_state');
 		if (state == 2) {
 			message.error('设备离线，不可操作');
 		} else {
+			setCurrentDeviceId(item.id);
 			setIsModalVisible(true);
 		}
-	};
-	const handleOk = () => {
-		setIsModalVisible(false);
-		message.success('保存成功');
 	};
 	const onDel = () => {
 		Modal.confirm({
@@ -197,9 +206,87 @@ const DeviceTable = (props = {}) => {
 		});
 	};
 	const pageSizeChange = e => {
-		console.log(e);
 		const { current } = e;
 		props.onPageSizeChange(current);
+	};
+	/** 选择目标位置(班级id) */
+	const onSeleceChange = placeId => {
+		console.log(placeId);
+		if (radio1 == 1) {
+			setSelecedPlace(placeId);
+		} else {
+			setSelecedPlace([placeId]);
+		}
+	};
+	/* 选择参数 高级设置 或 网络设置*/
+	const onRadio1Change = e => {
+		const value = _.get(e, 'target.value');
+		console.log(value);
+		setRadio1(value);
+		setSelecedPlace([]);
+	};
+	/* 选择参数 高级设置 或 网络设置*/
+	const onRadio2Change = e => {
+		console.log(e);
+		setRadio2(e);
+		setSelecedPlace([]);
+	};
+	/** 重置操作radio和选中的设备位置 */
+	const resetRadioAndSelecedPlace = () => {
+		setRadio1('');
+		setRadio2([]);
+		setSelecedPlace([]);
+	};
+	/** 关闭复制弹窗 */
+	const closeModal = () => {
+		setIsModalVisible(false);
+		resetRadioAndSelecedPlace();
+	};
+	const onModalConfirm = async () => {
+		if (!radio1) {
+			message.error('请选择操作类型');
+			return;
+		}
+		if (!radio2) {
+			message.error('请选择参数');
+			return;
+		}
+		if (!selecedPlace.length) {
+			message.error('请选择目标设备位置');
+			return;
+		}
+		let res = {};
+		if (radio1 === 1) {
+			// 设备复制
+			res = await deviceCopy();
+		} else if (radio1 === 2) {
+			// 设备替换
+			res = await deviceReplace();
+		}
+		if (_.get(res, 'result.code') === 0) {
+			message.success(_.get(res, 'result.text'));
+			setIsModalVisible(false);
+			resetRadioAndSelecedPlace();
+			// props.refreshList();//操作完成后 刷新设备列表
+		}
+	};
+	/** 设备复制请求 */
+	const deviceCopy = async () => {
+		const res = await deviceSettingCopy({
+			device_id: currentDeviceId,
+			place_id: selecedPlace,
+			menu_ids: radio2
+		});
+		return res;
+	};
+	/** 设备替换请求 */
+	const deviceReplace = async () => {
+		const res = await deviceSettingReplce({
+			device_id: currentDeviceId,
+			place_id: selecedPlace[0],
+			menu_ids: radio2
+		});
+		return res;
 	};
 	return (
 		<div className="table-wrap">
@@ -216,13 +303,6 @@ const DeviceTable = (props = {}) => {
 					current: props.current
 				}}
 				onChange={pageSizeChange}
-				onRow={item => {
-					return {
-						onClick() {
-							props.onItemClick(item.id);
-						}
-					};
-				}}
 				rowKey={item => `row${item.id}`}
 				className="table"
 			/>
@@ -248,28 +328,39 @@ const DeviceTable = (props = {}) => {
 					</div>
 				</div>
 			)}
-			<Modal title="设备替换/参数复制" cancelText="取消" okText="确定" visible={isModalVisible} onOk={handleOk} onCancel={() => setIsModalVisible(false)}>
+			<Modal title="设备替换/参数复制" cancelText="取消" okText="确定" visible={isModalVisible} onOk={onModalConfirm} onCancel={closeModal}>
 				<Form colon={false} labelAlign="left" wrapperCol={{ span: 12, offset: 1 }} labelCol={{ span: 3 }}>
 					<Form.Item label="操作">
 						<Space>
-							<Radio.Group>
-								<Radio value="radio1">参数复制</Radio>
-								<Radio value="radio2">设备替换</Radio>
+							<Radio.Group value={radio1} onChange={onRadio1Change}>
+								<Radio value={1}>参数复制</Radio>
+								<Radio value={2}>设备替换</Radio>
 							</Radio.Group>
 						</Space>
 					</Form.Item>
 					<Form.Item label="参数">
 						<Space>
-							<Radio.Group>
-								<Radio value="radio1">高级设置</Radio>
-								<Radio value="radio2">网络设置</Radio>
-							</Radio.Group>
+							<Checkbox.Group value={radio2} onChange={onRadio2Change}>
+								<Checkbox value={1}>高级设置</Checkbox>
+								<Checkbox value={2}>网络设置</Checkbox>
+							</Checkbox.Group>
 						</Space>
 					</Form.Item>
 					<Form.Item label="目标设备">
-						<Select placeholder="选择目标设备">
-							<Select.Option value="1">目标设备1</Select.Option>
-							<Select.Option value="2">目标设备2</Select.Option>
+						<Select mode={radio1 == 1 ? 'multiple' : ''} value={selecedPlace} filterOption={false} placeholder="选择目标设备" onChange={onSeleceChange}>
+							{_.map(placeList, (item, key) => {
+								return (
+									<Select.OptGroup label={item.name} key={key + '_' + item.id + 'classes'}>
+										{_.map(item.room, (item2, key2) => {
+											return (
+												<Select.Option value={item2.id} key={key2 + '_' + item.id + 'childern'}>
+													{item2.name}
+												</Select.Option>
+											);
+										})}
+									</Select.OptGroup>
+								);
+							})}
 						</Select>
 					</Form.Item>
 				</Form>

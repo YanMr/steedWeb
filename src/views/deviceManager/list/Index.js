@@ -7,7 +7,7 @@ import DeviceTable from './components/DeviceTable';
 import RightTab from './components/RightTab';
 import RightTabMain from './components/RightTabMain';
 
-import { getDeviceManage, getDevicePlace, getDeviceDetail } from '@/server/device';
+import { getDeviceManage, getDevicePlace, getDeviceDetail, getDevicePlaceCmd1 } from '@/server/device';
 import _ from 'lodash';
 
 const searDataMode = [
@@ -65,6 +65,7 @@ const List = () => {
 	});
 	const [searchTimeStamp, setsearchTimeStamp] = useState('');
 	const [deviceDetail, setDeviceDetail] = useState({});
+	const [placeList, setPlaceList] = useState([]);
 	const toggleEdit = () => {
 		setShowCheckBox(!showCheckBox);
 	};
@@ -143,8 +144,25 @@ const List = () => {
 			setDeviceDetail(device_control_info);
 		}
 	};
+	/** 查询目标接收位置列表 */
+	const fetchSettingPlaceList = async () => {
+		const res = await getDevicePlaceCmd1();
+		if (_.get(res, 'result.code') == 0) {
+			const placelist = _.get(res, 'placelist', []);
+			setPlaceList(placelist);
+		}
+	};
+	/** 触发设备列表接口刷新 用于表格中 复制/替换设备后的回调 */
+	const refreshList = () => {
+		if (pageNum === 1) {
+			setsearchTimeStamp(new Date().getTime());
+		} else {
+			setPageNum(1);
+		}
+	};
 	useEffect(() => {
 		fetchDevicePlace();
+		fetchSettingPlaceList();
 	}, []);
 	useEffect(() => {
 		fetchDeviceList();
@@ -179,7 +197,7 @@ const List = () => {
 								{showCheckBox ? '取消' : '编辑'}
 							</Button>
 						</div>
-						<DeviceTable data={list} total={total} current={pageNum} showCheckBox={showCheckBox} onCancel={toggleEdit} onPageSizeChange={onPageSizeChange} onItemClick={fetchDeviceDetail} />
+						<DeviceTable refreshList={refreshList} placeList={placeList} data={list} total={total} current={pageNum} showCheckBox={showCheckBox} onCancel={toggleEdit} onPageSizeChange={onPageSizeChange} onItemClick={fetchDeviceDetail} />
 					</section>
 				</section>
 				<div className={`toggleVisibleRight ${showRightSider ? '' : 'active'}`} onClick={toggleShowRightSider}>
@@ -193,7 +211,7 @@ const List = () => {
 							<RightTab onClickHandle={changeRightTab} activeTab={activeTab} />
 						</header>
 						<section className="custom-layout-content">
-							<RightTabMain activeTab={activeTab} data={deviceDetail} fetchDeviceDetail={fetchDeviceDetail}/>
+							<RightTabMain activeTab={activeTab} data={deviceDetail} fetchDeviceDetail={fetchDeviceDetail} />
 						</section>
 					</section>
 				</section>

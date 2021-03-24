@@ -161,6 +161,10 @@ section.device-page {
 	}
 	.device-name {
 		padding-left: 20px;
+		&:hover {
+			color: $light;
+			cursor: pointer;
+		}
 	}
 	.ant-table-selection-column {
 		.ant-table-selection {

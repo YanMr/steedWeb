@@ -20,7 +20,22 @@ export const getDevicePlace = (query = {}) => {
 	return post(`/app/place?source=4&cmd=15`, query);
 };
 
+/** 接收成员--位置获取(场景/批量控制) */
+export const getDevicePlaceCmd1 = (query = {}) => {
+	return post(`/app/place?source=4&cmd=1`, query);
+};
+
 /** 设备设置-详情 */
 export const getDeviceSettingDetail = (query = {}) => {
 	return post(`/app/device-setting?source=4&cmd=20`, query);
+};
+
+/** 设备设置-复制 */
+export const deviceSettingCopy = (query = {}) => {
+	return post(`/app/device-setting?source=4&cmd=11`, query);
+};
+
+/** 设备设置-替换 */
+export const deviceSettingReplce = (query = {}) => {
+	return post(`/app/device-setting?source=4&cmd=12`, query);
 };
