@@ -106,13 +106,6 @@ section.device-page {
 			}
 		}
 	}
-	.ant-checkbox-checked .ant-checkbox-inner::after {
-		display: none;
-	}
-	.ant-checkbox-inner {
-		width: 12px;
-		height: 12px;
-	}
 	.anticon {
 		color: $light;
 		position: relative;
@@ -230,13 +223,13 @@ section.device-page {
 	background: #fff;
 	border-top: 1px solid #e1e1e1;
 	padding-left: 14px;
-	.ant-checkbox-checked .ant-checkbox-inner::after {
-		display: none;
-	}
-	.ant-checkbox-inner {
-		width: 12px;
-		height: 12px;
-	}
+	// .ant-checkbox-checked .ant-checkbox-inner::after {
+	// 	// display: none;
+	// }
+	// .ant-checkbox-inner {
+	// 	width: 12px;
+	// 	height: 12px;
+	// }
 	.check-all {
 		margin-right: 12px;
 		.ant-checkbox-wrapper {
@@ -549,4 +542,9 @@ section.device-page {
 	.off-line-text {
 		font-size: 16px;
 	}
+}
+
+.batch-table .ant-table .ant-table-cell {
+	height: auto;
+	padding: 6px 10px;
 }

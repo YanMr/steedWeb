@@ -7,7 +7,7 @@ import DeviceTable from './components/DeviceTable';
 import RightTab from './components/RightTab';
 import RightTabMain from './components/RightTabMain';
 
-import { getDeviceManage, getDevicePlace, getDeviceDetail, getDevicePlaceCmd1 } from '@/server/device';
+import { getDeviceManage, getDevicePlace, getDeviceDetail, getDevicePlaceCmd1, getDeviceControlOption } from '@/server/device';
 import _ from 'lodash';
 
 const searDataMode = [
@@ -66,6 +66,7 @@ const List = () => {
 	const [searchTimeStamp, setsearchTimeStamp] = useState('');
 	const [deviceDetail, setDeviceDetail] = useState({});
 	const [placeList, setPlaceList] = useState([]);
+	const [controlOptions, setControlOptions] = useState([]);//批量控制项列表
 	const toggleEdit = () => {
 		setShowCheckBox(!showCheckBox);
 	};
@@ -75,13 +76,12 @@ const List = () => {
 
 	/** 点击 搜索 */
 	const operation = params => {
-		console.log(params.data);
 		const place = params.data.location;
 		const onlineState = params.data.status;
 		const keyword = params.data.text || '';
 		setSearchParams({ place, onlineState, keyword });
 		/** 防止重复触发查询列表 确保只触发1次 */
-		if (pageNum == 1) {
+		if (pageNum === 1) {
 			setsearchTimeStamp(new Date().getTime());
 		} else {
 			setPageNum(1);
@@ -160,9 +160,22 @@ const List = () => {
 			setPageNum(1);
 		}
 	};
+	/** 获取批量控制选项 */
+	const getControlOption = async () => {
+		const res = await getDeviceControlOption();
+		const batchList = _.get(res, "batch_control_item_list", []);
+		const controlOptions = _.map(batchList, item =>{
+			return {
+				...item,
+				value: ''
+			}
+		})
+		setControlOptions(controlOptions)
+	};
 	useEffect(() => {
 		fetchDevicePlace();
 		fetchSettingPlaceList();
+		getControlOption();
 	}, []);
 	useEffect(() => {
 		fetchDeviceList();
@@ -197,7 +210,7 @@ const List = () => {
 								{showCheckBox ? '取消' : '编辑'}
 							</Button>
 						</div>
-						<DeviceTable refreshList={refreshList} placeList={placeList} data={list} total={total} current={pageNum} showCheckBox={showCheckBox} onCancel={toggleEdit} onPageSizeChange={onPageSizeChange} onItemClick={fetchDeviceDetail} />
+						<DeviceTable refreshList={refreshList} controlOptions={controlOptions} placeList={placeList} data={list} total={total} current={pageNum} showCheckBox={showCheckBox} onCancel={toggleEdit} onPageSizeChange={onPageSizeChange} onItemClick={fetchDeviceDetail} />
 					</section>
 				</section>
 				<div className={`toggleVisibleRight ${showRightSider ? '' : 'active'}`} onClick={toggleShowRightSider}>

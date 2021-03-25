@@ -39,3 +39,18 @@ export const deviceSettingCopy = (query = {}) => {
 export const deviceSettingReplce = (query = {}) => {
 	return post(`/app/device-setting?source=4&cmd=12`, query);
 };
+
+/** 设备批量控制项获取 */
+export const getDeviceControlOption = (query = {}) => {
+	return post(`/app/device-manage?source=4&cmd=4`, query);
+};
+
+/** 设备删除(单个或批量删除) */
+export const postDeviceDel = (query = {}) => {
+	return post(`/app/device-manage?source=4&cmd=18`, query);
+};
+
+/** 设备批量控制 */
+export const postDeviceBatchControl = (query = {}) => {
+	return post(`/app/device-manage?source=4&cmd=8`, query);
+};
