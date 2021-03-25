@@ -639,8 +639,15 @@
 .scene-right {
   background-color: #FFFFFF;
   overflow-x: hidden;
-  .serch-container {
-    height: 100%;
+  .serch-container, .noData {
+    height: calc(100vh - 61px);
+  }
+  .noData {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color:#636363;
+    font-size: 20px;
   }
   .serch-right-container {
     padding: 11px 7px;
@@ -749,6 +756,7 @@
           }
           .device-item-name {
             font-size: 12px;
+            width: 100%;
           }
         }
         .yes {

@@ -23,7 +23,8 @@ class Scene extends Component {
       seceneType: '',
       seceneDetails: {},
       showRightSider: 0,
-      sceneId: undefined
+      sceneId: undefined,
+      taskId: undefined
     }
   }
 
@@ -67,6 +68,12 @@ class Scene extends Component {
     this.refs.content.getSceneId(id)
     this.refs.search.clearKeyText()
   }
+  rightTask = (data) => {
+    this.setState({
+      showRightSider: 285,
+    })
+    this.refs.sceneRight.getTaskDetailsFun(data.id)
+  }
 
   render() {
     return (
@@ -76,7 +83,7 @@ class Scene extends Component {
           <Layout>
             <Header className="scene-header"><SearchHeader ref="search" data={this.state.searData} operation={this.operation} /></Header>
             <Content className="scene-content">
-            <ContentMain prop={this.props} sceneId={this.state.sceneId} ref="content" seceneType={this.state.seceneType} seceneDetails={this.state.seceneDetails}/>
+            <ContentMain prop={this.props} rightTask={this.rightTask} sceneId={this.state.sceneId} ref="content" seceneType={this.state.seceneType} seceneDetails={this.state.seceneDetails}/>
             </Content>
           </Layout>
           <Sider className="scene-right-main" width={this.state.showRightSider}>
@@ -84,7 +91,7 @@ class Scene extends Component {
             <div className={`toggleVisibleRight ${this.state.showRightSider === 285 ? '' : 'active'}`} onClick={() => this.toggleShowRightSider()}>
               <IconFont type="icon-bofangsanjiaoxing" className="icon-arr" />
             </div>
-            <SceneRight />
+            <SceneRight ref="sceneRight" prop={this.props} />
             </div>
           </Sider>
         </Layout>

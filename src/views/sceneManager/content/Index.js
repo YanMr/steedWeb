@@ -37,12 +37,16 @@ class Content extends Component {
       this.refs.contentTable.refresh()
     }
   }
+
+  rightData = (data) => {
+    this.props.rightTask(data)
+  }
   
 
   render() {
     return (
       <div className="serch-container">
-        {this.props.sceneId ?  <ContentTable prop={this.props} ref="contentTable" /> : ''}
+        {this.props.sceneId ?  <ContentTable prop={this.props} rightData={this.rightData} ref="contentTable" /> : ''}
         {this.state.details ? 
         (<SceneDetails ref="sceneDetails"  seceneType={this.props.seceneType} seceneDetails={this.props.seceneDetails}  close={this.close}/>) 
         : ''}

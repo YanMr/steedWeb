@@ -87,7 +87,7 @@ class contentTable extends Component {
   }
 
   componentDidMount() {
-    // this.getTaskListFun()
+    
   }
 
   // 任务编辑
@@ -300,6 +300,12 @@ class contentTable extends Component {
     this.delTask(idList)
   }
 
+  // 查看任务详情右侧弹窗
+  onRightTaskDetails = (record) => {
+    this.props.rightData(record)
+  }
+
+
   render() {   
     return (
       <div className="serch-container">
@@ -322,6 +328,7 @@ class contentTable extends Component {
           dataSource={this.state.data}
           onRow={record => {
             return {
+              onClick: (e) => this.onRightTaskDetails(record), 
               onContextMenu: (e)=> this.onrowFum(e, record), 
             };
           }}
