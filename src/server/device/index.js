@@ -54,3 +54,42 @@ export const postDeviceDel = (query = {}) => {
 export const postDeviceBatchControl = (query = {}) => {
 	return post(`/app/device-manage?source=4&cmd=8`, query);
 };
+
+/** 设备设置 网络设置信息获取 */
+export const getDeviceSettingNetworkInfo = (query = {}) => {
+	return post(`/app/device-setting?source=4&cmd=18`, query);
+};
+/** 设备设置 网络设置信息获取 */
+export const postDeviceSettingNetworkInfo = (query = {}) => {
+	return post(`/app/device-setting?source=4&cmd=19`, query);
+};
+
+/** 设备设置 物联设备列表获取 */
+export const getIotList = (query = {}) => {
+	return post(`/app/device-setting?source=4&cmd=13`, query);
+};
+
+/** 设备设置 物联设备参数获取 */
+export const getIotListOptions = (query = {}) => {
+	return post(`/app/device-setting?source=4&cmd=15`, query);
+};
+
+/** 设备设置 物联设备添加 */
+export const postAddIot = (query = {}) => {
+	return post(`/app/device-setting?source=4&cmd=16`, query);
+};
+
+/** 设备设置 物联模块列表获取 */
+export const getDeviceModuleList = (query = {}) => {
+	return post(`/app/device-setting?source=4&cmd=5`, query);
+};
+
+/** 设备设置 物联模块修改名称 */
+export const postDeviceRename = (query = {}) => {
+	return post(`/app/device-setting?source=4&cmd=8`, query);
+};
+
+/** 设备设置 物联模块删除 */
+export const postDeviceModuleDel = (query = {}) => {
+	return post(`/app/device-setting?source=4&cmd=7`, query);
+};

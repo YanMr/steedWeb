@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Back from '@/components/Back/index';
 import TabHeader from './components/TabHeader';
 import AdvancedSetting from './components/AdvancedSetting';
@@ -35,6 +35,7 @@ const DeviceSetting = () => {
 	const onTabClick = id => {
 		setCurrentTabId(id);
 	};
+	useEffect(() => {}, []);
 	return (
 		<section className="device-setting-page">
 			<section className="custom-layout">

@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import IconFont from '@/components/IconFont';
 import { Table, Tooltip, Modal, message, Space, Input, Form, Select } from 'antd';
+import { getDeviceModuleList, postDeviceRename, postDeviceModuleDel } from '@/server/device';
+import { getQuery } from '../../../../utils';
+import _, { values } from 'lodash';
 
 const IotModule = () => {
+	const id = getQuery('id');
 	const [isMoalAddVisible, setIsMoalAddVisible] = useState(false); //添加模块 modal
 	const [isMoalEditVisible, setIsMoalEditVisible] = useState(false); //配置模块 modal
 	const [isMoalUpdateNameVisible, setIsMoalUpdateNameVisible] = useState(false); //修改模块名 modal
+	const [moduleList, setModuleList] = useState([]);
+	const [currentModule, setCurrentModule] = useState(''); //模块id 点击修改缓存的id
+	const [renamefrom] = Form.useForm();
+	const [renameDefaultValues, setRenameDefaultValues] = useState({
+		new_name: ''
+	});
 	const modalAddonOk = () => {
 		message.success('添加成功');
 		setIsMoalAddVisible(false);
@@ -15,28 +25,71 @@ const IotModule = () => {
 		setIsMoalAddVisible(false);
 	};
 	const onOpenEditModal = item => {
-		console.log('item', item);
+		setCurrentModule(item);
 		setIsMoalEditVisible(true);
 	};
-	const onOpenUpdateNameModal = item => {
+	/** 点击修改模块名称的按钮 */
+	const onOpenUpdateNameModal = async item => {
 		console.log('item', item);
+		setCurrentModule(item);
 		setIsMoalUpdateNameVisible(true);
+		setRenameDefaultValues({ new_name: item.name });
+		renamefrom.setFieldsValue({ new_name: item.name });
 	};
-	const modalUpdateNameonOk = () => {
-		setIsMoalUpdateNameVisible(false);
-		message.success('修改成功');
+	/** 确认修改模块名称 */
+	const modalUpdateNameonOk = async () => {
+		try {
+			const renamefromData = await renamefrom.validateFields();
+			const res = await postDeviceRename({
+				device_module: {
+					device_id: +id,
+					module_id: +currentModule.id,
+					new_name: renamefromData.new_name
+				}
+			});
+			if (_.get(res, 'result.code') === 0) {
+				message.success('操作成功');
+				fetchModuleList();
+				setIsMoalUpdateNameVisible(false);
+				renamefrom.resetFields();
+			}
+		} catch (error) {
+			console.log('error', error);
+		}
 	};
-	const onDelRow = () => {
+	const onDelRow = item => {
 		Modal.confirm({
 			title: '提示',
 			content: '确认要删除？',
 			okText: '确认',
 			cancelText: '取消',
-			onOk() {
-				message.success('删除成功');
+			async onOk() {
+				const res = await postDeviceModuleDel({
+					device_id: +id,
+					module_id: +item.id,
+					panid: +item.panid
+				});
+
+				if (_.get(res, 'result.code') === 0) {
+					message.success('操作成功');
+					fetchModuleList();
+				}
 			}
 		});
 	};
+	const fetchModuleList = async () => {
+		const res = await getDeviceModuleList({ device_id: +id });
+		if (_.get(res, 'result.code') === 0) {
+			const list = _.get(res, 'iot_module_list', []);
+			setModuleList(list);
+		}
+	};
+	const onModuleNameChange = value => {
+		console.log('value', value);
+	};
+	useEffect(() => {
+		fetchModuleList();
+	}, []);
 	const RenderHeader = () => {
 		return (
 			<header className="module-header">
@@ -88,6 +141,12 @@ const IotModule = () => {
 				align: 'center'
 			},
 			{
+				title: '软件版本',
+				dataIndex: 'module_version',
+				key: 'module_version',
+				align: 'center'
+			},
+			{
 				title: '操作',
 				align: 'center',
 				render: item => {
@@ -109,7 +168,7 @@ const IotModule = () => {
 		];
 		return (
 			<div className="iot-table">
-				<Table dataSource={tableData} columns={tableHeader} pagination={{ defaultPageSize: 10 }}></Table>
+				<Table dataSource={moduleList} columns={tableHeader} pagination={false}></Table>
 			</div>
 		);
 	};
@@ -237,13 +296,26 @@ const IotModule = () => {
 	/** 修改模块名的弹窗 */
 	const RenderUpdateNameModal = () => {
 		return (
-			<Modal title="模块名称修改" cancelText="取消" okText="确定" visible={isMoalUpdateNameVisible} onOk={modalUpdateNameonOk} onCancel={() => setIsMoalUpdateNameVisible(false)}>
-				<Form colon={false} labelAlign="left" wrapperCol={{ span: 12, offset: 1 }} labelCol={{ span: 3 }}>
-					<Form.Item label="模块名称">
-						<Input placeholder="请输入模块名称" />
-					</Form.Item>
-				</Form>
-			</Modal>
+			<React.Fragment>
+				{isMoalUpdateNameVisible && (
+					<Modal title="模块名称修改" cancelText="取消" okText="确定" visible={isMoalUpdateNameVisible} onOk={modalUpdateNameonOk} onCancel={() => setIsMoalUpdateNameVisible(false)}>
+						<Form form={renamefrom} colon={false} labelAlign="left" wrapperCol={{ span: 12, offset: 1 }} labelCol={{ span: 3 }} initialValues={renameDefaultValues}>
+							<Form.Item
+								label="模块名称"
+								name="new_name"
+								rules={[
+									{
+										required: true,
+										message: '请填写服务器地址'
+									}
+								]}
+							>
+								<Input placeholder="请输入模块名称" />
+							</Form.Item>
+						</Form>
+					</Modal>
+				)}
+			</React.Fragment>
 		);
 	};
 	return (

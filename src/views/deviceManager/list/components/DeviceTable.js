@@ -36,8 +36,15 @@ const DeviceTable = (props = {}) => {
 
 	useEffect(() => {
 		const controlOptions = props.controlOptions || [];
-		setBatchList(controlOptions);
-		setBatchListBak(controlOptions);
+		let newControlOptions = _.map(controlOptions, item => {
+			let command = '2048';
+			return {
+				...item,
+				command
+			};
+		});
+		setBatchList(newControlOptions);
+		setBatchListBak(newControlOptions);
 	}, [props.controlOptions]);
 
 	const onChange = ids => {
@@ -226,14 +233,10 @@ const DeviceTable = (props = {}) => {
 			cancelText: '取消',
 			async onOk() {
 				try {
-					const deviceIdArr = _.map(rowIds, item => {
-						return {
-							id: item
-						};
-					});
-					console.log('deviceIdArr', deviceIdArr);
 					const res = await postDeviceDel({
-						device: deviceIdArr
+						device: {
+							id: rowIds
+						}
 					});
 					if (_.get(res, 'result.code') === 0) {
 						message.success('删除成功');
@@ -339,13 +342,14 @@ const DeviceTable = (props = {}) => {
 			return _.includes(checkedBatchIds.current, item.type);
 		});
 		const res = await postDeviceBatchControl({
-			device_ids: rowIds,
-			batch_control_item: selectArr
+			object_id: rowIds,
+			device_batch_control: selectArr
 		});
 		if (_.get(res, 'result.code') === 0) {
 			message.success(_.get(res, 'result.text'));
 			setIsBatchModalVisible(false);
 			props.refreshList(); //操作完成后 刷新设备列表
+			setBatchList([...batchListBak]);
 		}
 	};
 	/** 批量控制弹窗 点击取消 */

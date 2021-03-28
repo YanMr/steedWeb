@@ -1,19 +1,44 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import IconFont from '@/components/IconFont';
-import { Table, Tooltip, Modal, message, Space, Input, Form, Select, Checkbox } from 'antd';
+import { Table, Tooltip, TimePicker, Modal, message, Space, Input, Form, Select, Checkbox } from 'antd';
+import { getQuery } from '../../../../utils';
+import { getIotList, getIotListOptions, postAddIot } from '@/server/device';
+import _ from 'lodash';
+import moment from 'moment';
+import locale from 'antd/es/date-picker/locale/zh_CN';
 const IotModule = () => {
+	const id = getQuery('id');
 	const [isModalVisible, setIsModalVisible] = useState(false);
 	const [modalType, setModalType] = useState('');
+	const [iotList, setIotList] = useState([]); // 物联设备列表
+	const [iotOptios, setIotOptios] = useState([]); // 添加物联设备时的可选参数
+	const [brandList, setBrandList] = useState([]); //品牌列表
+	const [addForm] = Form.useForm();
+	const [type, setType] = useState('');
+	const [addIotFormData, setIotFormData] = useState({
+		device_id: +id,
+		name: '', //物联设备名称
+		type: '', //物联设备类型
+		port1: '', //物联设备电源控制端口1
+		port2: '', //物联设备电源控制端口2
+		panid: '', //物联模块物联ID
+		boot_time: null, //物联设备开机时间
+		off_time: '', //物联设备关机时间
+		boot_sync: false, //物联设备开机同步
+		off_sync: false, //物联设备关机同步
+		send_code_times: '', //物联设备发码次数
+		send_code_interval: '', //物联设备发码间隔
+		comm_type: '', //物联设备通信控制方式
+		comm_port: '', //物联设备通信控制端口
+		brand_id: '', //物联设备品牌ID
+		comm_address: '' //物联设备通信控制地址
+	});
+
 	const onAddModal = () => {
 		setIsModalVisible(true);
 		setModalType('add');
 	};
-	const handleOk = () => {
-		setIsModalVisible(false);
-		const messageText = modalType === 'add' ? '添加成功' : '修改成功';
-		message.success(messageText);
-		setModalType('');
-	};
+
 	const onEditModal = () => {
 		setIsModalVisible(true);
 		setModalType('edit');
@@ -28,7 +53,91 @@ const IotModule = () => {
 				message.success('删除成功');
 			}
 		});
-	};	
+	};
+	/** 获取物联设备可选参数 用于添加物联设备 */
+	const fetchIotOptions = async () => {
+		const res = await getIotListOptions({ device_id: +id });
+		console.log('可选参数', res);
+		setIotOptios(res);
+	};
+	/** 获取物联设备列表 */
+	const fetchIotList = async () => {
+		const res = await getIotList({ device_id: +id });
+	};
+
+	// 选择设备类型 找到对应的品牌字段
+	// 6 一体机  ： aiopc_brand
+	// 3 投影仪 ： projector_brand
+	// 2 空调 ： hvac_brand
+	// 自定义 user_define_brand
+	const chooseType = value => {
+		// 0:总开关，1：灯光，2：空调 3：投影仪
+		// 4:风扇 6:一体机 7:磁控锁/门禁 8:窗帘 9:电脑 10:其它
+		console.log('已选 设备类型', value);
+		setType(value);
+		addForm.setFieldsValue({ brand_id: '' });
+		const brandKeys = {
+			6: 'aiopc_brand',
+			3: 'projector_brand',
+			2: 'hvac_brand',
+			10: 'user_define_brand'
+		};
+		if (!brandKeys[value]) {
+			setBrandList([]);
+		} else {
+			const key = brandKeys[value] || '';
+			const newBrandList = iotOptios[key] || '';
+			console.log('newBrandList', newBrandList);
+			setBrandList(newBrandList);
+		}
+	};
+
+	/** 添加物联设备 */
+	const handleOk = async () => {
+		const messageText = modalType === 'add' ? '添加成功' : '修改成功';
+		try {
+			const values = await addForm.validateFields();
+			console.log('success', values);
+			setIsModalVisible(false);
+			setModalType('');
+			const res = await postAddIot({
+				device_unit_info: {
+					device_id: +id,
+					name: values.name, //物联设备名称
+					type: values.type, //物联设备类型
+					port1: values.port1, //物联设备电源控制端口1
+					port2: values.port2, //物联设备电源控制端口2
+					panid: values.panid, //物联模块物联ID
+					boot_time: moment(values.boot_time).format('hh:mm:ss'), //物联设备开机时间
+					off_time: moment(values.off_time).format('hh:mm:ss'), //物联设备关机时间
+					boot_sync: values.boot_sync, //物联设备开机同步
+					off_sync: values.off_sync, //物联设备关机同步
+					send_code_times: +values.send_code_times, //物联设备发码次数
+					send_code_interval: +values.send_code_interval, //物联设备发码间隔
+					comm_type: values.comm_type, //物联设备通信控制方式
+					comm_port: +values.comm_port, //物联设备通信控制端口
+					brand_id: +values.brand_id, //物联设备品牌ID
+					comm_address: values.comm_address //物联设备通信控制地址
+				}
+			});
+			if (_.get(res, 'result.code') === 0) {
+				message.success(messageText);
+				addForm.resetFields();
+			}
+		} catch (error) {
+			console.log('error ', error);
+		}
+	};
+
+	const modalClose = () => {
+		addForm.resetFields();
+		console.log('触发重置', addForm);
+	};
+	useEffect(() => {
+		fetchIotList();
+		fetchIotOptions();
+	}, []);
+
 	const RenderHeader = () => {
 		return (
 			<header className="module-header">
@@ -179,7 +288,7 @@ const IotModule = () => {
 					return (
 						<div className="cell-action-btns">
 							<IconFont type="icon-bi" className="icon icon-edit" onClick={item => onEditModal(item)} />
-							<IconFont type="icon-del" className="icon icon-del" onClick={item => onDelRow(item)}/>
+							<IconFont type="icon-del" className="icon icon-del" onClick={item => onDelRow(item)} />
 						</div>
 					);
 				}
@@ -195,30 +304,227 @@ const IotModule = () => {
 	const RenderModal = () => {
 		const title = modalType === 'add' ? '物联设备添加' : '物联设备修改';
 		return (
-			<Modal title={title} cancelText="取消" okText="确定" visible={isModalVisible} onOk={handleOk} onCancel={() => setIsModalVisible(false)}>
-				<Form colon={false} labelAlign="left" wrapperCol={{ span: 12, offset: 1 }} labelCol={{ span: 3 }}>
-					<Form.Item label="被控设备名称">
+			<Modal afterClose={modalClose} transitionName="" maskTransitionName="" forceRender={true} destroyOnClose={true} preserve={false} title={title} cancelText="取消" okText="确定" visible={isModalVisible} onOk={handleOk} onCancel={() => setIsModalVisible(false)}>
+				<Form colon={false} labelAlign="left" wrapperCol={{ span: 12, offset: 1 }} labelCol={{ span: 5 }} initialValues={addIotFormData} form={addForm}>
+					<Form.Item
+						label="被控设备名称"
+						name="name"
+						rules={[
+							{
+								required: true,
+								message: '请填写设备名称'
+							}
+						]}
+					>
 						<Input placeholder="请输入被控设备名称" />
 					</Form.Item>
-					<Form.Item label="被控设备类型">
-						<Input placeholder="请输入被控设备类型" />
-					</Form.Item>
-					<Form.Item label="控制模块">
-						<Input placeholder="请输入控制模块" />
-					</Form.Item>
-					<Form.Item label="电源控制端口">
-						<Input placeholder="请输入电源控制端口" />
-					</Form.Item>
-					<Form.Item label="作品类型">
-						<Select placeholder="选择作品类型">
-							<Select.Option value="1">类型1</Select.Option>
-							<Select.Option value="2">类型2</Select.Option>
+					<Form.Item
+						label="被控设备类型"
+						name="type"
+						rules={[
+							{
+								required: true,
+								message: '请选择设备类型'
+							}
+						]}
+					>
+						<Select placeholder="请选择被控设备类型" onChange={chooseType}>
+							{_.map(iotOptios.iot_device_type, (item, key) => {
+								return (
+									<Select.Option value={item.id} key={key + '_' + item.id + 'iot_device_type'}>
+										{item.name}
+									</Select.Option>
+								);
+							})}
 						</Select>
 					</Form.Item>
-					<Form.Item label="电源控制端口">
-						<Input placeholder="请输入电源控制端口" />
+					<Form.Item
+						label="物联设备品牌"
+						name="brand_id"
+						rulesOld={[
+							{
+								required: true,
+								message: '请选择物联设备品牌'
+							}
+						]}
+					>
+						<Select placeholder="请选择物联设备品牌">
+							{_.map(brandList, (item, key) => {
+								return (
+									<Select.Option value={item.id} key={key + '_' + item.id + 'brand_id'}>
+										{item.name}
+									</Select.Option>
+								);
+							})}
+						</Select>
 					</Form.Item>
-					<Form.Item label="开机关联">
+
+					<Form.Item
+						label="电源控制端口1"
+						name="port1"
+						rules={[
+							{
+								required: true,
+								message: '请选择电源端口'
+							}
+						]}
+					>
+						<Select placeholder="请选择电源控制端口">
+							{_.map(iotOptios.power_output_port, (item, key) => {
+								return (
+									<Select.Option value={item.id} key={key + '_' + item.id + 'port1'}>
+										{item.name}
+									</Select.Option>
+								);
+							})}
+						</Select>
+					</Form.Item>
+					<Form.Item
+						label="电源控制端口2"
+						name="port2"
+						rules={[
+							{
+								required: true,
+								message: '请选择电源端口'
+							}
+						]}
+					>
+						<Select placeholder="请选择电源控制端口">
+							{_.map(iotOptios.power_output_port, (item, key) => {
+								return (
+									<Select.Option value={item.id} key={key + '_' + item.id + 'port2'}>
+										{item.name}
+									</Select.Option>
+								);
+							})}
+						</Select>
+					</Form.Item>
+					<Form.Item label="物联模块" name="panid">
+						<Select
+							placeholder="请选择物联模块"
+							rules={[
+								{
+									required: true,
+									message: '请选择物联模块'
+								}
+							]}
+						>
+							{_.map(iotOptios.iot_module, (item, key) => {
+								return (
+									<Select.Option value={item.id} key={key + '_' + item.id + 'port2'}>
+										{item.name}
+									</Select.Option>
+								);
+							})}
+						</Select>
+					</Form.Item>
+
+					<Form.Item
+						label="物联设备开机时间"
+						name="boot_time"
+						rules={[
+							{
+								required: true,
+								message: '请选择设备开机时间'
+							}
+						]}
+					>
+						<TimePicker locale={locale} />
+					</Form.Item>
+					<Form.Item
+						label="物联设备关机时间"
+						name="off_time"
+						rules={[
+							{
+								required: true,
+								message: '请选择设备关机时间'
+							}
+						]}
+					>
+						<TimePicker locale={locale} />
+					</Form.Item>
+					<Form.Item
+						label="物联设备发码次数"
+						name="send_code_times"
+						rules={[
+							{
+								required: true,
+								message: '请填写发码次数'
+							}
+						]}
+					>
+						<Input placeholder="请输入发码次数" />
+					</Form.Item>
+					<Form.Item
+						label="物联设备发码间隔"
+						name="send_code_interval"
+						rules={[
+							{
+								required: true,
+								message: '请填写发码间隔'
+							}
+						]}
+					>
+						<Input placeholder="请输入发码间隔" />
+					</Form.Item>
+
+					<Form.Item label="通信方式" name="comm_type">
+						<Select
+							placeholder="请选择通信方式"
+							rules={[
+								{
+									required: true,
+									message: '请选择通信方式'
+								}
+							]}
+						>
+							{_.map(iotOptios.udfc_transmit_mode, (item, key) => {
+								return (
+									<Select.Option value={item.id} key={key + '_' + item.id + 'udfc_transmit_mode'}>
+										{item.name}
+									</Select.Option>
+								);
+							})}
+						</Select>
+					</Form.Item>
+
+					<Form.Item label="通信控制端口" name="comm_port">
+						<Select
+							placeholder="请选择通信控制端口"
+							rules={[
+								{
+									required: true,
+									message: '请选择通信控制端口'
+								}
+							]}
+						>
+							{_.map(iotOptios.comm_port, (item, key) => {
+								return (
+									<Select.Option value={item.id} key={key + '_' + item.id + 'udfc_transmit_mode'}>
+										{item.name}
+									</Select.Option>
+								);
+							})}
+						</Select>
+					</Form.Item>
+
+					<Form.Item
+						label="通信控制地址"
+						name="comm_address"
+						rules={[
+							{
+								required: true,
+								message: '请填写通信控制地址'
+							}
+						]}
+					>
+						<Input placeholder="请填写通信控制地址" />
+					</Form.Item>
+
+					<Form.Item label="物联设备开机同步" name="boot_sync" valuePropName="checked">
+						<Checkbox />
+					</Form.Item>
+					<Form.Item label="物联设备关机同步" name="off_sync" valuePropName="checked">
 						<Checkbox />
 					</Form.Item>
 				</Form>
