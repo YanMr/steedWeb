@@ -84,9 +84,6 @@ const IotModule = () => {
 			setModuleList(list);
 		}
 	};
-	const onModuleNameChange = value => {
-		console.log('value', value);
-	};
 	useEffect(() => {
 		fetchModuleList();
 	}, []);
