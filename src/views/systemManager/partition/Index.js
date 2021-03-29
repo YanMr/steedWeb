@@ -16,7 +16,7 @@ const tabList = [
 	}
 ];
 const Partition = () => {
-	const [currentTabId, setCurrentTabId] = useState(tabList[1].id);
+	const [currentTabId, setCurrentTabId] = useState(tabList[0].id);
 	const onTabClick = id => {
 		setCurrentTabId(id);
 	};

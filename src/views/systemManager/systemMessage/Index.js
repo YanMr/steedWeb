@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Upload, message } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import IconFont from '@/components/IconFont';
+import { getSystemName, setSystemName } from '@/server/system/system'
 import '../index.scss'
 
 
@@ -9,9 +10,19 @@ class SystemMessage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      imageUrl: '',
-      loading: false
+      logo: '',
+      loading: false,
+      server: {}
     }
+  }
+
+  componentDidMount () {
+    this.getSystemNameFun()
+  }
+
+  // 获取系统信息
+  getSystemNameFun = async () => {
+    await getSystemName()
   }
 
   getBase64 = (img, callback) => {
@@ -39,9 +50,9 @@ class SystemMessage extends Component {
     }
     if (info.file.status === 'done') {
       // Get this url from response in real world.
-      this.getBase64(info.file.originFileObj, imageUrl =>
+      this.getBase64(info.file.originFileObj, logo =>
         this.setState({
-          imageUrl,
+          logo,
           loading: false,
         }),
       );
@@ -65,7 +76,7 @@ class SystemMessage extends Component {
           <div className="system-img-main">
             <div className="system-img-title">系统图标设置</div>
             <div className="system-img-setting-img">
-              <div className="img-system">{this.state.imageUrl?(<img src={this.state.imageUrl} alt="avatar" style={{ width: '100%' }} />): (<IconFont type="icon-morentouxiang" />)}</div>
+              <div className="img-system">{this.state.logo?(<img src={this.state.logo} alt="avatar" style={{ width: '100%' }} />): (<IconFont type="icon-morentouxiang" />)}</div>
               <div className="img-setting">
               <Upload 
               name="avatar"

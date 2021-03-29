@@ -292,7 +292,7 @@ class NewTask extends Component {
      }
      })
      let data = []
-     placelist.map((item, index) => {
+     placelist && placelist.map((item, index) => {
        data.push({
          title: item.name,
          key: item.id,

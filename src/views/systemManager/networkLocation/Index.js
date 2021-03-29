@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Button, Input, Table, Tooltip } from 'antd';
 import IconFont from '@/components/IconFont';
+import { getNetworkMess, setNetworkMess } from '@/server/system/network'
 import '../index.scss'
+import { sync } from 'resolve';
 
 
 class NetworkLocation extends Component {
@@ -9,6 +11,8 @@ class NetworkLocation extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      dns_server1: '',
+      dns_server2: '',
       data: [
         {key: 0,name: 'A-admin',ip: '192.168.1.100', subnetMask: '255.255.255.0', gateway: '192.168.1.1'}
       ],
@@ -60,6 +64,36 @@ class NetworkLocation extends Component {
     }
   }
 
+  componentDidMount() {
+    this.getNetworkMessFun()
+  }
+
+  // 网络信息获取
+  getNetworkMessFun = async() => {
+    const {network_info} = await getNetworkMess()
+    let dataMess = []
+    network_info.network_card_info.map((item,index) => {
+      dataMess.push({key: index,name: item.name,ip: item.ip, subnetMask: item.netmask, gateway: item.gateway})
+    })
+    this.setState({
+      data: dataMess,
+      dns_server1: network_info.dns_server1,
+      dns_server2: network_info.dns_server1,
+    })
+  }
+
+  server1 = (e) => {
+    this.setState({
+      dns_server1: e.target.value
+    })
+  }
+
+  server2 = (e) => {
+    this.setState({
+      dns_server2: e.target.value
+    })
+  }
+
   render() {
     return (
       <div className="account">
@@ -72,11 +106,11 @@ class NetworkLocation extends Component {
             <div className="network-dns-title">DNS服务器地址</div>
             <div className="network-dns-item">
               <div className="network-label">首选DNS服务器</div>
-              <div className="networl-value"><Input value="192.168.1.1"/></div>
+              <div className="networl-value"><Input value={this.state.dns_server1} onChange={this.server1} /></div>
             </div>
             <div className="network-dns-item">
               <div className="network-label">备选DNS服务器</div>
-              <div className="networl-value"><Input value="192.168.1.1"/></div>
+              <div className="networl-value"><Input value={this.state.dns_server2} onChange={this.server2} /></div>
             </div>
           </div>
           <div className="network-setting">
