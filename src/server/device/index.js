@@ -84,6 +84,11 @@ export const getDeviceModuleList = (query = {}) => {
 	return post(`/app/device-setting?source=4&cmd=5`, query);
 };
 
+/** 设备设置 物联模块配置信息获取 */
+export const getDeviceModuleDetail = (query = {}) => {
+	return post(`/app/device-setting?source=4&cmd=9`, query);
+};
+
 /** 设备设置 物联模块修改名称 */
 export const postDeviceRename = (query = {}) => {
 	return post(`/app/device-setting?source=4&cmd=8`, query);
@@ -92,4 +97,14 @@ export const postDeviceRename = (query = {}) => {
 /** 设备设置 物联模块删除 */
 export const postDeviceModuleDel = (query = {}) => {
 	return post(`/app/device-setting?source=4&cmd=7`, query);
+};
+
+/** 设备设置 物联模块添加 */
+export const postDeviceModuleAdd = (query = {}) => {
+	return post(`/app/device-setting?source=4&cmd=6`, query);
+};
+
+/** 设备设置 物联模块串口信息设置 */
+export const postDeviceModulePort = (query = {}) => {
+	return post(`/app/device-setting?source=4&cmd=10`, query);
 };

@@ -226,3 +226,30 @@
  {
 	background: #fff;
 }
+.m-row {
+	display: flex;
+	.m-row-item {
+		flex: 1;
+		border:1px solid #e1e1e1;
+		margin-bottom: -1px;
+		margin-left: -1px;
+		height: 40px;
+		align-items: center;
+		justify-content: center;
+		display: inline-flex;
+		.ant-input,
+		.ant-select {
+			width: 90%;
+		}
+		.icon {
+			position: relative;
+			&:hover {
+				color: $light;
+				cursor: pointer;
+			}
+		}
+		.icon1 {
+			top: 2px;
+		}
+	}
+}
