@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
-import { Modal, Form, Input, Button, Transfer, Select, } from 'antd';
+import { Modal, Form, Input, Button, Transfer, Select, message, } from 'antd';
+import { setAddUserMessage, setRoleDepartment, getUserDetails } from '@/server/system/user'
+import { getScenePlace } from '@/server/scene'
 import IconFont from '@/components/IconFont';
+import _ from 'lodash'
 import '../index.scss'
 
 
@@ -13,32 +16,36 @@ class AddUserModal extends Component {
       steps: 1,
       mockData: [],
       targetKeys: [],
-      selectedKeys: []
+      selectedKeys: [],
+      user_department: [],
+      user_roles: [],
+      userMess: {}
     }
   }
 
   componentDidMount() {
-		this.getMockData()
+		// this.getMockData()
 	}
-  
-  //  穿梭框
-  getMockData = () => {
-    const mockData = [];
-    for (let i = 0; i < 20; i++) {
-      mockData.push({
-        key: i.toString(),
-        title: `content${i + 1}`,
-        description: `description of content${i + 1}`,
-      });
-    }
+
+  // 角色与部门获取接口
+  setRoleDepartmentFun = async() => {
+    const { user_department, user_roles} = await setRoleDepartment()
     this.setState({
-      mockData,
-    }, () => {
-       this.setState({
-        targetKeys: this.state.mockData.filter(item => +item.key > 10).map(item => item.key)
-       })
+      user_department,
+      user_roles
+    })
+
+  }
+
+  // 获取用户信息
+  userDetails = async(id) => {
+    const data = await getUserDetails({
+      "user_info": {
+          "id": id
+      }
     })
   }
+  
 
   onChange = (nextTargetKeys, direction, moveKeys) => {
     console.log('targetKeys:', nextTargetKeys);
@@ -65,13 +72,85 @@ class AddUserModal extends Component {
   // 添加用户弹窗
   showModal = () => {
     this.setState({
-      isModalVisible: true
+      isModalVisible: true,
+      steps: 1
+    }, () => {
+      this.setRoleDepartmentFun()
     })
   }
 
   handleOk = () => {
     this.setState({
-      isModalVisible: false
+        isModalVisible: false
+    })
+  }
+
+  // 下一步
+  nextMessage = () => {
+    if (this.state.steps === 1) {
+      this.formRef.current.validateFields().then((values) => {
+        this.setState({
+          steps: 2,
+          userMess: values
+        }, () => {
+          this.setRoleAddEditFun()
+        })
+      })
+    } else {
+      this.setAddUserMessageFun()
+    }
+    
+  }
+
+  // 添加用户信息
+  setAddUserMessageFun = async () => {
+    const data = await setAddUserMessage({
+      "user_info": {
+        "name": this.state.userMess.name,
+        "role": this.state.userMess.usertype,
+        "password": this.state.userMess.passWorld,
+        "xingming": this.state.userMess.name,
+        "department": this.state.userMess.department,
+        "phone": this.state.userMess.phonenum,
+        "place_id": this.state.targetKeys
+    }
+    })
+    if (_.get(data, 'result.code') === 0) {
+      message.success('操作成功')
+      this.setState({
+        steps: 3
+      },() => {
+        this.props.refresh()
+      })
+    }
+  }
+
+  // 上一步
+  previous = () => {
+    this.setState({
+      steps: 1
+    })
+  }
+
+  // 查询设备位置
+  setRoleAddEditFun = async() => {
+    const { placelist } = await getScenePlace({
+      "search": {
+        "keyword": ""
+    }
+    })
+    let arr = []
+    placelist &&  placelist.map(item => {
+      item.room.map(flag => {
+        arr.push({
+          key: flag.id,
+          title: flag.name,
+          description: flag.name
+        })
+      })
+    })
+    this.setState({
+      mockData: arr
     })
   }
 
@@ -85,7 +164,7 @@ class AddUserModal extends Component {
     return (
       <div className="add-user">
         {/* 添加用户  begin*/}
-        <Modal title="用户添加"  footer={null} visible={this.state.isModalVisible} onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}>
+        {this.state.isModalVisible ? <Modal title="用户添加"  footer={null} visible={this.state.isModalVisible} onOk={() => this.handleOk()} onCancel={() => this.handleCancel()}>
          {/* 进度条 begin */}
          <div className="add-user-Modal-herder">
            <div className={this.state.steps === 1 ? 'zong cur one' : 'zong one'} >
@@ -115,7 +194,7 @@ class AddUserModal extends Component {
          {/* 内容区域 begin */}
          <div className="content-main-user">
            {/* 步骤一 begin */}
-         {this.state.steps === 1 ? (<div className="steps-one">
+           <div className={this.state.steps === 1 ? 'block steps-one' : 'none'}>
            <Form layout="inline" ref={this.formRef} className="searh-header-form">
              <Form.Item
                 label="用户名"
@@ -151,8 +230,13 @@ class AddUserModal extends Component {
                 label="部门"
               >
                 <Select placeholder='请选择部门名称' style={{ width: '206px' }}>
-                  <Select.Option value='0'>部门-全部</Select.Option>
-                  <Select.Option value='1'>教学楼</Select.Option>
+                  {
+                    this.state.user_department.map((item,index) => {
+                      return (
+                        <Select.Option key={index} value={item.id}>{item.name}</Select.Option>
+                      )
+                    })
+                  }
                 </Select>
               </Form.Item>
               <Form.Item
@@ -161,15 +245,20 @@ class AddUserModal extends Component {
                 label="用户类型"
               >
                 <Select placeholder='请选择用户类型' style={{ width: '206px' }}>
-                  <Select.Option value='0'>部门-全部</Select.Option>
-                  <Select.Option value='1'>教学楼</Select.Option>
+                {
+                    this.state.user_roles.map((item,index) => {
+                      return (
+                        <Select.Option key={index} value={item.id}>{item.name}</Select.Option>
+                      )
+                    })
+                  }
                 </Select>
               </Form.Item>
            </Form>
-           </div>) : ''}
+           </div>
            {/* 步骤一 end */}
            {/* 步骤二 begin */}
-           {this.state.steps === 2 ? (<div className="steps-two">
+           <div className={this.state.steps === 2 ? 'block steps-two' : 'none'}>
            <Transfer
               dataSource={this.state.mockData}
               titles={['未选位置', '已选位置']}
@@ -181,27 +270,26 @@ class AddUserModal extends Component {
               onScroll={this.onScroll}
               render={item => item.title}
             />
-           </div>) : ''}
+           </div>
            {/* 步骤二 end */}
            {/* 步骤三 begin */}
-           {this.state.steps === 3 ? (<div className="steps-three">
+           <div className={this.state.steps === 3 ? 'block steps-three' : 'none'}>
              <IconFont type="icon-chenggong" />
              <div className="suss-text">添加完成</div>
-           </div>) : ''}
+           </div>
            {/* 步骤三 end */}
          </div>
          {/* 按钮 begin */}
           <div className="footer">
-          {this.state.steps === 2 ? (<Button type="primary">上一步</Button>) : '' }
-          {this.state.steps === 1 || this.state.steps === 2 ? (<Button type="primary">下一步</Button>) : '' }
-          {this.state.steps === 3 ? (<Button >取消</Button>) : '' }
-          {this.state.steps === 3 ? (<Button type="primary">完成</Button>) : '' }
+          {this.state.steps === 2 ? (<Button type="primary" onClick={() => this.previous()}>上一步</Button>) : '' }
+          {this.state.steps === 1 || this.state.steps === 2 ? (<Button type="primary" onClick={() => this.nextMessage()}>下一步</Button>) : '' }
+          {this.state.steps === 3 ? (<Button type="primary" onClick={() => this.handleOk()}>关闭</Button>) : '' }
           </div>
          {/* 按钮 end */}
          {/* 内容区域 end */}
-         
         </Modal>
-        {/* 添加用户 end */}
+        : ''}
+        
       </div>
     );
   }
