@@ -56,7 +56,7 @@ const PartitionSetting = (props = {}) => {
 							type !== 3 ? <IconFont type="icon-tianjia1" name="添加" onClick={() => onAddModal(type, item)} /> :''
 						}
 						{
-							type !== 1 ? <IconFont type="icon-jianshao" name="减少" onClick={() => onEditModal(type, item)} /> :''
+							type !== 1 ? <IconFont type="icon-bi" name="修改" onClick={() => onEditModal(type, item)} /> :''
 						}
 						{
 							type !== 1 ? <IconFont type="icon-del" name="删除" onClick={() => onDelRow(type, item)}/>	:''
@@ -115,6 +115,7 @@ const getPartitionAddFun = async () => {
 		setIsModalVisible(true);
 		setModalType('add');
 		setLevel(level);
+		setPartitionName('')
 		setParentId(item?item.id:undefined);
 		setTreeId(undefined);
 	};
