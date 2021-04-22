@@ -21,21 +21,21 @@ const PartitionSetting = (props = {}) => {
 	const getPartitionListFun = async() => {
 		const { placelist } = await getPartitionList()
 		let list = [{
-			title: () => renderActionIcons(1),
+			title: () => renderActionIcons(2),
 			key: '0-1',
-			level: 1,
+			level: 2,
 			children: []
 		}]
 		placelist.map((item, index) => {
 			list[0].children.push({
-				title: renderActionIcons(2,item),
+				title: renderActionIcons(3,item),
 				key: `0-1-${item.id}`,
-				level: 2,
+				level: 3,
 				children: []
 			})
-			item.room.map(flag => {
+			item.room && item.room.map(flag => {
 				list[0].children[index].children.push({
-					title: renderActionIcons(3,flag),
+					title: renderActionIcons(3,flag,3),
 					level: 3,
 					key: `0-1-${item.id}-${flag.id}`,
 				})
@@ -44,22 +44,22 @@ const PartitionSetting = (props = {}) => {
 		setTreeData(list)
 	}
 
-	const renderActionIcons = (type, item)  => {
+	const renderActionIcons = (type, item, gg)  => {
 		return (
 			<div className="tree-item">
 				<div className="item-content">
 					<div className="item-name">
-						<span className="text">{type === 1 ? '全部' :item.name}</span>
+						<span className="text">{type === 2 ? '全部' :item.name}</span>
 					</div>
 					<div className="item-action-buttons">
+					  {
+							gg !== 3 ? <IconFont type="icon-tianjia1" name="添加" onClick={() => onAddModal(type, item)} />  :''
+					  }
 						{
-							type !== 3 ? <IconFont type="icon-tianjia1" name="添加" onClick={() => onAddModal(type, item)} /> :''
+							type !== 2 ? <IconFont type="icon-bi" name="修改" onClick={() => onEditModal(type, item)} /> :''
 						}
 						{
-							type !== 1 ? <IconFont type="icon-bi" name="修改" onClick={() => onEditModal(type, item)} /> :''
-						}
-						{
-							type !== 1 ? <IconFont type="icon-del" name="删除" onClick={() => onDelRow(type, item)}/>	:''
+							type !== 2 ? <IconFont type="icon-del" name="删除" onClick={() => onDelRow(type, item)}/>	:''
 						}
 					</div>
 				</div>
@@ -83,6 +83,7 @@ const getPartitionAddFun = async () => {
 	})
 	if (_.get(data, 'result.code') === 0) {
 		message.success('操作成功')
+		getPartitionListFun()
 	}
 }
 
@@ -96,6 +97,7 @@ const getPartitionAddFun = async () => {
 		})
 		if (_.get(data, 'result.code') === 0) {
 			message.success('操作成功')
+			getPartitionListFun()
 		}
 	}
 	// 分区删除
@@ -108,6 +110,7 @@ const getPartitionAddFun = async () => {
 		})
 		if (_.get(data, 'result.code') === 0) {
 			message.success('删除成功')
+			getPartitionListFun()
 		}
 	}
 
@@ -116,7 +119,7 @@ const getPartitionAddFun = async () => {
 		setModalType('add');
 		setLevel(level);
 		setPartitionName('')
-		setParentId(item?item.id:undefined);
+		setParentId(item?item.id:0);
 		setTreeId(undefined);
 	};
 	const onEditModal = (level, item) => {

@@ -98,7 +98,7 @@ const DeviceTable = (props = {}) => {
 			textWrap: 'word-break',
 			render(item) {
 				return (
-					<div className="device-name" onClick={e => onPlaceNameClick(e, item)}>
+					<div className="device-name" >
 						{item.place}
 					</div>
 				);
@@ -397,6 +397,11 @@ const DeviceTable = (props = {}) => {
 					hideOnSinglePage: true,
 					total: props.total,
 					current: props.current
+				}}
+				onRow={record => {
+					return {
+						onClick: (e) => onPlaceNameClick(e, record)
+					};
 				}}
 				onChange={pageSizeChange}
 				rowKey={item => item.id}

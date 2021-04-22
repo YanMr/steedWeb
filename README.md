@@ -61,13 +61,21 @@ npm i or yarn
 调试
 
 ```
-npm start
+本地服务器启动
+npm run start:local
+云端服务器启动
+npm run start
+npm run start:web
 ```
 
 发布应用
 
 ```
+本地服务器打包
+npm run build:local
+云端服务器打包
 npm run build
+npm run build:web
 ```
 
 ### Components

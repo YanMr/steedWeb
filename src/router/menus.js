@@ -3,11 +3,11 @@
  */
 
 export const menus = [
-	{
-		path: '/dashboard',
-		title: '首页',
-		icon: 'icon-zhuye'
-	},
+	// {
+	// 	path: '/dashboard',
+	// 	title: '首页',
+	// 	icon: 'icon-zhuye'
+	// },
 	{
 		path: '/device',
 		title: '设备管理',
@@ -49,21 +49,21 @@ export const menus = [
 				path: '/system/user',
 				title: '用户管理',
 			},
-			{
-				path: '/system/device',
-				title: '物联设备管理',
-			},
+			// {
+			// 	path: '/system/device',
+			// 	title: '物联设备管理',
+			// },
 			{
 				path: '/system/partition',
 				title: '分区设置',
 			}
 		]
 	},
-	{
-		path: '/userSystem',
-		title: '个人中心',
-		icon: 'icon-gerenzhongxin-xuanzhong'
-	},
+	// {
+	// 	path: '/userSystem',
+	// 	title: '个人中心',
+	// 	icon: 'icon-gerenzhongxin-xuanzhong'
+	// },
 	// {
 	// 	path: '/permission',
 	// 	title: '权限测试',

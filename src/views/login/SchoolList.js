@@ -34,7 +34,7 @@ class SchoolList extends Component {
     this.props.setUserInfo(Object.assign({}, this.props.value, { role: { type: data.login_info.role_level, name: data.login_info.user } }));
     localStorage.setItem('serverName', server.name)
     localStorage.setItem('userInfo', JSON.stringify(Object.assign({}, this.props.value, { role: { type: data.login_info.role_level, name: data.login_info.user } })));
-    this.props.prop.history.push('/dashboard');
+    this.props.prop.history.push('/device/list');
   }
 
 	render() {

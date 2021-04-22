@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import ReactSimpleVerify from 'react-simple-verify'
 import 'react-simple-verify/dist/react-simple-verify.css'
-import { Form, Input, Button, Tabs, Select } from 'antd';
+import md5 from 'blueimp-md5'
+import { Form, Input, Button, Tabs, Select, message } from 'antd';
 import { connect } from 'react-redux';
 import SchoolList from './login/SchoolList'
-import { getShortmessage, setCloudserver, getCloudserver } from '@/server/login'
+import { getShortmessage, setCloudserver, getCloudserver, setUserPass } from '@/server/login'
 import { setUserInfo } from '@/redux/actions/userInfo';
 import Security from '@/views/passwordSecurity/Index';
 import banner from '@/assets/img/banber.png'
@@ -35,7 +36,7 @@ class Login extends Component {
 			phone: '',
 			phoneV: '',
 			submitType: false,
-			tabKey: '1',
+			tabKey: process.env.NODE_ENV === 'local'?'1':'2',
 			submitTypePhone: false,
 			isPass: false,
 			count: 60,
@@ -50,8 +51,27 @@ class Login extends Component {
 	login = (e, type) => {
 		e.preventDefault();
 		if (type === 1) {
-			alert('请选择短信登录')
-			return 
+			this.formRef.current.validateFields().then( async (values) => {
+				const data = await setUserPass({
+					"login": {
+						"name": values.username,
+						"password": md5(values.password)
+				}
+				})
+				if (data.result.code === 0) {
+					localStorage.setItem('isLogin', '1');
+					localStorage.setItem('logo', data.server.logo)
+					localStorage.setItem('ui', data.login_info.ui)
+					this.props.setUserInfo(Object.assign({}, this.props.value, { role: { type: data.login_info.role_level, name: data.login_info.user } }));
+					localStorage.setItem('serverName', data.login_info.user)
+					localStorage.setItem('userInfo', JSON.stringify(Object.assign({}, this.props.value, { role: { type: data.login_info.role_level, name: data.login_info.user } })));
+					this.props.history.push('/device/list');
+				}else {
+					message.error('登录失败，请重试!')
+				}
+				}).catch((errorInfo ) => {
+					console.log(errorInfo );
+				})
 		} else {
 			this.formRef.current.validateFields().then( async (values) => {
 			const data = await setCloudserver({
@@ -224,30 +244,30 @@ class Login extends Component {
 					<div className="login-form-z">
 						{!this.state.server?(<div>
 						{this.state.action?(<Tabs defaultActiveKey={this.state.tabKey} onChange={this.callback}>
-							<TabPane tab="密码登录" key="1">
-							{this.state.tabKey === '1'?(	<Form ref={this.formRef} className="login-form">
-								<FormItem 
-									name="username"
-									rules={[{ required: true, message: '请填写手机号/邮箱！' }]}
-								>
-									<Input placeholder="手机号/邮箱"  onChange={this.userNameFun}/>
-								</FormItem>
-								<FormItem 
-									name="password"
-									rules={[{ required: true, message: '请填写密码！' }]}
-								>
-									<Input placeholder="密码"  onChange={this.passwordFun}/>
-								</FormItem>
-								<FormItem>
-								  <Button type="primary" disabled={!this.state.submitType}  htmlType="submit" block onClick={(e) => this.login(e, 1)}>
-										登录
-									</Button>
-									<div className="forget-pass" onClick={this.securityFun}>忘记密码</div>
-								</FormItem>
-							</Form>):''}
-							</TabPane>
-							<TabPane tab="短信登录" key="2">
-							{this.state.tabKey === '2'?(	<Form ref={this.formRef} className="login-form">
+							{
+								process.env.NODE_ENV === 'local' ? <TabPane tab="密码登录" key="1">
+								{this.state.tabKey === '1'?(	<Form ref={this.formRef} className="login-form">
+									<FormItem
+										name="username"
+										rules={[{ required: true, message: '请填写手机号/邮箱！' }]}
+									>
+										<Input placeholder="手机号/邮箱"  onChange={this.userNameFun}/>
+									</FormItem>
+									<FormItem 
+										name="password"
+										rules={[{ required: true, message: '请填写密码！' }]}
+									>
+										<Input placeholder="密码" type="password"  onChange={this.passwordFun}/>
+									</FormItem>
+									<FormItem>
+										<Button type="primary" disabled={!this.state.submitType}  htmlType="submit" block onClick={(e) => this.login(e, 1)}>
+											登录
+										</Button>
+										<div className="forget-pass" onClick={this.securityFun}>忘记密码</div>
+									</FormItem>
+								</Form>):''}
+								</TabPane> : <TabPane tab="短信登录" key="2">
+							  {this.state.tabKey === '2'?(	<Form ref={this.formRef} className="login-form">
 							<FormItem 
 									name="phone"
 									rules={[{ required: true, message: '请填写正确的手机号！' }]}
@@ -281,6 +301,7 @@ class Login extends Component {
 								</FormItem>
 							</Form>):''}
 							</TabPane>
+							}
 						</Tabs>):(<div className="wx-page">
 							<div className="wx-title">微信二维码登录</div>
 							<div className="wx-qrcode"></div>

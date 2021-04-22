@@ -12,6 +12,7 @@ class MessageSetting extends Component {
       data: [
         {key: 0,message: '设备与物联离线异常',maxNumber: '离线10分钟报警', userName: 'admin', frequency: '每天一次'}
       ],
+      addMessageShow: false,
       columns: [
         {
           title: '消息',
@@ -53,9 +54,18 @@ class MessageSetting extends Component {
       ],
     }
   }
+  close = () => {
+    this.setState({
+      addMessageShow: false
+    })
+  }
   // 添加消息
   addMessage = () => {
-    this.refs.addMessage.showModal()
+    this.setState({
+      addMessageShow: true
+    }, () => {
+      this.refs.addMessage.showModal()
+    })
   }
 
   render() {
@@ -71,10 +81,10 @@ class MessageSetting extends Component {
             <div className="qrcode-text">铠硕达智能设备管理平台助手(公众号二维码)</div>
           </div>
         </div>
-        <div className="user-login-message">
+        {/* <div className="user-login-message">
             <div className="user-mess-text">用户登录信息</div>
             <div className="user-mess-radio"><Switch defaultChecked></Switch></div>
-        </div>
+        </div> */}
         <div className="other">
         <div className="account-title">其他消息</div>
           <div className="account-btn"><Button type="primary" onClick={() => this.addMessage()}>添加消息</Button></div>
@@ -87,7 +97,9 @@ class MessageSetting extends Component {
               dataSource={this.state.data}
             />
         </div>  
-        <AddMessage ref="addMessage" />
+        {
+          this.state.addMessageShow ? <AddMessage ref="addMessage" close={this.close} /> : ''
+        }
       </div>
     );
   }

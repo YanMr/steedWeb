@@ -37,8 +37,13 @@ $axios.interceptors.request.use(
 		// 通过reudx的store拿到拿到全局状态树的token ，添加到请求报文，后台会根据该报文返回status
 		// 此处应根据具体业务写token
 		// const token = store.getState().user.token || localStorage.getItem('token');
-		const token = 'FA2019';
-		config.headers['X-Token'] = token;
+		// const token = 'FA2019';
+		// config.headers['X-Token'] = token;
+		// source=3 本地服务器  4是云端服务器
+		config.params = {
+			...config.params,
+			source:  process.env.NODE_ENV === 'local' ? 3 : 4
+		}
 		showLoading ()
 		return config;
 	},

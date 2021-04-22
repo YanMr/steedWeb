@@ -7,6 +7,6 @@ const loggerMiddleware = createLogger();
 const store = createStore(
 	reducers,
 	// applyMiddleware(thunk, loggerMiddleware)
-	process.env.NODE_ENV === 'development' ? composeEnhancers(applyMiddleware(thunk, loggerMiddleware)) : composeEnhancers(applyMiddleware(thunk))
+	(process.env.NODE_ENV === 'development'|| process.env.NODE_ENV === 'web' || process.env.NODE_ENV === 'local') ? composeEnhancers(applyMiddleware(thunk, loggerMiddleware)) : composeEnhancers(applyMiddleware(thunk))
 );
 export default store;

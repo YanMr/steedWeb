@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Upload, message } from 'antd';
+import { Upload, message, Input } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import IconFont from '@/components/IconFont';
 import { getSystemName, setSystemName } from '@/server/system/system'
+import _ from 'lodash'
 import '../index.scss'
 
 
@@ -11,8 +12,10 @@ class SystemMessage extends Component {
     super(props);
     this.state = {
       logo: '',
+      defaultLogo: '',
       loading: false,
-      server: {}
+      server: {},
+      settingStatus: true,
     }
   }
 
@@ -22,7 +25,12 @@ class SystemMessage extends Component {
 
   // 获取系统信息
   getSystemNameFun = async () => {
-    await getSystemName()
+   const {server, logo} =  await getSystemName()
+   this.setState({
+    server,
+    logo,
+    defaultLogo: logo
+   })
   }
 
   getBase64 = (img, callback) => {
@@ -57,7 +65,46 @@ class SystemMessage extends Component {
         }),
       );
     }
-  } 
+  }
+  
+  // 恢复默认
+  defaultFun = () => {
+    this.setState({
+      logo: this.state.defaultLogo
+    })
+  }
+
+  serverName = (e) => {
+    let server =  this.state.server
+    server.name = e.target.value
+    this.setState({
+      server
+    })
+  }
+
+  // 设置系统名称
+  saveStatus = async () => {
+    this.setState({
+      settingStatus: false
+    })
+    if (!this.state.settingStatus) {
+      const data =  await setSystemName({
+         "place": {
+           "level": 1,
+           "parent_id": 0,
+           "name": this.state.server.name
+       }
+       })
+       if (_.get(data, 'result.code') === 0) {
+         message.success('修改成功')
+         this.setState({
+          settingStatus: true
+        })
+       }
+
+     }
+   
+  }
 
   render() {
     return (
@@ -68,15 +115,15 @@ class SystemMessage extends Component {
           <div className="system-main">
           <div className="label-name">系统名称</div>
           <div className="label-value">
-            <div className="system-name no">未设置</div>
-            <div className="system-setting">设置</div>
+            <div className="system-name no">{this.state.settingStatus ? this.state.server.name : <Input className="serverInput" value={this.state.server.name} onChange={this.serverName}/>}</div>
+            <div className="system-setting" onClick={this.saveStatus}>{this.state.settingStatus? '设置': '保存'}</div>
           </div>
           </div>
 
           <div className="system-img-main">
             <div className="system-img-title">系统图标设置</div>
             <div className="system-img-setting-img">
-              <div className="img-system">{this.state.logo?(<img src={this.state.logo} alt="avatar" style={{ width: '100%' }} />): (<IconFont type="icon-morentouxiang" />)}</div>
+              <div className="img-system">{this.state.logo?(<img src={this.state.logo} style={{ width: '100%' }} />): (<IconFont type="icon-morentouxiang" />)}</div>
               <div className="img-setting">
               <Upload 
               name="avatar"
@@ -89,7 +136,7 @@ class SystemMessage extends Component {
               >
                 <div className="img-bottom">{this.state.loading?(<LoadingOutlined />):''}点击上传</div>
               </Upload>
-                <div className="img-bottom">恢复默认</div>
+                <div className="img-bottom" onClick={this.defaultFun}>恢复默认</div>
               </div>
 
             </div>
